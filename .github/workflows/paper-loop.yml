@@ -43,10 +43,23 @@ jobs:
       - name: Verify the survey build
         run: python build.py
 
+      - name: Restore the persistent automation queue
+        shell: bash
+        run: |
+          if git ls-remote --exit-code --heads origin automation/paper-discovery-loop >/dev/null 2>&1; then
+            git fetch --depth=1 origin automation/paper-discovery-loop
+            git checkout FETCH_HEAD -- \
+              automation/state.json \
+              automation/runs \
+              automation/inbox \
+              automation/drafts
+          fi
+
       - name: Discover and classify recent papers
         run: python scripts/paper_loop.py run --notify-slack
 
       - name: Create or update the human-review pull request
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v8
         with:
           add-paths: |

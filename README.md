@@ -159,7 +159,13 @@ Repository setup:
    Actions to create pull requests and grant read/write workflow permissions.
 
 The workflow keeps one fixed automation branch, so an open review PR is updated
-instead of creating duplicate PRs on every schedule.
+instead of creating duplicate PRs on every schedule. Before each run, it restores
+the state, prior run reports, and drafts from that branch; the pending queue
+therefore advances even before the PR is merged. If repository policy blocks
+Actions from creating pull requests, the branch still preserves the results and
+the discovery and Slack steps remain successful. Enabling **Allow GitHub Actions
+to create and approve pull requests** turns the same branch into the intended
+draft review PR.
 
 ## Author
 
