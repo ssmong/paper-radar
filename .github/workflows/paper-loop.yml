@@ -2,8 +2,8 @@ name: Paper discovery loop
 
 on:
   schedule:
-    # Mondays at 10:23 KST (GitHub Actions cron uses UTC).
-    - cron: "23 1 * * 1"
+    # Every day at 08:30 KST (GitHub Actions cron uses UTC).
+    - cron: "30 23 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -23,6 +23,7 @@ jobs:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
       ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
       - name: Check out the default branch
@@ -43,7 +44,7 @@ jobs:
         run: python build.py
 
       - name: Discover and classify recent papers
-        run: python scripts/paper_loop.py run
+        run: python scripts/paper_loop.py run --notify-slack
 
       - name: Create or update the human-review pull request
         uses: peter-evans/create-pull-request@v8

@@ -39,6 +39,7 @@ ARXIV_ID_RE = re.compile(
 )
 MARKDOWN_TITLE_RE = re.compile(r"\[\*\*(?P<title>.+?)\*\*\]\([^)]*\)")
 SAFE_SLUG_RE = re.compile(r"[^a-z0-9]+")
+KST = dt.timezone(dt.timedelta(hours=9), name="KST")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -127,6 +128,19 @@ def parse_iso_datetime(value: str) -> dt.datetime:
 
 def normalize_space(value: str) -> str:
     return " ".join(html.unescape(value).split())
+
+
+def truncate(value: str, limit: int) -> str:
+    """Return a single-line value that fits a Slack or report text budget."""
+    value = normalize_space(value)
+    if len(value) <= limit:
+        return value
+    return value[: max(1, limit - 1)].rstrip() + "…"
+
+
+def slack_escape(value: str) -> str:
+    """Escape text while leaving Slack link markup under our control."""
+    return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 def normalize_title(value: str) -> str:
@@ -544,6 +558,8 @@ Rules:
 4. Set needs_full_text=true when the abstract is insufficient to distinguish
    adjacent sections or verify the claimed scope.
 5. A high confidence score requires explicit abstract evidence.
+6. Write rationale and summary in Korean for the daily review digest. Preserve
+   paper titles, model names, datasets, metrics, and other proper nouns.
 """
 
     def _request(self, prompt: str) -> dict[str, Any]:
@@ -782,6 +798,177 @@ needs_full_text: {str(final['needs_full_text']).lower()}
 """
 
 
+def build_slack_payload(
+    report: dict[str, Any], config: dict[str, Any]
+) -> dict[str, Any]:
+    """Build a compact Korean Slack digest from one auditable run report."""
+    slack = config.get("slack", {})
+    max_papers = max(1, min(int(slack.get("max_papers", 6)), 12))
+    sections = section_map(config)
+    generated_at = parse_iso_datetime(report["generated_at"]).astimezone(KST)
+    stats = report["stats"]
+    reviewable = [
+        item
+        for item in report["results"]
+        if item["decision"]["status"] in {"accepted", "needs_review"}
+    ][:max_papers]
+
+    summary_text = (
+        f"신규 {stats['new']}편 · 선별 {stats['queued']}편 · "
+        f"우선 검토 {stats['accepted'] + stats['needs_review']}편"
+    )
+    blocks: list[dict[str, Any]] = [
+        {
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": f"연구문헌 모니터링 · {generated_at:%Y-%m-%d}",
+                "emoji": True,
+            },
+        },
+        {
+            "type": "section",
+            "fields": [
+                {"type": "mrkdwn", "text": f"*수집*\n{stats['discovered']}편"},
+                {
+                    "type": "mrkdwn",
+                    "text": f"*중복 제거 후 신규*\n{stats['new']}편",
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": f"*이번 실행에서 분석*\n{stats['queued']}편",
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": (
+                        "*판정*\n"
+                        f"후보 {stats['accepted']} · 검토 {stats['needs_review']} · "
+                        f"제외 {stats['rejected']}"
+                    ),
+                },
+            ],
+        },
+    ]
+
+    if reviewable:
+        blocks.append({"type": "divider"})
+    for index, item in enumerate(reviewable, start=1):
+        paper = item["paper"]
+        decision = item["decision"]
+        final = decision["final"]
+        section = sections.get(final["section_id"], {"name": "범위 밖"})
+        status = "우선 후보" if decision["status"] == "accepted" else "검토 필요"
+        evidence = ", ".join(final["evidence"][:3]) or "초록 근거 확인 필요"
+        title = slack_escape(truncate(paper["title"], 180))
+        summary = slack_escape(truncate(final["summary"], 520))
+        rationale = slack_escape(truncate(final["rationale"], 300))
+        evidence = slack_escape(truncate(evidence, 220))
+        blocks.append(
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": (
+                        f"*{index}. <{paper['abs_url']}|{title}>*\n"
+                        f"`{status}`  {final['section_id']}. "
+                        f"{slack_escape(section['name'])}  ·  신뢰도 {final['confidence']:.2f}\n"
+                        f"{summary}\n"
+                        f"*선정 근거*  {rationale}\n"
+                        f"*초록 근거*  {evidence}"
+                    ),
+                },
+            }
+        )
+        blocks.append(
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "mrkdwn",
+                        "text": (
+                            f"arXiv `{paper['paper_id']}` · "
+                            f"원문 확인 {'필요' if final['needs_full_text'] else '권장'} · "
+                            f"판정 불일치 {'있음' if decision['disagreement'] else '없음'}"
+                        ),
+                    }
+                ],
+            }
+        )
+        if index < len(reviewable):
+            blocks.append({"type": "divider"})
+
+    run_url = ""
+    server = os.environ.get("GITHUB_SERVER_URL", "").rstrip("/")
+    repository = os.environ.get("GITHUB_REPOSITORY", "").strip("/")
+    run_id = os.environ.get("GITHUB_RUN_ID", "").strip()
+    if server and repository and run_id:
+        run_url = f"{server}/{repository}/actions/runs/{run_id}"
+    footer = "LLM 판정은 검토 우선순위를 정하기 위한 결과이며, Wiki 반영 전 원문 확인 필요"
+    if run_url:
+        footer += f" · <{run_url}|실행 기록>"
+    blocks.extend(
+        [
+            {"type": "divider"},
+            {
+                "type": "context",
+                "elements": [{"type": "mrkdwn", "text": footer}],
+            },
+        ]
+    )
+    return {
+        "text": f"연구문헌 모니터링 {generated_at:%Y-%m-%d}: {summary_text}",
+        "blocks": blocks,
+    }
+
+
+def send_slack_digest(report: dict[str, Any], config: dict[str, Any]) -> bool:
+    """Send a digest when configured; return False for intentional skips."""
+    slack = config.get("slack", {})
+    if not slack.get("enabled", False):
+        print("Slack digest disabled in configuration.")
+        return False
+    if not report["results"] and not slack.get("notify_when_empty", False):
+        print("Slack digest skipped: no papers were analyzed in this run.")
+        return False
+    webhook_env = str(slack.get("webhook_env", "SLACK_WEBHOOK_URL"))
+    webhook_url = os.environ.get(webhook_env, "").strip()
+    if not webhook_url:
+        print(f"Slack digest skipped: {webhook_env} is not configured.")
+        return False
+
+    body = json.dumps(build_slack_payload(report, config), ensure_ascii=False).encode(
+        "utf-8"
+    )
+    attempts = max(1, int(slack.get("request_attempts", 3)))
+    timeout = max(1, int(slack.get("request_timeout_seconds", 15)))
+    last_error: Exception | None = None
+    for attempt in range(attempts):
+        request = urllib.request.Request(
+            webhook_url,
+            data=body,
+            method="POST",
+            headers={
+                "content-type": "application/json; charset=utf-8",
+                "user-agent": config["source"]["user_agent"],
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                response_text = response.read().decode("utf-8", "replace").strip()
+            if response_text.lower() != "ok":
+                raise RuntimeError(f"unexpected Slack response: {response_text[:200]}")
+            print("Slack digest sent.")
+            return True
+        except urllib.error.HTTPError as error:
+            detail = error.read().decode("utf-8", "replace")[:400]
+            last_error = RuntimeError(f"Slack HTTP {error.code}: {detail}")
+        except (urllib.error.URLError, TimeoutError, RuntimeError) as error:
+            last_error = error
+        if attempt + 1 < attempts:
+            time.sleep(2**attempt)
+    raise RuntimeError(f"Slack digest failed after {attempts} attempts: {last_error}")
+
+
 def make_classifier(
     config: dict[str, Any], *, no_llm: bool, feedback: list[dict[str, Any]]
 ) -> Classifier:
@@ -930,6 +1117,8 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
 
     if not results:
         write_json(state_path, state)
+        if getattr(args, "notify_slack", False):
+            send_slack_digest(report, config)
         print(json.dumps(report["stats"], ensure_ascii=False))
         return report
 
@@ -966,6 +1155,8 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
             "run_id": run_id,
         }
     write_json(state_path, state)
+    if getattr(args, "notify_slack", False):
+        send_slack_digest(report, config)
     print(json.dumps(report["stats"], ensure_ascii=False))
     return report
 
@@ -1010,6 +1201,11 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--now", help="Override current UTC time (ISO-8601) for tests")
     run.add_argument("--no-llm", action="store_true", help="Force deterministic fallback")
     run.add_argument("--dry-run", action="store_true", help="Print output without writing files")
+    run.add_argument(
+        "--notify-slack",
+        action="store_true",
+        help="Send the run digest through the configured Slack webhook",
+    )
     run.set_defaults(func=run_pipeline)
 
     review = subparsers.add_parser("review", help="Record a human feedback example")

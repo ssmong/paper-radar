@@ -117,20 +117,25 @@ For a rejection, use `--decision reject`; the section is stored as `0`.
 
 ### Scheduled pull requests
 
-`.github/workflows/paper-loop.yml` runs every Monday at 10:23 KST and can also
-be started manually from the Actions tab. It runs the offline tests, checks the
-Python files, verifies `build.py`, executes one live discovery cycle, and
-creates or updates a draft PR containing only `automation/` artifacts.
+`.github/workflows/paper-loop.yml` runs every day at 08:30 KST and can also be
+started manually from the Actions tab. It runs the offline tests, checks the
+Python files, verifies `build.py`, executes one live discovery cycle, sends a
+Slack digest, and creates or updates a draft PR containing only `automation/`
+artifacts.
 
 Repository setup:
 
 1. Add an Actions secret named `ANTHROPIC_API_KEY` for LLM classification.
    Without it, the scheduled job safely falls back to heuristic review-only
    classification.
-2. Optionally set the Actions variable `ANTHROPIC_MODEL` to override the model
+2. Create a Slack incoming webhook for the destination channel and add it as an
+   Actions secret named `SLACK_WEBHOOK_URL`. The webhook is never written to a
+   file or printed. Without the secret, the paper loop still runs and records
+   the reason the notification was skipped.
+3. Optionally set the Actions variable `ANTHROPIC_MODEL` to override the model
    in `automation/paper-loop.json`. `ANTHROPIC_BASE_URL` is also supported for
    an API-compatible gateway.
-3. In **Settings → Actions → General → Workflow permissions**, allow GitHub
+4. In **Settings → Actions → General → Workflow permissions**, allow GitHub
    Actions to create pull requests and grant read/write workflow permissions.
 
 The workflow keeps one fixed automation branch, so an open review PR is updated

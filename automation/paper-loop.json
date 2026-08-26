@@ -25,6 +25,14 @@
     "reject_confidence": 0.9,
     "max_passes": 3
   },
+  "slack": {
+    "enabled": true,
+    "webhook_env": "SLACK_WEBHOOK_URL",
+    "max_papers": 6,
+    "notify_when_empty": false,
+    "request_attempts": 3,
+    "request_timeout_seconds": 15
+  },
   "output": {
     "runs_dir": "automation/runs",
     "latest_report": "automation/inbox/latest.md",

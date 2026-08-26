@@ -8,6 +8,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from scripts import paper_loop
 
@@ -140,6 +141,59 @@ class ClassificationTests(unittest.TestCase):
         self.assertEqual(decision.status, "needs_review")
         self.assertEqual(decision.final.source, "heuristic")
         self.assertTrue(decision.final.needs_full_text)
+
+
+class SlackDigestTests(unittest.TestCase):
+    def setUp(self):
+        self.paper = paper_loop.parse_arxiv_atom(FIXTURE.read_bytes())[0]
+
+    def report(self) -> dict:
+        final = classification(
+            section_id="5", confidence=0.73, needs_full_text=True
+        )
+        decision = paper_loop.LoopDecision(
+            "needs_review", final, (final,), False
+        )
+        return {
+            "run_id": "2026-08-25T233000Z",
+            "generated_at": "2026-08-25T23:30:00Z",
+            "classifier": "anthropic",
+            "stats": {
+                "discovered": 8,
+                "new": 3,
+                "backlog": 0,
+                "prefiltered": 2,
+                "queued": 1,
+                "deferred": 1,
+                "accepted": 0,
+                "needs_review": 1,
+                "rejected": 0,
+            },
+            "results": [
+                paper_loop.result_record(
+                    self.paper,
+                    decision,
+                    prefilter_hits=("dexterous", "tactile"),
+                )
+            ],
+        }
+
+    def test_payload_uses_korean_date_and_links_original_paper(self):
+        payload = paper_loop.build_slack_payload(self.report(), CONFIG)
+        serialized = json.dumps(payload, ensure_ascii=False)
+
+        self.assertIn("2026-08-26", payload["text"])
+        self.assertIn(self.paper.abs_url, serialized)
+        self.assertIn("검토 필요", serialized)
+        self.assertIn("원문 확인 필요", serialized)
+
+    def test_missing_webhook_skips_without_exposing_secret(self):
+        with mock.patch.dict("os.environ", {}, clear=True):
+            with contextlib.redirect_stdout(io.StringIO()) as output:
+                sent = paper_loop.send_slack_digest(self.report(), CONFIG)
+
+        self.assertFalse(sent)
+        self.assertIn("SLACK_WEBHOOK_URL is not configured", output.getvalue())
 
 
 class PipelineTests(unittest.TestCase):
