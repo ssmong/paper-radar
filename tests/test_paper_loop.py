@@ -143,6 +143,72 @@ class ClassificationTests(unittest.TestCase):
         self.assertTrue(decision.final.needs_full_text)
 
 
+class FullTextInsightTests(unittest.TestCase):
+    def test_html_extraction_removes_scripts_and_numbers_source_lines(self):
+        payload = b"""
+        <html><body><h1>Method</h1><p>Contact-rich policy.</p>
+        <script>ignore_me()</script><table><tr><td>Success</td><td>82%</td></tr></table>
+        </body></html>
+        """
+
+        text = paper_loop.extract_arxiv_html_text(payload)
+        numbered = paper_loop.number_source_lines(text, max_chars=1000)
+
+        self.assertNotIn("ignore_me", text)
+        self.assertIn("[L0001] Method", numbered)
+        self.assertIn("82%", numbered)
+
+    def test_validation_recomputes_only_same_condition_delta(self):
+        base = {
+            "problem": "접촉 작업의 성공률 저하",
+            "method": "촉각 기반 정책",
+            "contribution": "동일 benchmark에서 성공률 향상",
+            "limitations": ["단일 로봇에서만 평가 [L0040]"],
+            "gap_candidate": "다른 embodiment 검증 필요",
+            "evidence": ["[L0010] 문제와 방법", "[L0030] 결과 표"],
+            "comparisons": [
+                {
+                    "task": "insertion",
+                    "dataset": "Benchmark A",
+                    "metric": "success rate",
+                    "proposed_value": 82,
+                    "baseline_name": "Baseline X",
+                    "baseline_value": 70,
+                    "unit": "%",
+                    "higher_is_better": True,
+                    "conditions_match": True,
+                    "comparison_note": "동일 조건",
+                    "proposed_evidence": "[L0030] proposed 82%",
+                    "baseline_evidence": "[L0030] baseline 70%",
+                },
+                {
+                    "task": "insertion",
+                    "dataset": "Benchmark B",
+                    "metric": "success rate",
+                    "proposed_value": 90,
+                    "baseline_name": "Baseline Y",
+                    "baseline_value": 60,
+                    "unit": "%",
+                    "higher_is_better": True,
+                    "conditions_match": False,
+                    "comparison_note": "평가 물체 수가 다름",
+                    "proposed_evidence": "[L0031] proposed 90%",
+                    "baseline_evidence": "[L0032] baseline 60%",
+                },
+            ],
+        }
+
+        insight = paper_loop.validate_insight(
+            base, source_kind="arxiv_html", source_url="https://arxiv.org/html/test"
+        )
+
+        matched, mismatched = insight["comparisons"]
+        self.assertEqual(matched["absolute_delta"], 12)
+        self.assertAlmostEqual(matched["relative_improvement_percent"], 1200 / 70)
+        self.assertIsNone(mismatched["absolute_delta"])
+        self.assertIsNone(mismatched["relative_improvement_percent"])
+
+
 class SlackDigestTests(unittest.TestCase):
     def setUp(self):
         self.paper = paper_loop.parse_arxiv_atom(FIXTURE.read_bytes())[0]
@@ -194,6 +260,55 @@ class SlackDigestTests(unittest.TestCase):
 
         self.assertFalse(sent)
         self.assertIn("SLACK_WEBHOOK_URL is not configured", output.getvalue())
+
+    def test_payload_prefers_grounded_insight_over_abstract_summary(self):
+        report = self.report()
+        report["results"][0]["insight"] = {
+            "problem": "접촉 상태 변화에서 성공률이 낮아지는 문제",
+            "method": "촉각 기반 variable impedance policy",
+            "contribution": "동일 조건 baseline보다 성공률을 높임",
+            "limitations": ["단일 task 평가"],
+            "gap_candidate": "다른 hand로의 일반화 검증",
+            "comparisons": [],
+            "evidence": ["[L0010] task and result"],
+            "source_kind": "arxiv_html",
+            "source_url": "https://arxiv.org/html/2608.00001v1",
+        }
+
+        payload = paper_loop.build_slack_payload(report, CONFIG)
+        serialized = json.dumps(payload, ensure_ascii=False)
+
+        self.assertIn("*문제*", serialized)
+        self.assertIn("*Gap 후보*", serialized)
+        self.assertIn("직접 비교 가능한 동일 조건 수치 없음", serialized)
+
+    def test_configured_webhook_posts_block_kit_payload(self):
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                del args
+
+            @staticmethod
+            def read():
+                return b"ok"
+
+        with mock.patch.dict(
+            "os.environ", {"SLACK_WEBHOOK_URL": "https://hooks.slack.test/secret"}
+        ):
+            with mock.patch(
+                "scripts.paper_loop.urllib.request.urlopen",
+                return_value=FakeResponse(),
+            ) as urlopen:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    sent = paper_loop.send_slack_digest(self.report(), CONFIG)
+
+        self.assertTrue(sent)
+        request = urlopen.call_args.args[0]
+        payload = json.loads(request.data.decode("utf-8"))
+        self.assertEqual(request.full_url, "https://hooks.slack.test/secret")
+        self.assertIn("blocks", payload)
 
 
 class PipelineTests(unittest.TestCase):

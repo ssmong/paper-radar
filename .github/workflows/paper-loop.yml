@@ -17,7 +17,7 @@ permissions:
 jobs:
   discover-and-classify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       PYTHONUTF8: "1"
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

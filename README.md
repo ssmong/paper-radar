@@ -53,7 +53,12 @@ publisher:
 3. apply a cheap keyword prefilter;
 4. classify title and abstract, then run a skeptical second LLM review;
 5. run a third adjudication pass when the first two disagree;
-6. write a review report and candidate drafts without editing the survey.
+6. inspect arXiv HTML for the highest-priority papers and extract a grounded
+   problem, method, contribution, limitation, and gap candidate;
+7. calculate numeric deltas in Python only when the paper reports proposed and
+   baseline values under matching task, dataset, metric, and evaluation
+   conditions;
+8. write a review report and candidate drafts without editing the survey.
 
 Classification is abstract-grounded. High-confidence candidates still arrive
 in a draft pull request and require a human to verify the full paper before any
@@ -67,6 +72,7 @@ the configured Claude model:
 ```bash
 python scripts/paper_loop.py run --dry-run
 python scripts/paper_loop.py run
+python scripts/paper_loop.py run --notify-slack
 ```
 
 Use the deterministic fallback for a zero-cost check. It never auto-accepts a
@@ -95,6 +101,20 @@ are:
 - `automation/drafts/section*/`: drafts only for candidates accepted by the
   LLM review loop;
 - `automation/state.json`: processed paper IDs and the persistent pending queue.
+
+For up to four reviewable papers per run, the loop first tries arXiv HTML and
+falls back to the abstract when full text is unavailable. Source text is
+numbered before LLM analysis, and every insight or numeric comparison must cite
+its `[L####]` evidence locator. The model returns the reported proposed and
+baseline values; Python recomputes the absolute difference and relative
+improvement. A mismatch in task, dataset, metric, or evaluation condition is
+shown as `comparison deferred` rather than converted into a misleading delta.
+
+The Slack message contains the daily counts and up to six review priorities.
+When full-text insight is available, each item shows the research problem,
+method, contribution over prior work, tentative gap, and up to two numeric
+comparisons. It links to the analyzed source and explicitly retains the
+full-paper verification requirement.
 
 `max_candidates_per_run` caps LLM cost. Reports show both the number that
 passed the prefilter and the number classified in the current run, so a backlog
