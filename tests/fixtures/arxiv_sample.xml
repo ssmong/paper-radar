@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>arXiv Query: offline paper-loop fixture</title>
+  <entry>
+    <id>https://arxiv.org/abs/2608.00001v1</id>
+    <updated>2026-08-20T12:00:00Z</updated>
+    <published>2026-08-20T12:00:00Z</published>
+    <title>
+      Tactile Dexterous Manipulation with Variable Impedance
+    </title>
+    <summary>
+      We study tactile dexterous manipulation and learn variable impedance
+      policies for contact-rich insertion with a multi-finger robot hand.
+    </summary>
+    <author><name>Ada Researcher</name></author>
+    <author><name>Min Robotist</name></author>
+    <category term="cs.RO" />
+    <link href="https://arxiv.org/abs/2608.00001v1" rel="alternate" type="text/html" />
+    <link title="pdf" href="https://arxiv.org/pdf/2608.00001v1" rel="related" type="application/pdf" />
+  </entry>
+  <entry>
+    <id>https://arxiv.org/abs/2608.00002v1</id>
+    <updated>2026-08-19T08:00:00Z</updated>
+    <published>2026-08-19T08:00:00Z</published>
+    <title>Protein Folding with Molecular Graphs</title>
+    <summary>
+      A molecular graph model predicts protein structures without robotics or
+      manipulation experiments.
+    </summary>
+    <author><name>Grace Biologist</name></author>
+    <category term="q-bio.BM" />
+    <link href="https://arxiv.org/abs/2608.00002v1" rel="alternate" type="text/html" />
+  </entry>
+  <entry>
+    <id>https://arxiv.org/abs/2608.00003v2</id>
+    <updated>2026-08-18T08:00:00Z</updated>
+    <published>2026-08-10T08:00:00Z</published>
+    <title>Known Dexterous Teleoperation Paper</title>
+    <summary>
+      A teleoperation interface collects dexterous robot hand demonstrations.
+    </summary>
+    <author><name>Known Author</name></author>
+    <category term="cs.RO" />
+    <link href="https://arxiv.org/abs/2608.00003v2" rel="alternate" type="text/html" />
+  </entry>
+</feed>

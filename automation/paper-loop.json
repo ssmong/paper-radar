@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "max_candidates_per_run": 20,
+  "source": {
+    "base_url": "https://export.arxiv.org/api/query",
+    "lookback_days": 45,
+    "max_results_per_query": 30,
+    "request_attempts": 3,
+    "request_delay_seconds": 3,
+    "request_timeout_seconds": 30,
+    "user_agent": "survey-paper-loop/1.0 (+https://github.com/ssmong/survey-contact-rich-dexterous-manipulation)"
+  },
+  "llm": {
+    "provider": "anthropic",
+    "base_url": "https://api.anthropic.com",
+    "model": "claude-sonnet-4-20250514",
+    "max_tokens": 800,
+    "request_attempts": 3,
+    "request_timeout_seconds": 60,
+    "validation_attempts": 2,
+    "feedback_examples": 12
+  },
+  "review_loop": {
+    "accept_confidence": 0.84,
+    "reject_confidence": 0.9,
+    "max_passes": 3
+  },
+  "output": {
+    "runs_dir": "automation/runs",
+    "latest_report": "automation/inbox/latest.md",
+    "drafts_dir": "automation/drafts"
+  },
+  "queries": [
+    {
+      "name": "dexterous-manipulation",
+      "search_query": "(all:\"dexterous manipulation\" OR all:\"dexterous hand\") AND (cat:cs.RO OR cat:cs.AI OR cat:cs.LG)"
+    },
+    {
+      "name": "force-tactile",
+      "search_query": "(all:\"tactile manipulation\" OR all:\"force-aware manipulation\" OR all:\"impedance control\") AND cat:cs.RO"
+    },
+    {
+      "name": "robot-vla",
+      "search_query": "(all:\"vision-language-action\" OR all:\"vision language action\") AND (all:robot OR all:manipulation)"
+    },
+    {
+      "name": "teleoperation-hardware",
+      "search_query": "(all:\"dexterous teleoperation\" OR all:\"robot hand hardware\") AND cat:cs.RO"
+    }
+  ],
+  "prefilter": {
+    "minimum_include_hits": 1,
+    "include_any": [
+      "dexterous",
+      "multi-finger",
+      "multifinger",
+      "in-hand",
+      "tactile",
+      "force-aware",
+      "force control",
+      "impedance",
+      "compliance",
+      "vision-language-action",
+      "vision language action",
+      "teleoperation",
+      "robot hand"
+    ],
+    "exclude_any": [
+      "surgical outcome",
+      "clinical trial",
+      "protein",
+      "molecular",
+      "financial market"
+    ]
+  },
+  "sections": [
+    {
+      "id": "1",
+      "name": "Dexterous Tool Use & Manipulation",
+      "description": "Multi-finger grasping, tool use, articulated or deformable object manipulation.",
+      "keywords": ["tool use", "articulated object", "deformable", "dexterous manipulation"]
+    },
+    {
+      "id": "2",
+      "name": "Dexterous VLA / Vision-Language-Action",
+      "description": "Language-conditioned VLA models that directly support dexterous hands.",
+      "keywords": ["vision-language-action", "vision language action", "vla", "language-conditioned"]
+    },
+    {
+      "id": "3",
+      "name": "Force-aware VLA / Tactile VLA",
+      "description": "VLA or language-conditioned systems using force, torque, or tactile sensing.",
+      "keywords": ["tactile vla", "force-aware vla", "forcevla", "tactile vision language"]
+    },
+    {
+      "id": "4",
+      "name": "VLM-guided Impedance Control",
+      "description": "VLM or LLM systems that generate, retrieve, or adapt impedance parameters.",
+      "keywords": ["vlm", "llm", "impedance parameter", "stiffness parameter"]
+    },
+    {
+      "id": "5",
+      "name": "Learned Impedance / Variable Compliance Control",
+      "description": "Learning or optimization of stiffness, damping, compliance, or force control without a VLM backbone.",
+      "keywords": ["impedance", "variable compliance", "stiffness", "damping", "force control"]
+    },
+    {
+      "id": "6",
+      "name": "VLA Foundation Models",
+      "description": "General VLA or visuomotor foundation models relevant to manipulation.",
+      "keywords": ["foundation model", "generalist robot", "cross-embodiment", "visuomotor policy"]
+    },
+    {
+      "id": "7",
+      "name": "RL-based Dexterous Manipulation",
+      "description": "Reinforcement-learning methods for dexterous grasping, reorientation, or long-horizon manipulation.",
+      "keywords": ["reinforcement learning", "ppo", "sim-to-real", "in-hand rotation", "reorientation"]
+    },
+    {
+      "id": "8",
+      "name": "Datasets",
+      "description": "Robot, force/tactile, human-hand, or cross-embodiment datasets.",
+      "keywords": ["dataset", "data collection", "demonstrations", "benchmark data"]
+    },
+    {
+      "id": "9",
+      "name": "Simulation Benchmarks & Platforms",
+      "description": "Simulation platforms, benchmarks, or differentiable tactile/contact simulators.",
+      "keywords": ["simulator", "simulation platform", "benchmark", "physics engine"]
+    },
+    {
+      "id": "10",
+      "name": "Teleoperation Systems",
+      "description": "Teleoperation interfaces and systems for collecting dexterous manipulation demonstrations.",
+      "keywords": ["teleoperation", "teleop", "retargeting", "demonstration collection"]
+    },
+    {
+      "id": "11",
+      "name": "Low-Cost Dexterous Hand Hardware",
+      "description": "New dexterous-hand hardware, mechanisms, sensing, actuation, or low-cost designs.",
+      "keywords": ["robot hand", "dexterous hand hardware", "actuator", "tendon-driven", "low-cost hand"]
+    },
+    {
+      "id": "12",
+      "name": "Tactile Representation Models",
+      "description": "General-purpose tactile encoders, representations, or tactile foundation models.",
+      "keywords": ["tactile representation", "tactile foundation", "tactile encoder", "touch representation"]
+    }
+  ]
+}
