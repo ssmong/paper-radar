@@ -15,6 +15,7 @@ falls back to deterministic keyword classification and marks every candidate as
 from __future__ import annotations
 
 import argparse
+import contextlib
 import dataclasses
 import datetime as dt
 import hashlib
@@ -23,6 +24,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 import unicodedata
 import urllib.error
@@ -94,6 +96,28 @@ class LoopDecision:
             "passes": [item.as_dict() for item in self.passes],
             "disagreement": self.disagreement,
         }
+
+
+@dataclasses.dataclass(frozen=True)
+class Candidate:
+    """One prefiltered paper waiting for tier-one abstract screening."""
+
+    paper: Paper
+    prefilter_hits: tuple[str, ...]
+    enqueued_at: str
+    from_backlog: bool = False
+
+
+@dataclasses.dataclass(frozen=True)
+class ScreeningResult:
+    """Explainable, deterministic signals used only to order expensive review."""
+
+    score: float
+    matched_topics: tuple[str, ...]
+    reasons: tuple[str, ...]
+
+    def as_dict(self) -> dict[str, Any]:
+        return dataclasses.asdict(self)
 
 
 class ArxivHTMLTextExtractor(HTMLParser):
@@ -457,6 +481,7 @@ def fetch_arxiv(config: dict[str, Any]) -> list[Paper]:
     source = config["source"]
     base_url = source.get("base_url", "https://export.arxiv.org/api/query")
     max_results = int(source.get("max_results_per_query", 25))
+    max_pages = max(1, int(source.get("max_pages_per_query", 1)))
     attempts = int(source.get("request_attempts", 3))
     timeout = int(source.get("request_timeout_seconds", 30))
     delay = float(source.get("request_delay_seconds", 3))
@@ -465,22 +490,31 @@ def fetch_arxiv(config: dict[str, Any]) -> list[Paper]:
     )
     collected: list[Paper] = []
     queries = config.get("queries", [])
-    for index, query in enumerate(queries):
-        params = urllib.parse.urlencode(
-            {
-                "search_query": query["search_query"],
-                "start": 0,
-                "max_results": max_results,
-                "sortBy": "submittedDate",
-                "sortOrder": "descending",
-            }
-        )
-        payload = request_bytes(
-            f"{base_url}?{params}", attempts=attempts, timeout=timeout, user_agent=user_agent
-        )
-        collected.extend(parse_arxiv_atom(payload, query_name=query["name"]))
-        if index + 1 < len(queries):
-            time.sleep(delay)
+    request_number = 0
+    for query in queries:
+        for page in range(max_pages):
+            if request_number:
+                time.sleep(delay)
+            params = urllib.parse.urlencode(
+                {
+                    "search_query": query["search_query"],
+                    "start": page * max_results,
+                    "max_results": max_results,
+                    "sortBy": "submittedDate",
+                    "sortOrder": "descending",
+                }
+            )
+            payload = request_bytes(
+                f"{base_url}?{params}",
+                attempts=attempts,
+                timeout=timeout,
+                user_agent=user_agent,
+            )
+            request_number += 1
+            page_papers = parse_arxiv_atom(payload, query_name=query["name"])
+            collected.extend(page_papers)
+            if len(page_papers) < max_results:
+                break
     return merge_papers(collected)
 
 
@@ -534,10 +568,98 @@ def load_json(path: Path, default: Any) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def write_json(path: Path, value: Any) -> None:
+def write_text_atomic(path: Path, text: str) -> None:
+    """Replace a text artifact atomically so interrupted runs keep the old file."""
     path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary_path = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as stream:
+            stream.write(text)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary_path, path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+
+
+def write_json(path: Path, value: Any) -> None:
     rendered = json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
-    path.write_text(rendered, encoding="utf-8")
+    write_text_atomic(path, rendered)
+
+
+@contextlib.contextmanager
+def exclusive_run_lock(path: Path) -> Iterable[None]:
+    """Fail fast when another scheduled run is already mutating this state."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor = -1
+    for lock_attempt in range(2):
+        try:
+            descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError as error:
+            try:
+                detail = path.read_text(encoding="utf-8", errors="replace").strip()
+            except FileNotFoundError:
+                # The owner released the lock between O_EXCL and inspection.
+                if lock_attempt == 0:
+                    continue
+                raise
+            stale = False
+            try:
+                lock_record = json.loads(detail)
+                started_at = str(lock_record.get("started_at", ""))
+                pid = int(lock_record.get("pid", 0))
+                alive = False
+                if pid == os.getpid():
+                    alive = True
+                elif pid > 0:
+                    try:
+                        os.kill(pid, 0)
+                        alive = True
+                    except PermissionError:
+                        alive = True
+                    except (ProcessLookupError, OSError):
+                        alive = False
+                old_without_live_owner = (
+                    utc_now() - parse_iso_datetime(started_at)
+                ) > dt.timedelta(hours=6)
+                stale = not alive and (pid > 0 or old_without_live_owner)
+            except (AttributeError, json.JSONDecodeError, TypeError, ValueError):
+                # A process can die after O_EXCL creates an empty lock but before
+                # its JSON payload is written. Reclaim only after a conservative
+                # mtime threshold; recent malformed locks may still be live.
+                try:
+                    modified_at = dt.datetime.fromtimestamp(
+                        path.stat().st_mtime, tz=dt.timezone.utc
+                    )
+                    stale = (utc_now() - modified_at) > dt.timedelta(hours=6)
+                except FileNotFoundError:
+                    if lock_attempt == 0:
+                        continue
+                    raise
+            if stale and lock_attempt == 0:
+                path.unlink(missing_ok=True)
+                continue
+            raise RuntimeError(
+                f"Another paper-loop run holds {path}"
+                + (f" ({detail})" if detail else "")
+            ) from error
+    try:
+        payload = json.dumps(
+            {"pid": os.getpid(), "started_at": utc_now().isoformat()},
+            ensure_ascii=False,
+        ).encode("utf-8")
+        os.write(descriptor, payload)
+        os.close(descriptor)
+        descriptor = -1
+        yield
+    finally:
+        if descriptor >= 0:
+            os.close(descriptor)
+        path.unlink(missing_ok=True)
 
 
 def load_feedback(path: Path) -> list[dict[str, Any]]:
@@ -565,6 +687,155 @@ def prefilter(paper: Paper, config: dict[str, Any]) -> tuple[bool, tuple[str, ..
     )
     minimum_hits = int(rules.get("minimum_include_hits", 1))
     return len(includes) >= minimum_hits and not excludes, includes
+
+
+def screening_limits(config: dict[str, Any]) -> tuple[int, int]:
+    """Return batch-classification and full-text-analysis limits."""
+    legacy_limit = int(config.get("max_candidates_per_run", 10))
+    screening = config.get("screening")
+    if not isinstance(screening, dict):
+        broad_limit = legacy_limit
+    else:
+        # The top-level key remains a compatibility ceiling for older callers.
+        broad_limit = min(
+            legacy_limit,
+            int(screening.get("max_abstracts_per_run", legacy_limit)),
+        )
+    detailed_limit = min(
+        broad_limit,
+        max(1, int(config.get("analysis", {}).get("max_papers_per_run", 4))),
+    )
+    if broad_limit < 1:
+        raise ValueError("screening.max_abstracts_per_run must be at least 1")
+    if detailed_limit < 1:
+        raise ValueError("analysis.max_papers_per_run must be at least 1")
+    return broad_limit, detailed_limit
+
+
+def _age_in_days(value: str, *, now: dt.datetime) -> float:
+    if not value:
+        return 0.0
+    try:
+        return max(0.0, (now - parse_iso_datetime(value)).total_seconds() / 86400)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def screen_candidate(
+    candidate: Candidate, config: dict[str, Any], *, now: dt.datetime
+) -> ScreeningResult:
+    """Score one abstract using transparent signals; never accept/reject a paper."""
+    screening = config.get("screening", {})
+    ranking = screening.get("ranking", {}) if isinstance(screening, dict) else {}
+    paper = candidate.paper
+    corpus = f"{paper.title} {paper.summary}".casefold()
+    score = len(set(candidate.prefilter_hits)) * float(
+        ranking.get("prefilter_hit_weight", 0.25)
+    )
+    reasons: list[str] = []
+    matched_topics: list[str] = []
+
+    for topic in ranking.get("priority_topics", []):
+        if not isinstance(topic, dict):
+            continue
+        hits = [
+            str(keyword)
+            for keyword in topic.get("keywords", [])
+            if str(keyword).casefold() in corpus
+        ]
+        if not hits:
+            continue
+        name = str(topic.get("name", "unnamed-topic"))
+        weight = float(topic.get("weight", 0.0))
+        score += weight
+        matched_topics.append(name)
+        reasons.append(f"topic:{name} (+{weight:g})")
+
+    category_weights = ranking.get("category_weights", {})
+    for category in set(paper.categories):
+        weight = float(category_weights.get(category, 0.0))
+        if weight:
+            score += weight
+            reasons.append(f"category:{category} (+{weight:g})")
+
+    query_weights = ranking.get("query_weights", {})
+    for query_name in set(paper.query_names):
+        weight = float(query_weights.get(query_name, 0.0))
+        if weight:
+            score += weight
+            reasons.append(f"query:{query_name} (+{weight:g})")
+
+    backlog_age = _age_in_days(candidate.enqueued_at, now=now)
+    if candidate.from_backlog and backlog_age:
+        age_bonus = min(
+            backlog_age * float(ranking.get("backlog_age_weight_per_day", 0.1)),
+            float(ranking.get("max_backlog_age_bonus", 5.0)),
+        )
+        score += age_bonus
+        reasons.append(f"backlog-age:{backlog_age:.1f}d (+{age_bonus:.2f})")
+
+    published_age = _age_in_days(paper.published, now=now)
+    freshness_weight = float(ranking.get("freshness_weight", 0.0))
+    lookback_days = max(1, int(config.get("source", {}).get("lookback_days", 45)))
+    freshness_bonus = freshness_weight * max(0.0, 1.0 - published_age / lookback_days)
+    if freshness_bonus:
+        score += freshness_bonus
+        reasons.append(f"freshness (+{freshness_bonus:.2f})")
+
+    if candidate.prefilter_hits:
+        reasons.append(f"prefilter-hits:{len(set(candidate.prefilter_hits))}")
+    return ScreeningResult(
+        score=round(score, 4),
+        matched_topics=tuple(matched_topics),
+        reasons=tuple(reasons),
+    )
+
+
+def rank_candidates(
+    candidates: Iterable[Candidate], config: dict[str, Any], *, now: dt.datetime
+) -> list[tuple[Candidate, ScreeningResult]]:
+    """Rank a whole abstract batch before any expensive multi-pass review."""
+    ranked = [
+        (candidate, screen_candidate(candidate, config, now=now))
+        for candidate in candidates
+    ]
+    ranked.sort(
+        key=lambda item: (
+            -item[1].score,
+            item[0].enqueued_at or "9999",
+            item[0].paper.paper_id,
+        )
+    )
+    return ranked
+
+
+def select_with_backlog_reserve(
+    ranked: list[tuple[Candidate, ScreeningResult]],
+    *,
+    limit: int,
+    reserve_fraction: float,
+) -> list[tuple[Candidate, ScreeningResult]]:
+    """Reserve FIFO capacity for backlog while keeping the remainder score-ranked."""
+    if len(ranked) <= limit:
+        return list(ranked)
+    reserve_fraction = min(1.0, max(0.0, reserve_fraction))
+    backlog = [item for item in ranked if item[0].from_backlog]
+    reserved_count = min(len(backlog), int(round(limit * reserve_fraction)))
+    if backlog and reserve_fraction > 0 and reserved_count == 0:
+        reserved_count = 1
+    reserved = sorted(
+        backlog,
+        key=lambda item: (item[0].enqueued_at or "", item[0].paper.paper_id),
+    )[:reserved_count]
+    reserved_ids = {item[0].paper.paper_id for item in reserved}
+    selected = reserved + [
+        item for item in ranked if item[0].paper.paper_id not in reserved_ids
+    ][: limit - len(reserved)]
+    rank_index = {
+        item[0].paper.paper_id: index for index, item in enumerate(ranked)
+    }
+    selected.sort(key=lambda item: rank_index[item[0].paper.paper_id])
+    return selected
 
 
 def section_map(config: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -742,10 +1013,13 @@ class AnthropicClassifier:
         }.get(mode, "Classify the paper conservatively.")
         return f"""{mode_instruction}
 
-Survey scope: contact-rich dexterous manipulation, VLA, tactile/force-aware
-control, learned impedance, dexterous RL, datasets, simulators, teleoperation,
-dexterous hardware, and tactile representation models. Reject papers that only
-mention robots or AI without a direct connection to this scope.
+Research-radar scope: contact-rich and general robot manipulation, VLA and
+embodied foundation models, tactile/force-aware control, robot reinforcement
+and imitation learning, sim-to-real, legged/humanoid locomotion, learning-based
+MPC and safe/robust/optimal control, motion planning, state estimation, sensor
+fusion, datasets, simulators, teleoperation, and robot hardware. Reject papers
+that only mention robots, control, or AI without a direct technical connection
+to one of these topics.
 
 Available sections:
 {sections}
@@ -1022,6 +1296,23 @@ Numbered source:
         raise RuntimeError(f"Anthropic insight analysis failed: {last_error}")
 
 
+def result_priority_key(record: dict[str, Any]) -> tuple[float, float, float, str]:
+    """Stable descending priority key shared by deep analysis and Slack."""
+    screening_score = float(record.get("screening", {}).get("score", 0.0))
+    confidence = float(record.get("decision", {}).get("final", {}).get("confidence", 0.0))
+    published = str(record.get("paper", {}).get("published", ""))
+    try:
+        published_timestamp = parse_iso_datetime(published).timestamp()
+    except (TypeError, ValueError):
+        published_timestamp = 0.0
+    paper_id = str(record.get("paper", {}).get("paper_id", ""))
+    return -screening_score, -confidence, -published_timestamp, paper_id
+
+
+def prioritized_results(results: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+    return sorted(results, key=result_priority_key)
+
+
 def enrich_results_with_insights(
     results: list[dict[str, Any]], config: dict[str, Any]
 ) -> None:
@@ -1032,11 +1323,11 @@ def enrich_results_with_insights(
         return
     analyzer = AnthropicInsightAnalyzer(config, api_key=api_key)
     limit = max(1, int(analysis.get("max_papers_per_run", 4)))
-    reviewable = [
+    reviewable = prioritized_results(
         item
         for item in results
         if item["decision"]["status"] in {"accepted", "needs_review"}
-    ][:limit]
+    )[:limit]
     for record in reviewable:
         paper = paper_from_dict(record["paper"])
         try:
@@ -1049,6 +1340,58 @@ def enrich_results_with_insights(
             )
         except RuntimeError as error:
             record["insight_error"] = truncate(str(error), 600)
+
+
+def enrich_results_with_codex_insights(
+    results: list[dict[str, Any]], config: dict[str, Any], *, repo_root: Path
+) -> None:
+    """Deep-analyze only the highest-ranked reviewable Codex classifications."""
+    analysis = config.get("analysis", {})
+    if not analysis.get("enabled", False):
+        return
+    limit = max(1, int(analysis.get("max_papers_per_run", 4)))
+    selected = prioritized_results(
+        item
+        for item in results
+        if item["decision"]["status"] in {"accepted", "needs_review"}
+        and not item.get("retryable_error")
+    )[:limit]
+    items: list[dict[str, Any]] = []
+    records_by_id: dict[str, dict[str, Any]] = {}
+    sources_by_id: dict[str, tuple[str, str]] = {}
+    for record in selected:
+        paper = paper_from_dict(record["paper"])
+        try:
+            source_kind, source_url, source_text = fetch_analysis_source(paper, config)
+        except RuntimeError as error:
+            record["insight_error"] = truncate(str(error), 600)
+            continue
+        items.append(
+            {
+                "paper_id": paper.paper_id,
+                "title": paper.title,
+                "source_kind": source_kind,
+                "source_url": source_url,
+                "source_text": source_text,
+            }
+        )
+        records_by_id[paper.paper_id] = record
+        sources_by_id[paper.paper_id] = (source_kind, source_url)
+    if not items:
+        return
+    try:
+        rows = make_codex_client(config, repo_root=repo_root).analyze_batch(items)
+        for row in rows:
+            paper_id = str(row["paper_id"])
+            source_kind, source_url = sources_by_id[paper_id]
+            raw = {key: value for key, value in row.items() if key != "paper_id"}
+            records_by_id[paper_id]["insight"] = validate_insight(
+                raw, source_kind=source_kind, source_url=source_url
+            )
+    except (RuntimeError, ValueError) as error:
+        message = truncate(f"Codex deep analysis failed: {error}", 600)
+        for record in records_by_id.values():
+            record["insight_error"] = message
 
 
 def decide_with_review_loop(
@@ -1091,6 +1434,128 @@ def decide_with_review_loop(
     return LoopDecision(status, final, passes, disagreement)
 
 
+def _decision_from_llm_passes(
+    initial: Classification,
+    reviewer: Classification,
+    config: dict[str, Any],
+    *,
+    adjudicator: Classification | None = None,
+) -> LoopDecision:
+    """Apply the normal conservative thresholds to already-batched LLM passes."""
+    review_config = config.get("review_loop", {})
+    agreement = (
+        initial.relevant == reviewer.relevant
+        and initial.section_id == reviewer.section_id
+    )
+    passes = (initial, reviewer) if adjudicator is None else (initial, reviewer, adjudicator)
+    final = adjudicator or reviewer
+    if (
+        final.relevant
+        and final.confidence >= float(review_config.get("accept_confidence", 0.84))
+        and not final.needs_full_text
+        and (agreement or adjudicator is not None)
+    ):
+        status = "accepted"
+    elif (
+        not final.relevant
+        and final.confidence >= float(review_config.get("reject_confidence", 0.90))
+    ):
+        status = "rejected"
+    else:
+        status = "needs_review"
+    return LoopDecision(status, final, passes, not agreement)
+
+
+def _classification_from_codex_row(
+    row: dict[str, Any], config: dict[str, Any], *, mode: str
+) -> Classification:
+    value = {key: value for key, value in row.items() if key != "paper_id"}
+    return validate_classification(value, config, source=f"codex_cli_{mode}")
+
+
+def make_codex_client(config: dict[str, Any], *, repo_root: Path) -> Any:
+    from scripts.codex_batch_classifier import CodexBatchClient
+
+    settings = config.get("codex", {})
+    return CodexBatchClient(
+        repo_root,
+        codex_bin=str(settings.get("binary", "codex")),
+        model=settings.get("model"),
+        batch_size=int(settings.get("batch_size", 24)),
+        max_prompt_chars=int(settings.get("max_prompt_chars", 90000)),
+        timeout_seconds=int(settings.get("timeout_seconds", 240)),
+        validation_attempts=int(settings.get("validation_attempts", 2)),
+        retry_delay_seconds=float(settings.get("retry_delay_seconds", 1.0)),
+    )
+
+
+def decide_codex_batch(
+    papers: list[Paper], config: dict[str, Any], *, repo_root: Path
+) -> dict[str, LoopDecision]:
+    """Run initial/review/adjudication passes as bounded Codex batches."""
+    client = make_codex_client(config, repo_root=repo_root)
+    client.preflight()
+    serialized = [paper.as_dict() for paper in papers]
+    sections = config["sections"]
+    initial_rows = client.classify_batch(
+        serialized, sections, mode="initial", preflight=False
+    )
+    initial = {
+        row["paper_id"]: _classification_from_codex_row(row, config, mode="initial")
+        for row in initial_rows
+    }
+    prior_by_id = {
+        paper_id: [classification.as_dict()]
+        for paper_id, classification in initial.items()
+    }
+    review_rows = client.classify_batch(
+        serialized,
+        sections,
+        mode="review",
+        prior_by_id=prior_by_id,
+        preflight=False,
+    )
+    reviewer = {
+        row["paper_id"]: _classification_from_codex_row(row, config, mode="review")
+        for row in review_rows
+    }
+    disagreement_papers = [
+        paper
+        for paper in papers
+        if initial[paper.paper_id].relevant != reviewer[paper.paper_id].relevant
+        or initial[paper.paper_id].section_id != reviewer[paper.paper_id].section_id
+    ]
+    adjudicated: dict[str, Classification] = {}
+    if disagreement_papers and int(config.get("review_loop", {}).get("max_passes", 3)) >= 3:
+        disagreement_ids = {paper.paper_id for paper in disagreement_papers}
+        adjudication_prior = {
+            paper_id: [initial[paper_id].as_dict(), reviewer[paper_id].as_dict()]
+            for paper_id in disagreement_ids
+        }
+        rows = client.classify_batch(
+            [paper.as_dict() for paper in disagreement_papers],
+            sections,
+            mode="adjudicate",
+            prior_by_id=adjudication_prior,
+            preflight=False,
+        )
+        adjudicated = {
+            row["paper_id"]: _classification_from_codex_row(
+                row, config, mode="adjudicate"
+            )
+            for row in rows
+        }
+    return {
+        paper.paper_id: _decision_from_llm_passes(
+            initial[paper.paper_id],
+            reviewer[paper.paper_id],
+            config,
+            adjudicator=adjudicated.get(paper.paper_id),
+        )
+        for paper in papers
+    }
+
+
 def is_recent(paper: Paper, *, now: dt.datetime, lookback_days: int) -> bool:
     if not paper.published:
         return True
@@ -1102,12 +1567,16 @@ def result_record(
     decision: LoopDecision,
     *,
     prefilter_hits: tuple[str, ...],
+    screening: ScreeningResult | None = None,
 ) -> dict[str, Any]:
-    return {
+    record = {
         "paper": paper.as_dict(),
         "decision": decision.as_dict(),
         "prefilter_hits": list(prefilter_hits),
     }
+    if screening is not None:
+        record["screening"] = screening.as_dict()
+    return record
 
 
 def format_metric_value(value: float, unit: str) -> str:
@@ -1194,7 +1663,11 @@ def render_markdown_report(
         f"- New after deduplication: {stats['new']}",
         f"- Carried from backlog: {stats['backlog']}",
         f"- Passed keyword prefilter: {stats['prefiltered']}",
+        f"- Abstracts screened/ranked: {stats.get('screened', stats['queued'])}",
         f"- Classified this run: {stats['queued']}",
+        f"- Selected for deep analysis: {stats.get('deep_analysis_selected', 0)}",
+        f"- Classified without deep analysis: {stats.get('deep_analysis_deferred', 0)}",
+        f"- Deferred before abstract-screening capacity: {stats.get('screening_deferred', 0)}",
         f"- Deferred to a later run: {stats['deferred']}",
         f"- AI accepted: {stats['accepted']}",
         f"- Needs human review: {stats['needs_review']}",
@@ -1227,6 +1700,14 @@ def render_markdown_report(
                     f"- Confidence: {final['confidence']:.2f}",
                     f"- Full text required: {final['needs_full_text']}",
                     f"- Review-loop disagreement: {decision['disagreement']}",
+                    *(
+                        [
+                            f"- Screening priority: {item['screening']['score']:.2f}",
+                            f"- Screening signals: {'; '.join(item['screening']['reasons']) or 'none'}",
+                        ]
+                        if item.get("screening")
+                        else []
+                    ),
                     f"- Rationale: {final['rationale']}",
                     f"- Summary: {final['summary']}",
                     f"- Evidence: {'; '.join(final['evidence']) or 'none'}",
@@ -1309,11 +1790,11 @@ def build_slack_payload(
     sections = section_map(config)
     generated_at = parse_iso_datetime(report["generated_at"]).astimezone(KST)
     stats = report["stats"]
-    reviewable = [
+    reviewable = prioritized_results(
         item
         for item in report["results"]
         if item["decision"]["status"] in {"accepted", "needs_review"}
-    ][:max_papers]
+    )[:max_papers]
 
     summary_text = (
         f"신규 {stats['new']}편 · 선별 {stats['queued']}편 · "
@@ -1433,7 +1914,10 @@ def build_slack_payload(
     run_id = os.environ.get("GITHUB_RUN_ID", "").strip()
     if server and repository and run_id:
         run_url = f"{server}/{repository}/actions/runs/{run_id}"
-    footer = "LLM 판정은 검토 우선순위를 정하기 위한 결과이며, Wiki 반영 전 원문 확인 필요"
+    footer = (
+        "LLM 판정은 검토 우선순위를 정하기 위한 결과이며, Wiki 반영 전 원문 확인 필요 "
+        f"· delivery `{report['run_id']}`"
+    )
     if run_url:
         footer += f" · <{run_url}|실행 기록>"
     blocks.extend(
@@ -1451,14 +1935,11 @@ def build_slack_payload(
     }
 
 
-def send_slack_digest(report: dict[str, Any], config: dict[str, Any]) -> bool:
-    """Send a digest when configured; return False for intentional skips."""
+def post_slack_payload(payload: dict[str, Any], config: dict[str, Any]) -> bool:
+    """Post one already-built payload; callers retain it until this succeeds."""
     slack = config.get("slack", {})
     if not slack.get("enabled", False):
         print("Slack digest disabled in configuration.")
-        return False
-    if not report["results"] and not slack.get("notify_when_empty", False):
-        print("Slack digest skipped: no papers were analyzed in this run.")
         return False
     webhook_env = str(slack.get("webhook_env", "SLACK_WEBHOOK_URL"))
     webhook_url = os.environ.get(webhook_env, "").strip()
@@ -1466,9 +1947,7 @@ def send_slack_digest(report: dict[str, Any], config: dict[str, Any]) -> bool:
         print(f"Slack digest skipped: {webhook_env} is not configured.")
         return False
 
-    body = json.dumps(build_slack_payload(report, config), ensure_ascii=False).encode(
-        "utf-8"
-    )
+    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     attempts = max(1, int(slack.get("request_attempts", 3)))
     timeout = max(1, int(slack.get("request_timeout_seconds", 15)))
     last_error: Exception | None = None
@@ -1499,21 +1978,96 @@ def send_slack_digest(report: dict[str, Any], config: dict[str, Any]) -> bool:
     raise RuntimeError(f"Slack digest failed after {attempts} attempts: {last_error}")
 
 
+def send_slack_digest(report: dict[str, Any], config: dict[str, Any]) -> bool:
+    """Send a digest when configured; return False for intentional skips."""
+    slack = config.get("slack", {})
+    if not report["results"] and not slack.get("notify_when_empty", False):
+        print("Slack digest skipped: no papers were analyzed in this run.")
+        return False
+    return post_slack_payload(build_slack_payload(report, config), config)
+
+
+def queue_slack_digest(repo_root: Path, report: dict[str, Any], config: dict[str, Any]) -> Path:
+    outbox_root = repo_root / config.get("output", {}).get(
+        "slack_outbox", "automation/outbox/slack"
+    )
+    path = outbox_root / f"{report['run_id']}.json"
+    write_json(
+        path,
+        {
+            "run_id": report["run_id"],
+            "queued_at": utc_now().isoformat().replace("+00:00", "Z"),
+            "payload": build_slack_payload(report, config),
+        },
+    )
+    return path
+
+
+def flush_slack_outbox(repo_root: Path, config: dict[str, Any]) -> int:
+    """Retry durable Slack payloads in order, retaining the first failure."""
+    outbox_root = repo_root / config.get("output", {}).get(
+        "slack_outbox", "automation/outbox/slack"
+    )
+    if not outbox_root.exists():
+        return 0
+    sent = 0
+    for path in sorted(outbox_root.glob("*.json")):
+        record = load_json(path, None)
+        if not isinstance(record, dict) or not isinstance(record.get("payload"), dict):
+            raise ValueError(f"Invalid Slack outbox record: {path}")
+        try:
+            delivered = post_slack_payload(record["payload"], config)
+        except RuntimeError as error:
+            print(f"Slack outbox retained for retry: {error}", file=sys.stderr)
+            break
+        if not delivered:
+            break
+        path.unlink()
+        sent += 1
+    return sent
+
+
+def resolve_llm_provider(config: dict[str, Any], args: argparse.Namespace) -> str:
+    if getattr(args, "no_llm", False):
+        return "deterministic"
+    requested = str(getattr(args, "llm_provider", "config") or "config")
+    if requested == "config":
+        requested = str(config.get("llm", {}).get("provider", "anthropic"))
+    if requested not in {"anthropic", "codex", "deterministic"}:
+        raise ValueError(f"Unsupported LLM provider: {requested!r}")
+    return requested
+
+
 def make_classifier(
-    config: dict[str, Any], *, no_llm: bool, feedback: list[dict[str, Any]]
+    config: dict[str, Any], *, provider: str, feedback: list[dict[str, Any]]
 ) -> Classifier:
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
-    if no_llm or not api_key:
+    if provider == "deterministic" or (provider == "anthropic" and not api_key):
         return HeuristicClassifier(config)
+    if provider != "anthropic":
+        raise ValueError(f"Provider {provider!r} uses the batch path, not Classifier")
     return AnthropicClassifier(config, api_key=api_key, feedback=feedback)
 
 
 def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
+    """Run with exclusive mutation access; dry runs remain side-effect free."""
+    if getattr(args, "dry_run", False):
+        return _run_pipeline_unlocked(args)
+    repo_root = Path(args.repo_root).resolve()
+    state_path = (repo_root / args.state).resolve()
+    lock_path = state_path.with_name(f".{state_path.name}.lock")
+    with exclusive_run_lock(lock_path):
+        return _run_pipeline_unlocked(args)
+
+
+def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
     repo_root = Path(args.repo_root).resolve()
     config_path = (repo_root / args.config).resolve()
     config = load_json(config_path, None)
     if not isinstance(config, dict):
         raise ValueError(f"Config must be a JSON object: {config_path}")
+    if not args.dry_run and getattr(args, "notify_slack", False):
+        flush_slack_outbox(repo_root, config)
     state_path = (repo_root / args.state).resolve()
     feedback_path = (repo_root / args.feedback).resolve()
     state = load_json(state_path, {"version": 1, "papers": {}, "pending": {}})
@@ -1525,11 +2079,25 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     state_pending = state.setdefault("pending", {})
     if not isinstance(state_pending, dict):
         raise ValueError(f"State field 'pending' must be a JSON object: {state_path}")
+    state_seen = state.setdefault("seen", {})
+    if not isinstance(state_seen, dict):
+        raise ValueError(f"State field 'seen' must be a JSON object: {state_path}")
     feedback = load_feedback(feedback_path)
     reviewed_ids = {str(item.get("paper_id", "")) for item in feedback}
-    classifier = make_classifier(config, no_llm=args.no_llm, feedback=feedback)
+    provider = resolve_llm_provider(config, args)
+    classifier = (
+        None
+        if provider == "codex"
+        else make_classifier(config, provider=provider, feedback=feedback)
+    )
     now = parse_iso_datetime(args.now) if args.now else utc_now()
-    run_id = now.strftime("%Y-%m-%dT%H%M%SZ")
+    run_id_base = now.strftime("%Y-%m-%dT%H%M%SZ")
+    run_id = run_id_base
+    runs_root = repo_root / config["output"]["runs_dir"]
+    collision = 1
+    while (runs_root / f"{run_id}.json").exists():
+        run_id = f"{run_id_base}-{collision:02d}"
+        collision += 1
 
     if args.fixture:
         fixture_path = Path(args.fixture)
@@ -1541,9 +2109,11 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     papers = merge_papers(papers)
     known_ids, known_titles = collect_known(repo_root / "content")
     known_ids.update(state_papers.keys())
+    known_ids.update(state_seen.keys())
     known_ids.update(reviewed_ids)
 
-    pending: list[tuple[str, Paper, tuple[str, ...]]] = []
+    pending: list[Candidate] = []
+    retained_filtered_pending: dict[str, dict[str, Any]] = {}
     for pending_id, pending_record in state_pending.items():
         if not isinstance(pending_record, dict) or not isinstance(
             pending_record.get("paper"), dict
@@ -1560,9 +2130,24 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
             continue
         keep, hits = prefilter(paper, config)
         if keep:
-            pending.append((str(pending_record.get("enqueued_at", "")), paper, hits))
-    pending.sort(key=lambda item: (item[0], item[1].published, item[1].paper_id))
-    pending_ids = {paper.paper_id for _, paper, _ in pending}
+            pending.append(
+                Candidate(
+                    paper=paper,
+                    prefilter_hits=hits,
+                    enqueued_at=str(pending_record.get("enqueued_at", "")),
+                    from_backlog=True,
+                )
+            )
+        else:
+            # Config changes must not silently erase already discovered work.
+            retained_filtered_pending[pending_id] = {
+                **pending_record,
+                "deferred_reason": "current_prefilter_no_match",
+            }
+    pending.sort(
+        key=lambda item: (item.enqueued_at, item.paper.published, item.paper.paper_id)
+    )
+    pending_ids = set(state_pending)
 
     new_papers = [
         paper
@@ -1580,43 +2165,126 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
             lookback_days=int(config["source"].get("lookback_days", 45)),
         )
     ]
+    recent_ids = {paper.paper_id for paper in recent}
+    outside_lookback = [
+        paper for paper in new_papers if paper.paper_id not in recent_ids
+    ]
 
-    fresh_eligible: list[tuple[Paper, tuple[str, ...]]] = []
+    generated_at = now.isoformat().replace("+00:00", "Z")
+    fresh_eligible: list[Candidate] = []
+    fresh_rejected: list[Paper] = []
     for paper in recent:
         keep, hits = prefilter(paper, config)
         if keep:
-            fresh_eligible.append((paper, hits))
-    eligible = [(paper, hits) for _, paper, hits in pending] + fresh_eligible
-    max_candidates = int(config.get("max_candidates_per_run", 10))
-    if max_candidates < 1:
-        raise ValueError("max_candidates_per_run must be at least 1")
-    queued = eligible[:max_candidates]
-    deferred = eligible[max_candidates:]
+            fresh_eligible.append(
+                Candidate(
+                    paper=paper,
+                    prefilter_hits=hits,
+                    enqueued_at=generated_at,
+                    from_backlog=False,
+                )
+            )
+        else:
+            fresh_rejected.append(paper)
+    eligible = [*pending, *fresh_eligible]
+    ranked = rank_candidates(eligible, config, now=now)
+    broad_limit, deep_analysis_limit = screening_limits(config)
+    screening_config = config.get("screening", {})
+    screened = select_with_backlog_reserve(
+        ranked,
+        limit=broad_limit,
+        reserve_fraction=float(screening_config.get("backlog_reserve_fraction", 0.0)),
+    )
+    # Every broadly screened abstract is batch-classified. Only full-text insight
+    # extraction is capped separately below.
+    queued = screened
+    queued_ids = {candidate.paper.paper_id for candidate, _ in queued}
+    deferred = [item for item in ranked if item[0].paper.paper_id not in queued_ids]
 
     results: list[dict[str, Any]] = []
-    for paper, hits in queued:
-        try:
-            decision = decide_with_review_loop(paper, classifier, config)
-        except RuntimeError as error:
-            fallback = HeuristicClassifier(config).classify(paper, mode="initial")
-            fallback = dataclasses.replace(
-                fallback,
-                rationale=f"LLM loop failed ({error}); {fallback.rationale}",
-                source="heuristic_after_llm_failure",
-            )
-            decision = LoopDecision("needs_review", fallback, (fallback,), True)
-        results.append(result_record(paper, decision, prefilter_hits=hits))
+    retryable_ids: set[str] = set()
+    batch_decisions: dict[str, LoopDecision] = {}
+    codex_error = ""
+    if provider == "codex" and queued:
+        from scripts.codex_batch_classifier import CodexBatchError
 
-    if classifier.is_llm and not args.no_llm:
+        try:
+            batch_decisions = decide_codex_batch(
+                [candidate.paper for candidate, _ in queued],
+                config,
+                repo_root=repo_root,
+            )
+        except CodexBatchError as error:
+            codex_error = truncate(str(error), 600)
+            retryable_ids = {
+                candidate.paper.paper_id for candidate, _ in queued
+            }
+
+    for candidate, screening_result in queued:
+        paper = candidate.paper
+        if provider == "codex":
+            if paper.paper_id in retryable_ids:
+                fallback = HeuristicClassifier(config).classify(paper, mode="initial")
+                fallback = dataclasses.replace(
+                    fallback,
+                    rationale=(
+                        f"Codex batch unavailable; retained for retry ({codex_error}). "
+                        f"{fallback.rationale}"
+                    ),
+                    source="codex_retryable_failure",
+                )
+                decision = LoopDecision("needs_review", fallback, (fallback,), True)
+            else:
+                decision = batch_decisions[paper.paper_id]
+        else:
+            assert classifier is not None
+            try:
+                decision = decide_with_review_loop(paper, classifier, config)
+            except RuntimeError as error:
+                fallback = HeuristicClassifier(config).classify(paper, mode="initial")
+                fallback = dataclasses.replace(
+                    fallback,
+                    rationale=f"LLM loop failed ({error}); {fallback.rationale}",
+                    source="heuristic_after_llm_failure",
+                )
+                decision = LoopDecision("needs_review", fallback, (fallback,), True)
+        record = result_record(
+            paper,
+            decision,
+            prefilter_hits=candidate.prefilter_hits,
+            screening=screening_result,
+        )
+        if paper.paper_id in retryable_ids:
+            record["retryable_error"] = codex_error
+        results.append(record)
+
+    if provider == "anthropic" and classifier is not None and classifier.is_llm:
         enrich_results_with_insights(results, config)
+    elif provider == "codex" and not retryable_ids:
+        enrich_results_with_codex_insights(results, config, repo_root=repo_root)
+
+    retryable_deferred = [
+        item for item in queued if item[0].paper.paper_id in retryable_ids
+    ]
+    deep_reviewable_count = sum(
+        item["decision"]["status"] in {"accepted", "needs_review"}
+        and not item.get("retryable_error")
+        for item in results
+    )
 
     stats = {
         "discovered": len(papers),
         "new": len(new_papers),
         "backlog": len(pending),
+        "retained_filtered_backlog": len(retained_filtered_pending),
         "prefiltered": len(eligible),
+        "screened": len(screened),
+        "screening_deferred": len(ranked) - len(screened),
         "queued": len(queued),
-        "deferred": len(deferred),
+        "deep_analysis_selected": min(deep_analysis_limit, deep_reviewable_count),
+        "deep_analysis_deferred": max(0, deep_reviewable_count - deep_analysis_limit),
+        "deferred": len(deferred) + len(retryable_deferred),
+        "retryable_failures": len(retryable_ids),
         "accepted": sum(item["decision"]["status"] == "accepted" for item in results),
         "needs_review": sum(
             item["decision"]["status"] == "needs_review" for item in results
@@ -1625,8 +2293,14 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     }
     report = {
         "run_id": run_id,
-        "generated_at": now.isoformat().replace("+00:00", "Z"),
-        "classifier": "anthropic" if classifier.is_llm else "heuristic",
+        "generated_at": generated_at,
+        "classifier": (
+            "codex"
+            if provider == "codex"
+            else "anthropic"
+            if classifier is not None and classifier.is_llm
+            else "heuristic"
+        ),
         "stats": stats,
         "results": results,
     }
@@ -1635,33 +2309,58 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return report
 
-    generated_at = report["generated_at"]
     prior_pending = state_pending
-    state["pending"] = {
-        paper.paper_id: {
+    for paper in fresh_rejected:
+        state_seen[paper.paper_id] = {
+            "title": paper.title,
+            "status": "prefilter_rejected",
+            "first_seen": generated_at,
+            "config_version": config.get("version"),
+        }
+    for paper in outside_lookback:
+        state_seen[paper.paper_id] = {
+            "title": paper.title,
+            "status": "outside_lookback",
+            "first_seen": generated_at,
+            "config_version": config.get("version"),
+        }
+    state["pending"] = dict(retained_filtered_pending)
+    for candidate, screening_result in [*deferred, *retryable_deferred]:
+        paper = candidate.paper
+        state["pending"][paper.paper_id] = {
             "paper": paper.as_dict(),
-            "prefilter_hits": list(hits),
+            "prefilter_hits": list(candidate.prefilter_hits),
             "enqueued_at": prior_pending.get(paper.paper_id, {}).get(
-                "enqueued_at", generated_at
+                "enqueued_at", candidate.enqueued_at or generated_at
+            ),
+            "last_screened_at": generated_at,
+            "screening": screening_result.as_dict(),
+            "deferred_reason": (
+                "retryable_llm_failure"
+                if paper.paper_id in retryable_ids
+                else "abstract_screening_capacity"
             ),
         }
-        for paper, hits in deferred
-    }
 
     if not results:
+        slack_queued = False
+        if getattr(args, "notify_slack", False) and config.get("slack", {}).get(
+            "notify_when_empty", False
+        ):
+            queue_slack_digest(repo_root, report, config)
+            slack_queued = True
         write_json(state_path, state)
-        if getattr(args, "notify_slack", False):
-            send_slack_digest(report, config)
+        if slack_queued:
+            flush_slack_outbox(repo_root, config)
         print(json.dumps(report["stats"], ensure_ascii=False))
         return report
 
     runs_dir = repo_root / config["output"]["runs_dir"]
     inbox_path = repo_root / config["output"]["latest_report"]
     write_json(runs_dir / f"{run_id}.json", report)
-    inbox_path.parent.mkdir(parents=True, exist_ok=True)
-    inbox_path.write_text(
+    write_text_atomic(
+        inbox_path,
         render_markdown_report(run_id=run_id, stats=stats, results=results, config=config),
-        encoding="utf-8",
     )
 
     drafts_root = repo_root / config["output"]["drafts_dir"]
@@ -1673,11 +2372,12 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
         draft_path = drafts_root / f"section{section_id}" / (
             f"{paper['paper_id']}_{slugify(paper['title'])}.md"
         )
-        draft_path.parent.mkdir(parents=True, exist_ok=True)
-        draft_path.write_text(render_draft(record, config), encoding="utf-8")
+        write_text_atomic(draft_path, render_draft(record, config))
 
     for record in results:
         paper = record["paper"]
+        if paper["paper_id"] in retryable_ids:
+            continue
         final = record["decision"]["final"]
         state_papers[paper["paper_id"]] = {
             "title": paper["title"],
@@ -1687,9 +2387,13 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
             "first_seen": generated_at,
             "run_id": run_id,
         }
-    write_json(state_path, state)
+    slack_queued = False
     if getattr(args, "notify_slack", False):
-        send_slack_digest(report, config)
+        queue_slack_digest(repo_root, report, config)
+        slack_queued = True
+    write_json(state_path, state)
+    if slack_queued:
+        flush_slack_outbox(repo_root, config)
     print(json.dumps(report["stats"], ensure_ascii=False))
     return report
 
@@ -1733,6 +2437,12 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--fixture", help="Use an offline Atom XML or JSON fixture")
     run.add_argument("--now", help="Override current UTC time (ISO-8601) for tests")
     run.add_argument("--no-llm", action="store_true", help="Force deterministic fallback")
+    run.add_argument(
+        "--llm-provider",
+        choices=("config", "anthropic", "codex", "deterministic"),
+        default="config",
+        help="Classification backend; 'config' uses llm.provider",
+    )
     run.add_argument("--dry-run", action="store_true", help="Print output without writing files")
     run.add_argument(
         "--notify-slack",

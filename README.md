@@ -66,14 +66,21 @@ survey content is changed.
 
 ### Run locally
 
-The loop uses only the Python standard library. Set `ANTHROPIC_API_KEY` to use
-the configured Claude model:
+The default backend is the locally installed Codex CLI with saved ChatGPT
+authentication. Sign in once as the operating user and verify the saved session:
 
 ```bash
-python scripts/paper_loop.py run --dry-run
-python scripts/paper_loop.py run
-python scripts/paper_loop.py run --notify-slack
+codex login
+python scripts/codex_batch_classifier.py --preflight-only
+python scripts/paper_loop.py run --llm-provider codex --dry-run
+python scripts/paper_loop.py run --llm-provider codex --notify-slack
 ```
+
+Codex receives bounded paper batches in an isolated temporary directory with an
+ephemeral session, a read-only sandbox, and strict output schemas. Missing IDs,
+invalid sections, unsupported evidence, authentication failures, and timeouts
+fail closed; affected papers remain queued for retry instead of being recorded
+as completed.
 
 Use the deterministic fallback for a zero-cost check. It never auto-accepts a
 paper and labels every matching item `needs_review`:
@@ -100,10 +107,14 @@ are:
 - `automation/runs/<timestamp>.json`: an auditable machine-readable run;
 - `automation/drafts/section*/`: drafts only for candidates accepted by the
   LLM review loop;
-- `automation/state.json`: processed paper IDs and the persistent pending queue.
+- `automation/state.json`: processed, seen, and persistent pending paper IDs;
+- `automation/outbox/slack/`: durable Slack payloads retained after delivery
+  failures and replayed without consuming the paper queue.
 
-For up to four reviewable papers per run, the loop first tries arXiv HTML and
-falls back to the abstract when full text is unavailable. Source text is
+The default configuration collects multiple pages from broad control and
+robotics queries, ranks and batch-classifies up to 60 abstracts, then performs
+full-text analysis only for the top eight reviewable papers. It first tries
+arXiv HTML and falls back to the abstract when full text is unavailable. Source text is
 numbered before LLM analysis, and every insight or numeric comparison must cite
 its `[L####]` evidence locator. The model returns the reported proposed and
 baseline values; Python recomputes the absolute difference and relative
@@ -116,11 +127,13 @@ method, contribution over prior work, tentative gap, and up to two numeric
 comparisons. It links to the analyzed source and explicitly retains the
 full-paper verification requirement.
 
-`max_candidates_per_run` caps LLM cost. Reports show both the number that
-passed the prefilter and the number classified in the current run, so a backlog
-is visible rather than silently hidden. Unprocessed recent candidates remain
-in the pending queue for a later run, even after they age past the arXiv
-lookback window.
+`max_candidates_per_run` and `screening.max_abstracts_per_run` bound batch
+classification; `analysis.max_papers_per_run` separately bounds expensive
+full-text analysis. Reports expose collected, prefiltered, classified,
+deep-analyzed, deferred, backlog, and retryable-failure counts. Unprocessed
+candidates remain in the pending queue even after they age past the arXiv
+lookback window. Prefiltered-out and out-of-lookback IDs are also recorded so
+the same papers are not counted as new every day.
 
 After checking a paper, record the decision so later LLM passes can use it as a
 calibration example:
@@ -135,37 +148,20 @@ python scripts/paper_loop.py review \
 
 For a rejection, use `--decision reject`; the section is stored as `0`.
 
-### Scheduled pull requests
+### Mac mini scheduling and manual recovery
 
-`.github/workflows/paper-loop.yml` runs every day at 08:30 KST and can also be
-started manually from the Actions tab. It runs the offline tests, checks the
-Python files, verifies `build.py`, executes one live discovery cycle, sends a
-Slack digest, and creates or updates a draft PR containing only `automation/`
-artifacts.
+The supported daily scheduler is a single-user Mac mini LaunchAgent. It runs at
+08:30 local time, retrieves the Slack webhook from Login Keychain, checks Codex
+authentication, prevents overlapping runs, and rotates bounded logs. Follow
+[`docs/mac-mini-codex-operator-guide.md`](docs/mac-mini-codex-operator-guide.md)
+for the one-time install, security model, preflight, inspection, and removal
+commands.
 
-Repository setup:
-
-1. Add an Actions secret named `ANTHROPIC_API_KEY` for LLM classification.
-   Without it, the scheduled job safely falls back to heuristic review-only
-   classification.
-2. Create a Slack incoming webhook for the destination channel and add it as an
-   Actions secret named `SLACK_WEBHOOK_URL`. The webhook is never written to a
-   file or printed. Without the secret, the paper loop still runs and records
-   the reason the notification was skipped.
-3. Optionally set the Actions variable `ANTHROPIC_MODEL` to override the model
-   in `automation/paper-loop.json`. `ANTHROPIC_BASE_URL` is also supported for
-   an API-compatible gateway.
-4. In **Settings → Actions → General → Workflow permissions**, allow GitHub
-   Actions to create pull requests and grant read/write workflow permissions.
-
-The workflow keeps one fixed automation branch, so an open review PR is updated
-instead of creating duplicate PRs on every schedule. Before each run, it restores
-the state, prior run reports, and drafts from that branch; the pending queue
-therefore advances even before the PR is merged. If repository policy blocks
-Actions from creating pull requests, the branch still preserves the results and
-the discovery and Slack steps remain successful. Enabling **Allow GitHub Actions
-to create and approve pull requests** turns the same branch into the intended
-draft review PR.
+`.github/workflows/paper-loop.yml` has no cron. It is a manually triggered,
+deterministic recovery path only, so GitHub Actions cannot race the Mac, consume
+its retry queue, or silently substitute heuristic results before Codex sees a
+paper. Its outputs remain human-review artifacts and never edit published survey
+content directly.
 
 ## Author
 

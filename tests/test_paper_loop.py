@@ -93,6 +93,281 @@ class PaperParsingTests(unittest.TestCase):
         self.assertIn(paper_loop.normalize_title("Heading Paper"), titles)
         self.assertIn(paper_loop.normalize_title("Table Paper"), titles)
 
+    def test_arxiv_pagination_advances_start_and_stops_on_short_page(self):
+        config = json.loads(json.dumps(CONFIG))
+        config["queries"] = [{"name": "test", "search_query": "cat:cs.RO"}]
+        config["source"]["max_results_per_query"] = 3
+        config["source"]["max_pages_per_query"] = 4
+        config["source"]["request_delay_seconds"] = 0
+        empty = (
+            b'<?xml version="1.0" encoding="UTF-8"?>'
+            b'<feed xmlns="http://www.w3.org/2005/Atom"></feed>'
+        )
+        urls: list[str] = []
+
+        def fake_request(url, **kwargs):
+            del kwargs
+            urls.append(url)
+            return FIXTURE.read_bytes() if len(urls) == 1 else empty
+
+        with mock.patch("scripts.paper_loop.request_bytes", side_effect=fake_request):
+            papers = paper_loop.fetch_arxiv(config)
+
+        self.assertEqual(len(papers), 3)
+        self.assertEqual(len(urls), 2)
+        self.assertIn("start=0", urls[0])
+        self.assertIn("start=3", urls[1])
+
+    def test_arxiv_overlapping_queries_merge_provenance(self):
+        config = json.loads(json.dumps(CONFIG))
+        config["queries"] = [
+            {"name": "control", "search_query": "cat:eess.SY"},
+            {"name": "robotics", "search_query": "cat:cs.RO"},
+        ]
+        config["source"]["max_results_per_query"] = 10
+        config["source"]["max_pages_per_query"] = 2
+        config["source"]["request_delay_seconds"] = 0
+
+        with mock.patch(
+            "scripts.paper_loop.request_bytes", return_value=FIXTURE.read_bytes()
+        ) as request:
+            papers = paper_loop.fetch_arxiv(config)
+
+        self.assertEqual(request.call_count, 2)
+        self.assertEqual(len(papers), 3)
+        self.assertEqual(papers[0].query_names, ("control", "robotics"))
+
+    def test_overlapping_full_pages_are_bounded_and_merge_query_names(self):
+        config = json.loads(json.dumps(CONFIG))
+        config["queries"] = [
+            {"name": "first", "search_query": "cat:cs.RO"},
+            {"name": "second", "search_query": "cat:cs.AI"},
+        ]
+        config["source"]["max_results_per_query"] = 3
+        config["source"]["max_pages_per_query"] = 2
+        config["source"]["request_delay_seconds"] = 0
+        urls: list[str] = []
+
+        def repeated_page(url, **kwargs):
+            del kwargs
+            urls.append(url)
+            return FIXTURE.read_bytes()
+
+        with mock.patch("scripts.paper_loop.request_bytes", side_effect=repeated_page):
+            papers = paper_loop.fetch_arxiv(config)
+
+        self.assertEqual(len(urls), 4)
+        self.assertEqual(len(papers), 3)
+        self.assertEqual(papers[0].query_names, ("first", "second"))
+
+
+class ScreeningTests(unittest.TestCase):
+    def test_priority_ranking_is_not_input_order(self):
+        papers = paper_loop.parse_arxiv_atom(FIXTURE.read_bytes())
+        ordinary = dataclasses.replace(
+            papers[0], paper_id="ordinary", title="Robot hand design", summary="hardware"
+        )
+        priority = dataclasses.replace(
+            papers[0],
+            paper_id="priority",
+            title="Sim-to-real reinforcement learning for quadruped locomotion",
+            summary="Domain randomization and PPO for a legged robot.",
+            query_names=("legged-humanoid",),
+        )
+        now = paper_loop.parse_iso_datetime("2026-08-25T00:00:00Z")
+        candidates = [
+            paper_loop.Candidate(ordinary, ("robot hand",), "2026-08-25T00:00:00Z"),
+            paper_loop.Candidate(
+                priority, ("reinforcement learning", "quadruped"), "2026-08-25T00:00:00Z"
+            ),
+        ]
+
+        ranked = paper_loop.rank_candidates(candidates, CONFIG, now=now)
+
+        self.assertEqual(ranked[0][0].paper.paper_id, "priority")
+        self.assertIn("physical-ai-robot-learning", ranked[0][1].matched_topics)
+
+    def test_oldest_backlog_gets_reserved_capacity(self):
+        papers = paper_loop.parse_arxiv_atom(FIXTURE.read_bytes())
+        ranked = [
+            (
+                paper_loop.Candidate(
+                    dataclasses.replace(papers[0], paper_id=f"fresh-{index}"),
+                    ("robot hand",),
+                    "2026-08-25T00:00:00Z",
+                    False,
+                ),
+                paper_loop.ScreeningResult(100 - index, (), ()),
+            )
+            for index in range(3)
+        ]
+        oldest = (
+            paper_loop.Candidate(
+                dataclasses.replace(papers[0], paper_id="oldest"),
+                ("robot hand",),
+                "2026-07-01T00:00:00Z",
+                True,
+            ),
+            paper_loop.ScreeningResult(1, (), ()),
+        )
+
+        selected = paper_loop.select_with_backlog_reserve(
+            [*ranked, oldest], limit=2, reserve_fraction=0.5
+        )
+
+        self.assertIn("oldest", {item[0].paper.paper_id for item in selected})
+
+    def test_priority_ties_use_stable_paper_id_order(self):
+        base = paper_loop.parse_arxiv_atom(FIXTURE.read_bytes())[0]
+        records = []
+        for paper_id in ("b", "a"):
+            current = dataclasses.replace(base, paper_id=paper_id)
+            decision = paper_loop.LoopDecision(
+                "needs_review",
+                classification(source="test"),
+                (classification(source="test"),),
+                False,
+            )
+            records.append(
+                paper_loop.result_record(
+                    current,
+                    decision,
+                    prefilter_hits=("robot hand",),
+                    screening=paper_loop.ScreeningResult(10.0, (), ()),
+                )
+            )
+
+        ordered = paper_loop.prioritized_results(records)
+
+        self.assertEqual([item["paper"]["paper_id"] for item in ordered], ["a", "b"])
+
+    def test_expanded_topics_survive_prefilter_and_map_to_taxonomy(self):
+        cases = [
+            ("Quadruped whole-body control", "Legged robot locomotion", "13"),
+            ("Learning-based model predictive control", "Safe control", "14"),
+            ("Bimanual robot manipulation", "Diffusion policy", "15"),
+            ("Motion planning", "Task planning and trajectory optimization", "16"),
+            ("Visual-inertial state estimation", "Sensor fusion", "17"),
+            ("Physical AI", "Robot world model and embodied foundation model", "18"),
+        ]
+        for index, (title, summary, section_id) in enumerate(cases):
+            with self.subTest(section_id=section_id):
+                paper = paper_loop.Paper(
+                    paper_id=f"topic-{index}",
+                    title=title,
+                    summary=summary,
+                    authors=(),
+                    published="2026-08-25T00:00:00Z",
+                    updated="2026-08-25T00:00:00Z",
+                    categories=("cs.RO",),
+                    abs_url=f"https://arxiv.org/abs/topic-{index}",
+                    pdf_url="",
+                )
+                keep, _ = paper_loop.prefilter(paper, CONFIG)
+                result = paper_loop.HeuristicClassifier(CONFIG).classify(
+                    paper, mode="initial"
+                )
+                self.assertTrue(keep)
+                self.assertEqual(result.section_id, section_id)
+
+        excluded = dataclasses.replace(
+            paper,
+            paper_id="excluded",
+            title="Safe control for financial market trading",
+        )
+        self.assertFalse(paper_loop.prefilter(excluded, CONFIG)[0])
+
+    def test_equal_priority_results_have_stable_paper_id_tie_break(self):
+        paper = paper_loop.parse_arxiv_atom(FIXTURE.read_bytes())[0]
+        final = classification(confidence=0.8)
+        decision = paper_loop.LoopDecision("needs_review", final, (final,), False)
+        records = [
+            paper_loop.result_record(
+                dataclasses.replace(paper, paper_id=paper_id),
+                decision,
+                prefilter_hits=("tactile",),
+                screening=paper_loop.ScreeningResult(5.0, (), ()),
+            )
+            for paper_id in ("z-paper", "a-paper", "m-paper")
+        ]
+
+        ordered = paper_loop.prioritized_results(records)
+
+        self.assertEqual(
+            [item["paper"]["paper_id"] for item in ordered],
+            ["a-paper", "m-paper", "z-paper"],
+        )
+
+
+class LockTests(unittest.TestCase):
+    def test_dead_pid_lock_is_reclaimed_but_live_lock_is_not(self):
+        with tempfile.TemporaryDirectory() as directory:
+            lock = Path(directory) / ".state.lock"
+            lock.write_text(
+                json.dumps({"pid": 99999999, "started_at": "2026-08-25T00:00:00Z"}),
+                encoding="utf-8",
+            )
+            with mock.patch("scripts.paper_loop.utc_now", return_value=paper_loop.parse_iso_datetime("2026-08-25T00:01:00Z")):
+                with paper_loop.exclusive_run_lock(lock):
+                    self.assertTrue(lock.exists())
+            self.assertFalse(lock.exists())
+
+            lock.write_text(
+                json.dumps({"pid": paper_loop.os.getpid(), "started_at": "2020-01-01T00:00:00Z"}),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(RuntimeError, "Another paper-loop run"):
+                with paper_loop.exclusive_run_lock(lock):
+                    pass
+            self.assertTrue(lock.exists())
+
+    def test_old_empty_lock_from_crash_is_reclaimed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            lock = Path(directory) / ".state.lock"
+            lock.write_text("", encoding="utf-8")
+            old = paper_loop.parse_iso_datetime("2026-08-24T00:00:00Z").timestamp()
+            paper_loop.os.utime(lock, (old, old))
+
+            with mock.patch(
+                "scripts.paper_loop.utc_now",
+                return_value=paper_loop.parse_iso_datetime("2026-08-25T00:00:00Z"),
+            ):
+                with paper_loop.exclusive_run_lock(lock):
+                    self.assertTrue(lock.exists())
+
+            self.assertFalse(lock.exists())
+
+    def test_recent_malformed_lock_still_blocks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            lock = Path(directory) / ".state.lock"
+            lock.write_text("{incomplete", encoding="utf-8")
+            recent = paper_loop.parse_iso_datetime("2026-08-25T00:00:00Z").timestamp()
+            paper_loop.os.utime(lock, (recent, recent))
+
+            with mock.patch(
+                "scripts.paper_loop.utc_now",
+                return_value=paper_loop.parse_iso_datetime("2026-08-25T00:01:00Z"),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "Another paper-loop run"):
+                    with paper_loop.exclusive_run_lock(lock):
+                        pass
+
+            self.assertTrue(lock.exists())
+
+
+class AtomicWriteTests(unittest.TestCase):
+    def test_failed_replace_preserves_previous_state_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "state.json"
+            path.write_text('{"old": true}\n', encoding="utf-8")
+
+            with mock.patch("scripts.paper_loop.os.replace", side_effect=OSError("disk")):
+                with self.assertRaisesRegex(OSError, "disk"):
+                    paper_loop.write_json(path, {"new": True})
+
+            self.assertEqual(path.read_text(encoding="utf-8"), '{"old": true}\n')
+            self.assertEqual(list(path.parent.glob(".state.json.*.tmp")), [])
+
 
 class ClassificationTests(unittest.TestCase):
     def setUp(self):
@@ -310,6 +585,53 @@ class SlackDigestTests(unittest.TestCase):
         self.assertEqual(request.full_url, "https://hooks.slack.test/secret")
         self.assertIn("blocks", payload)
 
+    def test_failed_slack_payload_remains_in_durable_outbox(self):
+        config = json.loads(json.dumps(CONFIG))
+        config["slack"]["request_attempts"] = 1
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = paper_loop.queue_slack_digest(root, self.report(), config)
+            with mock.patch.dict(
+                "os.environ", {"SLACK_WEBHOOK_URL": "https://hooks.slack.test/secret"}
+            ):
+                with mock.patch(
+                    "scripts.paper_loop.urllib.request.urlopen",
+                    side_effect=TimeoutError("offline"),
+                ):
+                    with contextlib.redirect_stderr(io.StringIO()):
+                        sent = paper_loop.flush_slack_outbox(root, config)
+
+            self.assertEqual(sent, 0)
+            self.assertTrue(path.exists())
+
+    def test_successful_outbox_replay_is_not_sent_twice(self):
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                del args
+
+            @staticmethod
+            def read():
+                return b"ok"
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = paper_loop.queue_slack_digest(root, self.report(), CONFIG)
+            with mock.patch.dict(
+                "os.environ", {"SLACK_WEBHOOK_URL": "https://hooks.slack.test/secret"}
+            ):
+                with mock.patch(
+                    "scripts.paper_loop.urllib.request.urlopen",
+                    return_value=FakeResponse(),
+                ) as urlopen:
+                    self.assertEqual(paper_loop.flush_slack_outbox(root, CONFIG), 1)
+                    self.assertEqual(paper_loop.flush_slack_outbox(root, CONFIG), 0)
+
+            self.assertFalse(path.exists())
+            self.assertEqual(urlopen.call_count, 1)
+
 
 class PipelineTests(unittest.TestCase):
     def make_repo(self, root: Path) -> None:
@@ -363,9 +685,15 @@ class PipelineTests(unittest.TestCase):
                     "discovered": 3,
                     "new": 2,
                     "backlog": 0,
+                    "retained_filtered_backlog": 0,
                     "prefiltered": 1,
+                    "screened": 1,
+                    "screening_deferred": 0,
                     "queued": 1,
+                    "deep_analysis_selected": 1,
+                    "deep_analysis_deferred": 0,
                     "deferred": 0,
+                    "retryable_failures": 0,
                     "accepted": 0,
                     "needs_review": 1,
                     "rejected": 0,
@@ -384,6 +712,7 @@ class PipelineTests(unittest.TestCase):
             self.assertFalse((root / "automation" / "drafts").exists())
 
             repeated = self.run_silently(self.run_args(root))
+            self.assertEqual(repeated["stats"]["new"], 0)
             self.assertEqual(repeated["stats"]["prefiltered"], 0)
             self.assertEqual(repeated["stats"]["queued"], 0)
             self.assertEqual(repeated["results"], [])
@@ -452,6 +781,150 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(second["stats"]["backlog"], 1)
             self.assertEqual(second["results"][0]["paper"]["paper_id"], "2608.00002")
             self.assertEqual(state["pending"], {})
+
+    def test_pending_survives_a_later_prefilter_change(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            config_path = root / "automation" / "paper-loop.json"
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            config["max_candidates_per_run"] = 1
+            config["prefilter"]["include_any"].append("molecular")
+            config["prefilter"]["exclude_any"] = []
+            config_path.write_text(json.dumps(config), encoding="utf-8")
+
+            self.run_silently(self.run_args(root))
+            state = json.loads(
+                (root / "automation" / "state.json").read_text(encoding="utf-8")
+            )
+            self.assertIn("2608.00002", state["pending"])
+
+            config["prefilter"]["exclude_any"] = ["molecular"]
+            config_path.write_text(json.dumps(config), encoding="utf-8")
+            second = self.run_silently(self.run_args(root))
+            state = json.loads(
+                (root / "automation" / "state.json").read_text(encoding="utf-8")
+            )
+
+            self.assertEqual(second["stats"]["retained_filtered_backlog"], 1)
+            self.assertEqual(
+                state["pending"]["2608.00002"]["deferred_reason"],
+                "current_prefilter_no_match",
+            )
+
+    def test_outside_lookback_papers_are_seen_only_once(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            args = self.run_args(root)
+            args.now = "2027-08-25T00:00:00Z"
+
+            first = self.run_silently(args)
+            second = self.run_silently(args)
+
+            self.assertEqual(first["stats"]["new"], 2)
+            self.assertEqual(first["results"], [])
+            self.assertEqual(second["stats"]["new"], 0)
+
+    def test_retryable_codex_failure_is_processed_on_next_run(self):
+        from scripts.codex_batch_classifier import CodexExecutionError
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            args = self.run_args(root)
+            args.no_llm = False
+            args.llm_provider = "codex"
+
+            with mock.patch(
+                "scripts.paper_loop.decide_codex_batch",
+                side_effect=CodexExecutionError("temporary login failure"),
+            ):
+                first = self.run_silently(args)
+            state = json.loads(
+                (root / "automation" / "state.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(first["stats"]["retryable_failures"], 1)
+            self.assertIn("2608.00001", state["pending"])
+            self.assertNotIn("2608.00001", state["papers"])
+
+            def successful_batch(papers, config, *, repo_root):
+                del config, repo_root
+                final = classification(source="codex_cli_review")
+                return {
+                    paper.paper_id: paper_loop.LoopDecision(
+                        "needs_review", final, (final,), False
+                    )
+                    for paper in papers
+                }
+
+            with mock.patch(
+                "scripts.paper_loop.decide_codex_batch", side_effect=successful_batch
+            ), mock.patch("scripts.paper_loop.enrich_results_with_codex_insights"):
+                second = self.run_silently(args)
+            state = json.loads(
+                (root / "automation" / "state.json").read_text(encoding="utf-8")
+            )
+
+            self.assertEqual(second["stats"]["retryable_failures"], 0)
+            self.assertIn("2608.00001", state["papers"])
+            self.assertNotIn("2608.00001", state["pending"])
+
+    def test_slack_payload_is_queued_before_processed_state_commit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            args = self.run_args(root)
+            args.notify_slack = True
+            events: list[str] = []
+            original_write_json = paper_loop.write_json
+
+            def tracked_write(path, value):
+                if Path(path).resolve() == (root / "automation" / "state.json").resolve():
+                    events.append("state")
+                return original_write_json(path, value)
+
+            def tracked_queue(*args, **kwargs):
+                del args, kwargs
+                events.append("queue")
+                return root / "queued.json"
+
+            with mock.patch("scripts.paper_loop.write_json", side_effect=tracked_write), mock.patch(
+                "scripts.paper_loop.queue_slack_digest", side_effect=tracked_queue
+            ), mock.patch("scripts.paper_loop.flush_slack_outbox", return_value=0):
+                self.run_silently(args)
+
+            self.assertLess(events.index("queue"), events.index("state"))
+
+    def test_slack_queue_failure_does_not_commit_processed_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            args = self.run_args(root)
+            args.notify_slack = True
+            state_path = root / "automation" / "state.json"
+            before = state_path.read_text(encoding="utf-8")
+
+            with mock.patch(
+                "scripts.paper_loop.queue_slack_digest",
+                side_effect=OSError("outbox disk failure"),
+            ), mock.patch("scripts.paper_loop.flush_slack_outbox", return_value=0):
+                with self.assertRaisesRegex(OSError, "outbox disk failure"):
+                    self.run_silently(args)
+
+            self.assertEqual(state_path.read_text(encoding="utf-8"), before)
+
+    def test_run_without_notify_does_not_flush_existing_outbox(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            args = self.run_args(root)
+            args.notify_slack = False
+
+            with mock.patch("scripts.paper_loop.flush_slack_outbox") as flush:
+                self.run_silently(args)
+
+            flush.assert_not_called()
 
     def test_malformed_state_fails_with_actionable_error(self):
         with tempfile.TemporaryDirectory() as directory:

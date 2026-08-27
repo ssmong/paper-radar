@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.ssmong.paper-radar</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>__REPO_ROOT__/scripts/macos/run_paper_radar.sh</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>__REPO_ROOT__</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PAPER_RADAR_REPO_ROOT</key>
+    <string>__REPO_ROOT__</string>
+    <key>PAPER_RADAR_PYTHON</key>
+    <string>__PYTHON_BIN__</string>
+    <key>PAPER_RADAR_LOG_DIR</key>
+    <string>__LOG_DIR__</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>8</integer>
+    <key>Minute</key>
+    <integer>30</integer>
+  </dict>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>LowPriorityIO</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__LOG_DIR__/paper-radar.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__LOG_DIR__/paper-radar.err.log</string>
+</dict>
+</plist>

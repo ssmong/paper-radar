@@ -1,17 +1,18 @@
 {
-  "version": 1,
-  "max_candidates_per_run": 8,
+  "version": 2,
+  "max_candidates_per_run": 60,
   "source": {
     "base_url": "https://export.arxiv.org/api/query",
     "lookback_days": 45,
-    "max_results_per_query": 30,
+    "max_results_per_query": 50,
+    "max_pages_per_query": 2,
     "request_attempts": 3,
     "request_delay_seconds": 3,
     "request_timeout_seconds": 30,
     "user_agent": "survey-paper-loop/1.0 (+https://github.com/ssmong/survey-contact-rich-dexterous-manipulation)"
   },
   "llm": {
-    "provider": "anthropic",
+    "provider": "codex",
     "base_url": "https://api.anthropic.com",
     "model": "claude-sonnet-4-20250514",
     "max_tokens": 800,
@@ -20,14 +21,74 @@
     "validation_attempts": 2,
     "feedback_examples": 12
   },
+  "codex": {
+    "binary": "codex",
+    "batch_size": 24,
+    "max_prompt_chars": 90000,
+    "timeout_seconds": 240,
+    "validation_attempts": 2,
+    "retry_delay_seconds": 1.0
+  },
   "review_loop": {
     "accept_confidence": 0.84,
     "reject_confidence": 0.9,
     "max_passes": 3
   },
+  "screening": {
+    "max_abstracts_per_run": 60,
+    "backlog_reserve_fraction": 0.25,
+    "ranking": {
+      "prefilter_hit_weight": 0.35,
+      "backlog_age_weight_per_day": 0.2,
+      "max_backlog_age_bonus": 8.0,
+      "freshness_weight": 1.0,
+      "category_weights": {
+        "cs.RO": 2.5,
+        "eess.SY": 2.0,
+        "cs.AI": 1.0,
+        "cs.LG": 1.0
+      },
+      "query_weights": {
+        "robot-learning-sim-to-real": 2.5,
+        "legged-humanoid": 2.5,
+        "learning-based-control": 2.5,
+        "optimal-safe-control": 2.0,
+        "robot-manipulation": 2.0,
+        "robot-foundation-models": 2.0,
+        "planning-estimation": 1.5
+      },
+      "priority_topics": [
+        {
+          "name": "physical-ai-robot-learning",
+          "weight": 7.0,
+          "keywords": ["reinforcement learning", "robot learning", "sim-to-real", "domain randomization", "physical ai", "world model", "ppo"]
+        },
+        {
+          "name": "legged-humanoid-control",
+          "weight": 6.5,
+          "keywords": ["legged robot", "quadruped", "humanoid", "locomotion", "whole-body control", "contact-rich locomotion"]
+        },
+        {
+          "name": "learning-optimal-safe-control",
+          "weight": 6.0,
+          "keywords": ["model predictive control", "optimal control", "learning-based control", "safe control", "robust control", "adaptive control", "koopman", "control barrier function"]
+        },
+        {
+          "name": "manipulation-vla-imitation",
+          "weight": 5.5,
+          "keywords": ["robot manipulation", "dexterous manipulation", "vision-language-action", "vision language action", "diffusion policy", "imitation learning", "mobile manipulation"]
+        },
+        {
+          "name": "planning-estimation-sensor-fusion",
+          "weight": 4.0,
+          "keywords": ["motion planning", "task planning", "state estimation", "sensor fusion", "visual-inertial", "kalman filter", "autonomous system"]
+        }
+      ]
+    }
+  },
   "analysis": {
     "enabled": true,
-    "max_papers_per_run": 4,
+    "max_papers_per_run": 8,
     "max_source_chars": 50000,
     "minimum_full_text_chars": 4000,
     "max_tokens": 1800,
@@ -47,7 +108,8 @@
   "output": {
     "runs_dir": "automation/runs",
     "latest_report": "automation/inbox/latest.md",
-    "drafts_dir": "automation/drafts"
+    "drafts_dir": "automation/drafts",
+    "slack_outbox": "automation/outbox/slack"
   },
   "queries": [
     {
@@ -65,6 +127,34 @@
     {
       "name": "teleoperation-hardware",
       "search_query": "(all:\"dexterous teleoperation\" OR all:\"robot hand hardware\") AND cat:cs.RO"
+    },
+    {
+      "name": "robot-learning-sim-to-real",
+      "search_query": "(all:\"robot learning\" OR all:\"reinforcement learning\" OR all:\"sim-to-real\" OR all:\"domain randomization\") AND (cat:cs.RO OR cat:cs.LG OR cat:cs.AI)"
+    },
+    {
+      "name": "legged-humanoid",
+      "search_query": "(all:\"legged robot\" OR all:quadruped OR all:humanoid OR all:locomotion OR all:\"whole-body control\") AND (cat:cs.RO OR cat:eess.SY)"
+    },
+    {
+      "name": "learning-based-control",
+      "search_query": "(all:\"learning-based control\" OR all:\"learning based control\" OR all:\"neural control\" OR all:\"koopman control\") AND (cat:cs.RO OR cat:eess.SY OR cat:cs.LG)"
+    },
+    {
+      "name": "optimal-safe-control",
+      "search_query": "(all:\"model predictive control\" OR all:\"safe control\" OR all:\"robust control\" OR all:\"control barrier function\") AND (cat:cs.RO OR cat:eess.SY)"
+    },
+    {
+      "name": "robot-manipulation",
+      "search_query": "(all:\"robot manipulation\" OR all:\"mobile manipulation\" OR all:\"imitation learning\" OR all:\"diffusion policy\") AND (cat:cs.RO OR cat:cs.AI OR cat:cs.LG)"
+    },
+    {
+      "name": "robot-foundation-models",
+      "search_query": "(all:\"robot foundation model\" OR all:\"vision-language-action\" OR all:\"vision language action\" OR all:\"robot world model\") AND (cat:cs.RO OR cat:cs.AI OR cat:cs.LG)"
+    },
+    {
+      "name": "planning-estimation",
+      "search_query": "(all:\"motion planning\" OR all:\"task planning\" OR all:\"state estimation\" OR all:\"sensor fusion\") AND (cat:cs.RO OR cat:eess.SY)"
     }
   ],
   "prefilter": {
@@ -82,7 +172,35 @@
       "vision-language-action",
       "vision language action",
       "teleoperation",
-      "robot hand"
+      "robot hand",
+      "robot manipulation",
+      "mobile manipulation",
+      "reinforcement learning",
+      "robot learning",
+      "sim-to-real",
+      "domain randomization",
+      "physical ai",
+      "world model",
+      "quadruped",
+      "legged robot",
+      "humanoid",
+      "locomotion",
+      "whole-body control",
+      "model predictive control",
+      "optimal control",
+      "learning-based control",
+      "learning based control",
+      "safe control",
+      "robust control",
+      "adaptive control",
+      "koopman",
+      "control barrier function",
+      "motion planning",
+      "task planning",
+      "state estimation",
+      "sensor fusion",
+      "imitation learning",
+      "diffusion policy"
     ],
     "exclude_any": [
       "surgical outcome",
@@ -164,6 +282,42 @@
       "name": "Tactile Representation Models",
       "description": "General-purpose tactile encoders, representations, or tactile foundation models.",
       "keywords": ["tactile representation", "tactile foundation", "tactile encoder", "touch representation"]
+    },
+    {
+      "id": "13",
+      "name": "Legged & Humanoid Robot Learning",
+      "description": "Learning, locomotion, and whole-body control for quadruped, legged, and humanoid robots.",
+      "keywords": ["legged robot", "quadruped", "humanoid", "locomotion", "whole-body control", "contact-rich locomotion"]
+    },
+    {
+      "id": "14",
+      "name": "Learning-based, Optimal & Safe Control",
+      "description": "Learning-enhanced MPC, optimal, adaptive, robust, and safety-critical robot control.",
+      "keywords": ["model predictive control", "optimal control", "learning-based control", "safe control", "robust control", "adaptive control", "koopman", "control barrier function"]
+    },
+    {
+      "id": "15",
+      "name": "General Robot Manipulation & Imitation Learning",
+      "description": "Robot-arm, bimanual, or mobile manipulation using imitation learning, diffusion policies, or learned visuomotor policies.",
+      "keywords": ["robot manipulation", "mobile manipulation", "bimanual", "imitation learning", "diffusion policy", "visuomotor policy"]
+    },
+    {
+      "id": "16",
+      "name": "Motion Planning & Decision Making",
+      "description": "Robot motion/task planning, decision making, trajectory optimization, and autonomous-system planning.",
+      "keywords": ["motion planning", "task planning", "decision making", "trajectory optimization", "path planning"]
+    },
+    {
+      "id": "17",
+      "name": "State Estimation & Sensor Fusion",
+      "description": "State estimation and sensor fusion for robots and autonomous systems.",
+      "keywords": ["state estimation", "sensor fusion", "visual-inertial", "kalman filter", "observer"]
+    },
+    {
+      "id": "18",
+      "name": "Robot World Models & Embodied Foundation Models",
+      "description": "World models and general embodied foundation models used for robot prediction, planning, or control.",
+      "keywords": ["robot world model", "embodied foundation model", "physical ai", "generalist robot", "cross-embodiment"]
     }
   ]
 }
