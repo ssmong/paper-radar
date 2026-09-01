@@ -1,0 +1,514 @@
+{
+  "classifier": "heuristic",
+  "generated_at": "2026-09-01T01:58:06.969553Z",
+  "results": [
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "dataset",
+            "demonstrations"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 8: dataset, demonstrations.",
+          "relevant": true,
+          "section_id": "8",
+          "source": "heuristic",
+          "summary": "Autonomous laboratories hold great promise for accelerating scientific discovery. To achieve this vision, robots are supposed to dexterously manipulate diverse labware and instruments and execute long-horizon, state-dependent experimental procedures. Yet existing benchmarks do not jointly capture dexterous hand use, re"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "dataset",
+              "demonstrations"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 8: dataset, demonstrations.",
+            "relevant": true,
+            "section_id": "8",
+            "source": "heuristic",
+            "summary": "Autonomous laboratories hold great promise for accelerating scientific discovery. To achieve this vision, robots are supposed to dexterously manipulate diverse labware and instruments and execute long-horizon, state-dependent experimental procedures. Yet existing benchmarks do not jointly capture dexterous hand use, re"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.18618v1",
+        "authors": [
+          "Zhipeng Tang",
+          "Sihang Chen",
+          "Sha Zhang",
+          "Peihao Yang",
+          "Yan Liu",
+          "Wentao Zhao",
+          "Xinrui Liu",
+          "Rui Huang",
+          "Wensheng Du",
+          "Yuting Huang",
+          "Jiajun Deng",
+          "Lidian Wang",
+          "Yuan Zhang",
+          "Yanyong Zhang"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.18618",
+        "pdf_url": "https://arxiv.org/pdf/2608.18618v1",
+        "published": "2026-08-19T07:11:06Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Autonomous laboratories hold great promise for accelerating scientific discovery. To achieve this vision, robots are supposed to dexterously manipulate diverse labware and instruments and execute long-horizon, state-dependent experimental procedures. Yet existing benchmarks do not jointly capture dexterous hand use, real-world laboratory interactions, and multi-stage experimental procedures, limiting systematic training and evaluation. To bridge this gap, we introduce LabDex, a large-scale real-world dataset and benchmark for dexterous manipulation in chemistry laboratories, organized around a hierarchical task taxonomy spanning atomic skills, compositional tasks, and long-horizon experiments. First, LabDex is cross-platform and, for the first time, unifies real-world and simulation platforms under a common framework, providing standardized task definitions, demonstrations, and evaluation protocols. Second, LabDex is large-scale and systematically organizes chemistry laboratory operations into three interconnected levels: Atomic Skills, which characterize fundamental dexterous manipulation capabilities; Compositional Skills; and Long-Horizon Laboratory Workflows. This hierarchical design not only supports the evaluation of end-task performance, but also enables the analysis of how fundamental dexterous skills compose and influence more complex laboratory operations. We conduct cross-level evaluations of representative robot learning methods in both real-world and simulation environments. The experimental results validate the effectiveness of the LabDex task design and demonstration data, and show that the benchmark supports the training and systematic evaluation of existing robotic policies across laboratory dexterous manipulation tasks at different levels, providing a foundation for further research and development of autonomous laboratory robots.",
+        "title": "LabDex: A Hierarchical Benchmark for Dexterous Manipulation in Laboratories",
+        "updated": "2026-08-19T07:11:06Z"
+      },
+      "prefilter_hits": [
+        "dexterous"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "Thanks to its parallelizability and flexibility, sampling-based Model Predictive Control (MPC) has become widely popular for controlling real-world robotic systems. However, for high-dimensional and open-loop unstable dynamical systems, the required number of samples to improve the control sequence will grow exponentia"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "Thanks to its parallelizability and flexibility, sampling-based Model Predictive Control (MPC) has become widely popular for controlling real-world robotic systems. However, for high-dimensional and open-loop unstable dynamical systems, the required number of samples to improve the control sequence will grow exponentia"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.19443v1",
+        "authors": [
+          "Chaoyi Pan",
+          "Zeji Yi",
+          "John Zhang",
+          "Zachary Manchester",
+          "Guannan Qu",
+          "Guanya Shi"
+        ],
+        "categories": [
+          "cs.RO",
+          "eess.SY"
+        ],
+        "paper_id": "2608.19443",
+        "pdf_url": "https://arxiv.org/pdf/2608.19443v1",
+        "published": "2026-08-19T20:56:18Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Thanks to its parallelizability and flexibility, sampling-based Model Predictive Control (MPC) has become widely popular for controlling real-world robotic systems. However, for high-dimensional and open-loop unstable dynamical systems, the required number of samples to improve the control sequence will grow exponentially with the horizon, leading to poor sample efficiency and numerical instability. This paper investigates the instability of shooting methods in sampling-based MPC and shows that the optimal sampling proposal distribution can be realized by sampling with an optimized feedback policy. We refer to this algorithm as Feedback Sampling MPC (FS-MPC). FS-MPC involves a hybrid sampling design which balances local and global search based on the system stability and the available computation budget. Our theoretical analysis shows that our hybrid sampling approach achieves faster convergence than standard MPPI and better optimality than standard feedback sampling. Empirically, in diverse contact-rich control tasks like humanoid loco-manipulation and dexterous manipulation, we show that FS-MPC successfully tackles dynamically unstable tasks where standard sample-based approaches struggle, and strictly outperforms feedback policies alone. Finally, we validate our method on humanoid robot locomotion and manipulation tasks in the real world.",
+        "title": "Hybrid Feedback Sampling for Sample-Efficient Model Predictive Control",
+        "updated": "2026-08-19T20:56:18Z"
+      },
+      "prefilter_hits": [
+        "dexterous"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "State-of-the-art vision-language-action (VLA) models such as $π_{0.5}$ exhibit strong semantic understanding, instruction following and task behavior. However, when deployed on new robots, even minor mismatches in hardware configuration relative to pretraining can cause severe performance drops. Finetuning the VLA on i"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "State-of-the-art vision-language-action (VLA) models such as $π_{0.5}$ exhibit strong semantic understanding, instruction following and task behavior. However, when deployed on new robots, even minor mismatches in hardware configuration relative to pretraining can cause severe performance drops. Finetuning the VLA on i"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.19490v1",
+        "authors": [
+          "Prachi Garg",
+          "Steve Xing",
+          "Prahit Yaugand",
+          "Saurabh Gupta",
+          "Derek Hoiem"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.CV",
+          "cs.LG"
+        ],
+        "paper_id": "2608.19490",
+        "pdf_url": "https://arxiv.org/pdf/2608.19490v1",
+        "published": "2026-08-19T23:02:07Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "State-of-the-art vision-language-action (VLA) models such as $π_{0.5}$ exhibit strong semantic understanding, instruction following and task behavior. However, when deployed on new robots, even minor mismatches in hardware configuration relative to pretraining can cause severe performance drops. Finetuning the VLA on in-domain expert data from the new embodiment improves performance on the expert task but leads to a loss in its original instruction following and behavioral priors. In this paper, we propose a self-supervised method that generates online interaction rollouts from the zero-shot VLA as additional training data for finetuning. Our experiments show this finetuning scheme yields strong multi-task policies that, on the target robot, (1) inherit prior tasks distilled from the zero-shot model, (2) enable generalist instruction following, while (3) learning new skills from expert data with improved sample efficiency. We demonstrate the success of our approach across test sets probing generalization on a real ALOHA robot and a new simulation benchmark in RoboTwin. Video results are available at https://self-supervised-control.pages.dev/",
+        "title": "Fine-Tuning VLAs with Self-Demonstrated Generative Control for Multi-Task Manipulation",
+        "updated": "2026-08-19T23:02:07Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Pretrained Vision-Language-Action models provide a strong foundation for robot learning, but sequentially adapting them to diverse skills can perturb the representations and velocity mappings used by previous skills, leading to catastrophic forgetting. Architecture-based approaches improve retention by isolating skills"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Pretrained Vision-Language-Action models provide a strong foundation for robot learning, but sequentially adapting them to diverse skills can perturb the representations and velocity mappings used by previous skills, leading to catastrophic forgetting. Architecture-based approaches improve retention by isolating skills"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.19589v1",
+        "authors": [
+          "Jiaqi Wang",
+          "Zhou Fang",
+          "Qiongfeng Shi",
+          "Yi Zhou"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.CV"
+        ],
+        "paper_id": "2608.19589",
+        "pdf_url": "https://arxiv.org/pdf/2608.19589v1",
+        "published": "2026-08-20T03:10:31Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Pretrained Vision-Language-Action models provide a strong foundation for robot learning, but sequentially adapting them to diverse skills can perturb the representations and velocity mappings used by previous skills, leading to catastrophic forgetting. Architecture-based approaches improve retention by isolating skills but lead to increased inference footprint. Recent subspace-constrained methods restrict parameter updates in an orthogonal subspace to minimize interference but impose a unified constraint on the entire model. We analyze the distinct roles of internal VLA components and identify two VLA-specific challenges. First, the VLM maintains broad semantic representations, making it vulnerable to capacity exhaustion, whereas the ActionHead refines semantics into localized velocity patterns that are highly sensitive to perturbations. Second, the final velocity decoder serves as a readout layer. Freezing it forms an output-stage expressivity bottleneck, while updating it risks overwriting previous velocity mappings. To this end, we propose OrthoSkillVLA, a parameter-efficient framework for continual skill learning in pretrained VLA models without demonstration replay. Given the representation heterogeneity, we impose separate subspace constraints on the VLM and ActionHead, preserving reusable semantic capacity while protecting localized velocity patterns. For the output layer, we introduce a lightweight feature-aware MoE decoder, where each skill is allocated a compact expert and a training-free router selects the expert according to feature-space affinity. Extensive simulated and real-world evaluations, together with ablations, demonstrate that OrthoSkillVLA better preserves prior skills while acquiring new ones.",
+        "title": "OrthoSkillVLA: Continual Skill Learning via Gradient-Informed Skill Subspace Adaptation",
+        "updated": "2026-08-20T03:10:31Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "How to efficiently finetune robot policies to learn new tasks on the fly? State of the art robotic manipulation policies are based on behaviour cloning of large vision-language-action (VLA) models with billions of parameters on huge teleoperation datasets. While this simple approach has enabled significant advances for"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "How to efficiently finetune robot policies to learn new tasks on the fly? State of the art robotic manipulation policies are based on behaviour cloning of large vision-language-action (VLA) models with billions of parameters on huge teleoperation datasets. While this simple approach has enabled significant advances for"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.19891v1",
+        "authors": [
+          "Bhavya Sukhija",
+          "Oliver Groth",
+          "Mohit Shridhar",
+          "Tim Hertweck",
+          "Michael Bloesch",
+          "Markus Wulfmeier",
+          "Abbas Abdolmaleki",
+          "Martin Riedmiller"
+        ],
+        "categories": [
+          "cs.AI"
+        ],
+        "paper_id": "2608.19891",
+        "pdf_url": "https://arxiv.org/pdf/2608.19891v1",
+        "published": "2026-08-20T10:58:45Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "How to efficiently finetune robot policies to learn new tasks on the fly? State of the art robotic manipulation policies are based on behaviour cloning of large vision-language-action (VLA) models with billions of parameters on huge teleoperation datasets. While this simple approach has enabled significant advances for robotic manipulation, finetuning of VLA policies for learning new tasks still remains an open problem. In particular, collecting teleoperation datasets requires hundreds of hours of expensive human labour and the alternative, reinforcement learning (RL), can be notoriously sample-inefficient especially for long-horizon tasks. In addition, RL with VLAs imposes several challenges due to the model's size and architectural design. In this work, we propose EXIMO, an efficient algorithm for finetuning of VLA policies. EXIMO operates in three stages: explore, imitate, and optimize. During the explore phase, EXIMO equips the VLA with a vision language model (VLM) that acts as a planner. The VLM thinks and breaks down challenging long-horizon problems into shorter ones for the VLA. The VLM, together with the VLA, is used to collect an orchestrated dataset on new tasks. During the imitate phase, the VLA is finetuned with the orchestrated data. Finally, during the optimize stage, we use residual off-policy RL to further finetune the policy. In our experiments, we ablate all three stages of EXIMO and show that it outperforms existing approaches significantly in terms of sample-efficiency and final performance.",
+        "title": "EXIMO: VLM Guided Exploration of VLA Policies",
+        "updated": "2026-08-20T10:58:45Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "tool use",
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: tool use, dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "As the demand for larger manipulation datasets grows, handheld robotic gripper data collection and the associated gripper designs become more vital. Current data collection device designs trend towards matching the morphologies of existing robotic grippers, sacrificing ergonomics and manipulation performance. In this p"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "tool use",
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: tool use, dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "As the demand for larger manipulation datasets grows, handheld robotic gripper data collection and the associated gripper designs become more vital. Current data collection device designs trend towards matching the morphologies of existing robotic grippers, sacrificing ergonomics and manipulation performance. In this p"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.20546v1",
+        "authors": [
+          "Amar Hajj-Ahmad",
+          "Zubin Kremer Guha",
+          "Tim Fofonoff",
+          "Zhi Ern Teoh",
+          "Ciarán T. O'Neill",
+          "Ben Thacher",
+          "Igor Fala",
+          "Vidullan Surendran",
+          "Murphy Wonsick",
+          "Peter Whitney",
+          "David Watkins"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.20546",
+        "pdf_url": "https://arxiv.org/pdf/2608.20546v1",
+        "published": "2026-08-20T20:16:11Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "As the demand for larger manipulation datasets grows, handheld robotic gripper data collection and the associated gripper designs become more vital. Current data collection device designs trend towards matching the morphologies of existing robotic grippers, sacrificing ergonomics and manipulation performance. In this paper, we propose a co-design framework that guides the simultaneous development of both data collection and robotic execution devices by weaving both platform constraints into the design process. Through this workflow, we present the Koala Gripper system, a data capture device and robotic gripper platform that improves dexterity and grasp capability compared to parallel jaw grippers while preserving scalability and ease-of-use. The design introduces a novel force-optimized finger/trigger linkage mechanism with directional reflected mass characteristics, a unique monolithic dual-thumb, and user-centered ergonomic design. The design's actuated robotic fingers are backdrivable, with effective mass on the order of tens of grams. We show that these grippers are capable of secure grasps over a wide range of objects, forceful tool use, and precise singulation. We further validate the platform by deploying it with an end-to-end data collection and policy execution pipeline that highlights its capabilities through learning from demonstration. More information available at http://koalagripper.rai-inst.com",
+        "title": "Koala Gripper: Co-designing Robotic Grippers and Data-Capture Devices for Scaling Dexterous Manipulation Learning",
+        "updated": "2026-08-20T20:16:11Z"
+      },
+      "prefilter_hits": [
+        "dexterous"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Manipulating moving objects requires a policy to anticipate contact events, yet vision-language-action (VLA) policies are commonly fine-tuned from the current observation alone. World action models (WAMs) learn predictive dynamics, but running a video-scale teacher or explicitly imagining future frames at deployment is"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Manipulating moving objects requires a policy to anticipate contact events, yet vision-language-action (VLA) policies are commonly fine-tuned from the current observation alone. World action models (WAMs) learn predictive dynamics, but running a video-scale teacher or explicitly imagining future frames at deployment is"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.20735v2",
+        "authors": [
+          "Siyuan Ma",
+          "Yutian Zhang",
+          "Boshi Zhang",
+          "Qinglian Wu",
+          "Jiaqi Zhai",
+          "Dong Wei",
+          "Xiaojin Huang"
+        ],
+        "categories": [
+          "cs.AI",
+          "cs.RO"
+        ],
+        "paper_id": "2608.20735",
+        "pdf_url": "https://arxiv.org/pdf/2608.20735v2",
+        "published": "2026-08-21T04:40:41Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Manipulating moving objects requires a policy to anticipate contact events, yet vision-language-action (VLA) policies are commonly fine-tuned from the current observation alone. World action models (WAMs) learn predictive dynamics, but running a video-scale teacher or explicitly imagining future frames at deployment is costly. We introduce ForeTime-VLA, a dense pi0.5 policy that distills a future-aware, action-equivalent representation from a frozen Fast-WAM-derived teacher while remaining causal at inference. Offline, current and future video latents are compressed into a whitened 64-D target. Online, an eight-frame history encoder predicts this target together with manipulation phase and normalized time-to-transition. Four future tokens and one phase token condition the VLM prefix, while the predicted future and transition horizon condition the action expert. Training retains the original flow-matching action target and adds cosine, relational geometry, phase, time-to-transition, and action-equivalence objectives. On a deduplicated conveyor-belt dataset, we compare 40k-step checkpoints on 768 matched windows per split. Test MAE decreases from 0.134119 to 0.130593 (2.63%; paired-bootstrap 95% CI: 0.82-4.48% improvement), and test L2 decreases by 3.02%, at a 2.46-2.93% latency cost. In quantitative real-robot evaluation, ForeTime-VLA achieves 81.1% stationary and 58.9% slow-moving grasp success, exceeding the next-best reference by 12.2 and 22.2 percentage points, respectively. Across three belt speeds, it completes 44/90 grasps versus 23/90 for pi0.5, including 11/30 versus 2/30 at fast speed. The agreement between offline orientation gains and reduced real-robot contact-pose failures supports causal future-token distillation as an effective way to improve dynamic manipulation without deploying the world-model teacher.",
+        "title": "ForeTime-VLA: Causal Future-Token Distillation from a World Action Model for Conveyor-Belt Manipulation",
+        "updated": "2026-08-24T03:31:07Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.55,
+          "evidence": [],
+          "needs_full_text": true,
+          "rationale": "No section-specific keyword was found by the deterministic fallback.",
+          "relevant": false,
+          "section_id": "0",
+          "source": "heuristic",
+          "summary": "Tactile sensors are integral components of modern robotic systems, enabling robots to perceive and interact with the physical environment through tactile feedback. Despite their importance, the physical-layer security of tactile sensors has received little attention in prior work. In this paper, we present GhostTac, to"
+        },
+        "passes": [
+          {
+            "confidence": 0.55,
+            "evidence": [],
+            "needs_full_text": true,
+            "rationale": "No section-specific keyword was found by the deterministic fallback.",
+            "relevant": false,
+            "section_id": "0",
+            "source": "heuristic",
+            "summary": "Tactile sensors are integral components of modern robotic systems, enabling robots to perceive and interact with the physical environment through tactile feedback. Despite their importance, the physical-layer security of tactile sensors has received little attention in prior work. In this paper, we present GhostTac, to"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.20817v2",
+        "authors": [
+          "Kun Wang",
+          "Xuancun Lu",
+          "Ruochen Zhou",
+          "Kai Wang",
+          "Tongjun Ye",
+          "Yihao Shao",
+          "Chen Yan",
+          "Xiaoyu Ji",
+          "Wenyuan Xu"
+        ],
+        "categories": [
+          "cs.CR",
+          "cs.RO"
+        ],
+        "paper_id": "2608.20817",
+        "pdf_url": "https://arxiv.org/pdf/2608.20817v2",
+        "published": "2026-08-21T07:39:19Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Tactile sensors are integral components of modern robotic systems, enabling robots to perceive and interact with the physical environment through tactile feedback. Despite their importance, the physical-layer security of tactile sensors has received little attention in prior work. In this paper, we present GhostTac, to the best of our knowledge, the first contactless attack that manipulates tactile sensing via electromagnetic interference (EMI). We identify that EMI exploits the nonlinear rectification and limited bandwidth amplification effects, allowing carefully crafted EMI signals to be converted into a persistent DC offset that bypasses on-board filtering and induces stable measurement deviations. Building on this mechanism, GhostTac enables fine-grained and controllable manipulation of sensor outputs by reshaping the spatial distribution and manipulating the magnitude at the targeted location. Such interference can induce unintended and harmful robot behaviors, such as causing a domestic robot to exert excessive force, resulting in physical damage or human injury. We evaluate GhostTac on 10 sensor modules and 2 dexterous hands, covering 15 tactile sensors of different types, and demonstrate consistent attack effectiveness across all tested devices. We further present three case studies on tactile grasping, slip detection, and material classification to illustrate practical impacts in real robotic tasks. We envision that our findings shed light on a new physical attack vector against tactile sensing in robotic systems.",
+        "title": "GhostTac: Manipulating Tactile Sensors without Physical Contact",
+        "updated": "2026-08-24T02:23:22Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile"
+      ]
+    }
+  ],
+  "run_id": "2026-09-01T015806Z",
+  "stats": {
+    "accepted": 0,
+    "backlog": 35,
+    "deferred": 32,
+    "discovered": 117,
+    "needs_review": 8,
+    "new": 49,
+    "prefiltered": 40,
+    "queued": 8,
+    "rejected": 0
+  }
+}

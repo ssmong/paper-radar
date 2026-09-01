@@ -1,0 +1,530 @@
+{
+  "classifier": "heuristic",
+  "generated_at": "2026-08-27T04:38:10.128976Z",
+  "results": [
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.63,
+          "evidence": [
+            "impedance",
+            "stiffness",
+            "damping"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 5: impedance, stiffness, damping.",
+          "relevant": true,
+          "section_id": "5",
+          "source": "heuristic",
+          "summary": "The paper proposes a robot-agnostic compliant-control framework that extends the ROS control ecosystem with standardized joint and Cartesian command interfaces. It addresses a key limitation of existing control software: no reusable infrastructure for implementing compliant-control algorithms across different manipulat"
+        },
+        "passes": [
+          {
+            "confidence": 0.63,
+            "evidence": [
+              "impedance",
+              "stiffness",
+              "damping"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 5: impedance, stiffness, damping.",
+            "relevant": true,
+            "section_id": "5",
+            "source": "heuristic",
+            "summary": "The paper proposes a robot-agnostic compliant-control framework that extends the ROS control ecosystem with standardized joint and Cartesian command interfaces. It addresses a key limitation of existing control software: no reusable infrastructure for implementing compliant-control algorithms across different manipulat"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2607.22483v1",
+        "authors": [
+          "Mihael Simonič",
+          "Xiaocong Li"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2607.22483",
+        "pdf_url": "https://arxiv.org/pdf/2607.22483v1",
+        "published": "2026-07-24T16:53:51Z",
+        "query_names": [
+          "force-tactile"
+        ],
+        "summary": "The paper proposes a robot-agnostic compliant-control framework that extends the ROS control ecosystem with standardized joint and Cartesian command interfaces. It addresses a key limitation of existing control software: no reusable infrastructure for implementing compliant-control algorithms across different manipulators while preserving a common interface to higher-level applications. A plugin-based architecture separates controller infrastructure from control-law implementation. Generic wrappers use existing hardware abstractions to interface with different manipulators, while runtime-loaded plugins implement only the control law. Command interfaces support joint- and Cartesian-space references, stiffness and damping gains, nullspace targets, and feedforward terms, enabling variable impedance and diverse compliant-control formulations. Robot kinematics and dynamics are computed from URDF models using Pinocchio. The architecture facilitates the development of compliant-control strategies and enables the same implementation to be deployed across platforms unchanged. The complete framework, including reference controllers, high-level task interfaces, and example configurations for various manipulators, is open-sourced. The reference Cartesian impedance controller supports task-dependent compliance by rotating translational and rotational stiffness and damping, allowing the principal compliance directions to be updated online according to local task geometry rather than remaining fixed in the robot base or TCP frame. This is particularly important in contact-rich manipulation, where the desired directions of motion, constraints, and compliance directions may vary throughout task execution. Real-robot experiments demonstrate task-dependent compliance in contact-rich manipulation, while simulations show portability across manipulators with distinct kinematic and dynamic characteristics.",
+        "title": "Plug, Play, and Comply: A Modular Framework for Online Variable Impedance with Arbitrarily Oriented Compliance Axes",
+        "updated": "2026-07-24T16:53:51Z"
+      },
+      "prefilter_hits": [
+        "impedance",
+        "compliance"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.63,
+          "evidence": [
+            "impedance",
+            "stiffness",
+            "damping"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 5: impedance, stiffness, damping.",
+          "relevant": true,
+          "section_id": "5",
+          "source": "heuristic",
+          "summary": "Personalization of impedance controllers for powered prosthetic legs is critical to accommodating individual gait biomechanics but remains challenging. Existing methods rely on time-intensive human-in-the-loop exploration and/or constrain optimization to low-dimensional, single-joint parameter subspaces. Sim-to-real tr"
+        },
+        "passes": [
+          {
+            "confidence": 0.63,
+            "evidence": [
+              "impedance",
+              "stiffness",
+              "damping"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 5: impedance, stiffness, damping.",
+            "relevant": true,
+            "section_id": "5",
+            "source": "heuristic",
+            "summary": "Personalization of impedance controllers for powered prosthetic legs is critical to accommodating individual gait biomechanics but remains challenging. Existing methods rely on time-intensive human-in-the-loop exploration and/or constrain optimization to low-dimensional, single-joint parameter subspaces. Sim-to-real tr"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2607.22858v1",
+        "authors": [
+          "Duong Le",
+          "Ryan Posh",
+          "Shihao Cheng",
+          "Maani Ghaffari",
+          "Robert D. Gregg"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2607.22858",
+        "pdf_url": "https://arxiv.org/pdf/2607.22858v1",
+        "published": "2026-07-24T18:59:48Z",
+        "query_names": [
+          "force-tactile"
+        ],
+        "summary": "Personalization of impedance controllers for powered prosthetic legs is critical to accommodating individual gait biomechanics but remains challenging. Existing methods rely on time-intensive human-in-the-loop exploration and/or constrain optimization to low-dimensional, single-joint parameter subspaces. Sim-to-real transfer has enabled high-dimensional locomotion control for legged robots, but in assistive device control the human partner remains un-modelable. We present a replay-constrained simulation framework: a MuJoCo-based simulator reproduces prosthetic knee-ankle dynamics while replaying recorded hip kinematics and feedback-based ground reaction forces from individual walking data, bypassing the need to model complex human neuromuscular control mechanisms. We demonstrate the framework with a deep reinforcement learning policy that personalizes phase-dependent stiffness, damping, and equilibrium angle at both joints simultaneously, maximizing a biomimicry-based reward computed solely from onboard prosthesis measurements. Experiments with three participants with transfemoral amputation during level-ground walking at 0.8~m/s demonstrate strong simulation-to-hardware predictive validity (Pearson $r=0.96$--$0.997$). The best-performing policy on hardware was consistently predicted within the top five simulation policies for all participants. The learned controllers improved overall biomimicry rewards by 42--59\\% relative to the unpersonalized baseline. The framework supports scalable high-dimensional personalization of powered prosthetic legs and is amenable to extension to higher-dimensional controller parameterizations such as neural-network controllers.",
+        "title": "A Replay-Constrained Simulation Framework for Personalization of Powered Knee--Ankle Prosthesis Controllers",
+        "updated": "2026-07-24T18:59:48Z"
+      },
+      "prefilter_hits": [
+        "impedance"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "teleoperation",
+            "teleop"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "Tactile gloves digitize contact and force during hand-object interactions, enabling robotics applications in dexterous manipulation, teleoperation, and learning from demonstration. To preserve hand dexterity and capture the nuances of natural interactions, these gloves and the integrated tactile sensors are designed to"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "teleoperation",
+              "teleop"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "Tactile gloves digitize contact and force during hand-object interactions, enabling robotics applications in dexterous manipulation, teleoperation, and learning from demonstration. To preserve hand dexterity and capture the nuances of natural interactions, these gloves and the integrated tactile sensors are designed to"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2607.22964v1",
+        "authors": [
+          "Tianhong Catherine Yu",
+          "Ziyi Kou",
+          "Mia Huang",
+          "Taylor Niehues",
+          "Yiyue Luo",
+          "Li Guan",
+          "Dingtian Zhang"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.HC"
+        ],
+        "paper_id": "2607.22964",
+        "pdf_url": "https://arxiv.org/pdf/2607.22964v1",
+        "published": "2026-07-25T00:12:31Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Tactile gloves digitize contact and force during hand-object interactions, enabling robotics applications in dexterous manipulation, teleoperation, and learning from demonstration. To preserve hand dexterity and capture the nuances of natural interactions, these gloves and the integrated tactile sensors are designed to be soft, flexible, and comfortable. However, such flexible sensors are sensitive not only to contact forces but also unavoidably to hand pose changes, resulting in pose-related artifacts (PRAs). PRAs are especially problematic in the low-force range, resulting in misdetections or late-onset detections of contact, which raises the minimum detectable force (MDF) of the glove. In this work, we characterize the PRAs in relation to pose and force. Building on these insights, we introduce a glove-agnostic algorithmic framework that leverages hand pose information, which is increasingly available, to mitigate PRAs without glove modifications. Our pose-aware force estimation model augments tactile-to-force pipelines with a residual prediction branch that explicitly accounts for pose-induced sensor deformations. We validate our approach across 3 glove designs and 15 users, reducing MDF by 10.4%, 12.2%, and 18.3%, with consistent improvements across all evaluated metrics. This method provides a practical path to improving the usability of tactile gloves in data collection and diverse robotic applications.",
+        "title": "Pose-Aware Modeling to Mitigate Pose-Related Artifacts in Tactile Gloves",
+        "updated": "2026-07-25T00:12:31Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "Multimodal foundation models learned to see and to speak by consuming the whole internet. Embodied agents admit no such shortcut, since they require data that couple observations with physical states and actions. These signals can be provided, to varying degrees, by multiple data sources. In this work, we organize the "
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "Multimodal foundation models learned to see and to speak by consuming the whole internet. Embodied agents admit no such shortcut, since they require data that couple observations with physical states and actions. These signals can be provided, to varying degrees, by multiple data sources. In this work, we organize the "
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2607.24744v2",
+        "authors": [
+          "Yifan Ye",
+          "Yankai Fu",
+          "Yaoxu Lv",
+          "Bohan Hou",
+          "Jun Cen",
+          "Lingdong Kong",
+          "Duo Zheng",
+          "Tianxing Chen",
+          "Jiaming Liu",
+          "Ziang Cao",
+          "Yunfan Lou",
+          "Wei Chow",
+          "Xian Sun",
+          "Yingshuo Wang",
+          "Kuangzhi Ge",
+          "Xiaowei Chi",
+          "Xidong Zhang",
+          "Zhibo Pang",
+          "Yiwu Zhong",
+          "Sirui Han",
+          "Zhihe Lu",
+          "Weihao Yuan",
+          "Qifeng Chen",
+          "Michael Yu Wang",
+          "Yao Mu",
+          "Ziwei Liu",
+          "Jianfei Yang",
+          "Ping Luo",
+          "Shanghang Zhang"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.CV"
+        ],
+        "paper_id": "2607.24744",
+        "pdf_url": "https://arxiv.org/pdf/2607.24744v2",
+        "published": "2026-07-27T17:59:58Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Multimodal foundation models learned to see and to speak by consuming the whole internet. Embodied agents admit no such shortcut, since they require data that couple observations with physical states and actions. These signals can be provided, to varying degrees, by multiple data sources. In this work, we organize the embodied data ecosystem as a \"pyramid\" spanning five complementary sources: real-robot data, UMI-style data, egocentric and exocentric data, simulation data, and general vision-language data. We organize the pyramid around the tension between scalability and robot alignment, and further characterize each source in terms of data quality, diversity, reusability, and physical fidelity. We then analyze recent embodied foundation models through the lens of their data recipes, examining how different sources are selected, aligned, and mixed during pretraining. For embodied brain models, vision-language-action models, and world-action models alike, we relate data composition to capabilities in perception, reasoning, planning, action generation, and world prediction. We close by discussing six open challenges: building large-scale tactile datasets, collecting failure and recovery data, developing scalable data-collection pipelines, aligning actions across embodiments, leveraging egocentric data for dexterous manipulation, and designing principled data recipes for robot learning. We hope this work paves the foundation for the design of next-generation embodied systems.",
+        "title": "Data Pyramid for Embodied Manipulation: A Survey",
+        "updated": "2026-08-08T15:15:40Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile",
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.63,
+          "evidence": [
+            "teleop",
+            "retargeting",
+            "demonstration collection"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleop, retargeting, demonstration collection.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "Scalable collection of dexterous manipulation demonstrations remains a major bottleneck for robot learning. High-fidelity interfaces often require costly hardware and extensive setup, while low-setup, low cost alternatives tend to provide less precise control and impose greater cognitive workload on operators. We prese"
+        },
+        "passes": [
+          {
+            "confidence": 0.63,
+            "evidence": [
+              "teleop",
+              "retargeting",
+              "demonstration collection"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleop, retargeting, demonstration collection.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "Scalable collection of dexterous manipulation demonstrations remains a major bottleneck for robot learning. High-fidelity interfaces often require costly hardware and extensive setup, while low-setup, low cost alternatives tend to provide less precise control and impose greater cognitive workload on operators. We prese"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2607.27784v1",
+        "authors": [
+          "Beom Jun Kim",
+          "Shiu-Jen Wang",
+          "Jonathan Liu",
+          "Alvin Zhu",
+          "Quanyou Wang",
+          "Hanzhang Fang",
+          "Feng Xu",
+          "Mingzhang Zhu",
+          "Yuchen Cui",
+          "Dennis W. Hong"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2607.27784",
+        "pdf_url": "https://arxiv.org/pdf/2607.27784v1",
+        "published": "2026-07-30T07:17:28Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Scalable collection of dexterous manipulation demonstrations remains a major bottleneck for robot learning. High-fidelity interfaces often require costly hardware and extensive setup, while low-setup, low cost alternatives tend to provide less precise control and impose greater cognitive workload on operators. We present DexDirect, a direct kinesthetic arm guidance for efficient dexterous demonstration collection. The operator drags a 6-DoF gravity-compensated robot arm directly by a handle, while a single webcam retargets operator's other hand onto a 16 joints 13-DoF dexterous robot hand. User studies suggest DexDirect collects 17.2x and 3.2x more successful demonstrations compared to purely vision (AnyTeleop) and pose-tracking (TeleDex) baselines. An adapted NASA-TLX shows DexDirect greatly reduces mental demand, effort, and frustration, despite raising physical demand. A diffusion policy trained on DexDirect demonstrations reaches a 90% success rate on a cube pick-and-place task. These results suggest that direct kinesthetic arm guidance combined with vision-based hand retargeting provides an efficient low-setup and scalable interface for collecting dexterous manipulation demonstrations",
+        "title": "DexDirect: Direct Kinesthetic Arm Guidance for Efficient Dexterous Demonstration Collection",
+        "updated": "2026-07-30T07:17:28Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "robot hand"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "Many dexterous manipulation tasks require the object to remain securely held throughout the interaction. From the perspective of hand-object relational motion, such manipulation comprises four canonical skills: grasping, relocation, in-hand rotation, and in-hand translation. Human hands flexibly compose these skills to"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "Many dexterous manipulation tasks require the object to remain securely held throughout the interaction. From the perspective of hand-object relational motion, such manipulation comprises four canonical skills: grasping, relocation, in-hand rotation, and in-hand translation. Human hands flexibly compose these skills to"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2607.28198v1",
+        "authors": [
+          "Hui Zhang",
+          "Julian Ferchow",
+          "Jie Song",
+          "Mirko Meboldt"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.CV"
+        ],
+        "paper_id": "2607.28198",
+        "pdf_url": "https://arxiv.org/pdf/2607.28198v1",
+        "published": "2026-07-30T13:35:45Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Many dexterous manipulation tasks require the object to remain securely held throughout the interaction. From the perspective of hand-object relational motion, such manipulation comprises four canonical skills: grasping, relocation, in-hand rotation, and in-hand translation. Human hands flexibly compose these skills to accomplish complex tasks. Existing approaches, however, model these skills separately with skill-specific action constraints, objectives, or even dedicated hand morphologies, which breaks the compatibility and continuity required for long-horizon composition. In this work, we present a unified framework that models all four skills in a single formulation that shares the same state and action spaces and a common objective structure. This formulation enables straightforward distillation of a single cross-skill policy that performs strongly on every skill, generalizes to unseen objects, stays robust to disturbances, and chains skills seamlessly into long-horizon manipulation. The framework also transfers effectively across different hand morphologies. Overall, our results suggest that different dexterous manipulation skills can be viewed as instantiations of a shared task formulation, revealing the intrinsic consistency across different behaviors.",
+        "title": "UniCross: Unified Cross-Skill Dexterous Manipulation Synthesis",
+        "updated": "2026-07-30T13:35:45Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "in-hand"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "Curved tactile fingertips for dexterous manipulation must resolve fine contact geometry, distinguish normal and tangential loads, and capture transient signals. Existing curved vision-based tactile sensors struggle to combine accurate 3D reconstruction, three-axis force estimation, and high-speed processing in a compac"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "Curved tactile fingertips for dexterous manipulation must resolve fine contact geometry, distinguish normal and tangential loads, and capture transient signals. Existing curved vision-based tactile sensors struggle to combine accurate 3D reconstruction, three-axis force estimation, and high-speed processing in a compac"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2607.28416v1",
+        "authors": [
+          "Xiaofan Lu",
+          "Kaiji Huang",
+          "Jiahui Chen",
+          "Yuankai Lin",
+          "Hua Yang",
+          "Zhouping Yin"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2607.28416",
+        "pdf_url": "https://arxiv.org/pdf/2607.28416v1",
+        "published": "2026-07-30T16:00:51Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Curved tactile fingertips for dexterous manipulation must resolve fine contact geometry, distinguish normal and tangential loads, and capture transient signals. Existing curved vision-based tactile sensors struggle to combine accurate 3D reconstruction, three-axis force estimation, and high-speed processing in a compact form. This article presents FasTac, a curved vision-based tactile sensor integrating multispectral photometric stereo, dynamic-convolution force estimation, and hardware acceleration on a field-programmable gate array (FPGA). Single-image-sensor simultaneous multispectral imaging provides spatially aligned observations for robust surface normal estimation, followed by boundary-prior fast Poisson depth reconstruction. HyperForce uses position-aware dynamic convolution to model the spatially nonuniform mechanical response of curved elastomers and estimate three-axis forces. The complete image-to-normal-force pipeline is deployed on an FPGA. Experiments show that near-infrared (NIR) illumination and the boundary prior decrease depth mean absolute error (MAE) from 0.2730 mm to 0.0415 mm; HyperForce achieves normalized mean absolute error (NMAE) values of 2.74% and 2.39% for normal and shear forces, respectively; and FPGA deployment shortens processing latency from 3.26 ms on the GPU to 1.09 ms. Multi-object reconstruction, feedback grasping, and vibration measurement validate fine geometric perception, stable force feedback, and dynamic contact sensing.",
+        "title": "FasTac: A Curved Multispectral Vision-Based Tactile Sensor for High-Speed High-Precision 3D Shape and Force Perception",
+        "updated": "2026-07-30T16:00:51Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "impedance"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 5: impedance.",
+          "relevant": true,
+          "section_id": "5",
+          "source": "heuristic",
+          "summary": "Multi-link aerial robots can actively deform their articulated structures during flight, giving them strong potential for aerial manipulation. However, they still face substantial challenges in contact-rich aerial manipulation tasks such as surface sliding, which requires both disturbance robustness and compliance to u"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "impedance"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 5: impedance.",
+            "relevant": true,
+            "section_id": "5",
+            "source": "heuristic",
+            "summary": "Multi-link aerial robots can actively deform their articulated structures during flight, giving them strong potential for aerial manipulation. However, they still face substantial challenges in contact-rich aerial manipulation tasks such as surface sliding, which requires both disturbance robustness and compliance to u"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.01800v1",
+        "authors": [
+          "Zicheng Luo",
+          "Maolin Lei",
+          "Jinjie Li",
+          "Yicheng Chen",
+          "Zicen Xiong",
+          "Moju Zhao"
+        ],
+        "categories": [
+          "cs.RO",
+          "eess.SY"
+        ],
+        "paper_id": "2608.01800",
+        "pdf_url": "https://arxiv.org/pdf/2608.01800v1",
+        "published": "2026-08-03T07:09:18Z",
+        "query_names": [
+          "force-tactile"
+        ],
+        "summary": "Multi-link aerial robots can actively deform their articulated structures during flight, giving them strong potential for aerial manipulation. However, they still face substantial challenges in contact-rich aerial manipulation tasks such as surface sliding, which requires both disturbance robustness and compliance to uncertain surface geometry. Force-control strategies such as impedance and admittance control are commonly employed to address these requirements. Although impedance control can provide disturbance-resistant interaction and admittance control can offer compliant adaptation, their opposite force--motion causalities prevent their simultaneous implementation when applied through the same actuation source, such as the rotor thrusts used by conventional aerial robots. To overcome this limitation, we propose a hybrid impedance--admittance control strategy for a multi-link aerial robot. The articulated morphology enables a functional separation of force and motion regulation across joint and rotor actuation sources. In this framework, admittance behavior is generated through joint angle regulation to enhance adaptive interaction, while impedance behavior is achieved by modulating rotor thrust to regulate the sliding motion. This structural coordination allows the robot to leverage the complementary strengths of both control paradigms. As a result, the multi-link aerial robot achieves resilient and adaptive surface sliding. Experimental results demonstrate robust and compliant sliding performance on unknown surfaces.",
+        "title": "Hybrid Impedance-Admittance Control with Multi-Link Aerial Robot for Contact-Rich Surface Sliding Task",
+        "updated": "2026-08-03T07:09:18Z"
+      },
+      "prefilter_hits": [
+        "impedance",
+        "compliance"
+      ]
+    }
+  ],
+  "run_id": "2026-08-27T043810Z",
+  "stats": {
+    "accepted": 0,
+    "backlog": 56,
+    "deferred": 58,
+    "discovered": 117,
+    "needs_review": 8,
+    "new": 54,
+    "prefiltered": 66,
+    "queued": 8,
+    "rejected": 0
+  }
+}

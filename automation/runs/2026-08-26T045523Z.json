@@ -1,0 +1,513 @@
+{
+  "classifier": "heuristic",
+  "generated_at": "2026-08-26T04:55:23.732586Z",
+  "results": [
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision language action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision language action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Vision language action models (VLAs) have advanced general purpose robotic grasping and manipulation by enabling robots to interpret visual observations and natural language instructions to generate executable action sequences. However, existing VLAs often implicitly assume gripper invariance, despite grasping strategi"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision language action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision language action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Vision language action models (VLAs) have advanced general purpose robotic grasping and manipulation by enabling robots to interpret visual observations and natural language instructions to generate executable action sequences. However, existing VLAs often implicitly assume gripper invariance, despite grasping strategi"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.24603v1",
+        "authors": [
+          "Hanyi Zhang",
+          "Zihong Luo",
+          "Tianyu Li",
+          "Khang Nguyen",
+          "Basu Hela",
+          "Shreyas Kumar",
+          "Ngoc Duy Tran",
+          "Feng Dai",
+          "Charith Munasinghe",
+          "Jorge Peña Queralta",
+          "Giovanni Toffetti",
+          "Khoa Vo",
+          "Ngan Le",
+          "Ravi Prakash",
+          "Quan Vuong",
+          "Tung D. Ta",
+          "Long Hu",
+          "Anh Nguyen",
+          "Baoru Huang"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.24603",
+        "pdf_url": "https://arxiv.org/pdf/2608.24603v1",
+        "published": "2026-08-25T14:24:51Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Vision language action models (VLAs) have advanced general purpose robotic grasping and manipulation by enabling robots to interpret visual observations and natural language instructions to generate executable action sequences. However, existing VLAs often implicitly assume gripper invariance, despite grasping strategies being inherently embodiment-dependent. Different gripper types, such as parallel-jaw and suction, usually require distinct interaction strategies to achieve the same grasping objective. Moreover, current datasets for VLAs predominantly rely on parallel-jaw grippers, limiting gripper-aware learning. To address this gap, we introduce MiGA, a multi-gripper-aware dataset spanning five distinct gripper types across multiple robots with 103,000 demonstrations, explicitly capturing strategy divergence under shared task objectives. We further propose GVLA, which combines a new multi-gripper tokenizer with adapter-based policy routing. Our new gripper encoding induces structured embedding information that balances parameter sharing and strategy differentiation, while layer-wise probing confirms meaningful gripper-conditioned representations for VLAs. Intensive experiments in both simulation and real-world robots show that our GVLA outperforms the current baselines across evaluated settings. Our method also improves zero-shot generalization or few-shot adaptation to new objects or unseen tasks, and enable more efficient gripper adaptation.",
+        "title": "Gripper-aware Vision Language Action Models",
+        "updated": "2026-08-25T14:24:51Z"
+      },
+      "prefilter_hits": [
+        "vision language action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "teleoperation",
+            "teleop"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "Capturing hand pose during dexterous manipulation remains difficult: vision-based methods degrade under occlusion and challenging lighting, while sensorized gloves, though occlusion-free, are prone to drift and magnetic interference and rarely match motion-capture accuracy. We introduce a fiber optic sensing glove for "
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "teleoperation",
+              "teleop"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "Capturing hand pose during dexterous manipulation remains difficult: vision-based methods degrade under occlusion and challenging lighting, while sensorized gloves, though occlusion-free, are prone to drift and magnetic interference and rarely match motion-capture accuracy. We introduce a fiber optic sensing glove for "
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.24572v1",
+        "authors": [
+          "J. D. Peiffer",
+          "Taylor Niehues",
+          "Li Guan",
+          "Ziyi Kou",
+          "Ergys Ristani"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.24572",
+        "pdf_url": "https://arxiv.org/pdf/2608.24572v1",
+        "published": "2026-08-25T13:59:35Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Capturing hand pose during dexterous manipulation remains difficult: vision-based methods degrade under occlusion and challenging lighting, while sensorized gloves, though occlusion-free, are prone to drift and magnetic interference and rarely match motion-capture accuracy. We introduce a fiber optic sensing glove for full hand pose tracking that targets these failure modes, using multi-core shape-sensing fibers that capture each fiber's full 3D shape rather than curvature alone. A novel pipeline registers each reconstructed fiber shape to a common hand reference frame, and a new inverse-kinematics solver reconstructs full hand pose at 60 Hz using curve constraints. Benchmarked on a 2-hour dataset of dexterous object manipulation tasks across 5 subjects, the glove achieves 7.2 mm mean fingertip position error against motion capture ground truth, reduced to 4.9 mm by a one-time factory calibration of the fiber routing hub that transfers across users and sessions. These capabilities enable high-fidelity data capture and bimanual virtual teleoperation - both essential to advancing the robotics field.",
+        "title": "Fiber Optic Sensing Glove for High Performance Dexterous Manipulation Capture",
+        "updated": "2026-08-25T13:59:35Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Multimodal large language models (MLLMs) can integrate long visual histories, reason under partial observability, and infer behavior from a few examples. Yet vision-language-action (VLA) models generally inherit pretrained representations without using this contextual capacity as episode memory. Memory-dependent polici"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Multimodal large language models (MLLMs) can integrate long visual histories, reason under partial observability, and infer behavior from a few examples. Yet vision-language-action (VLA) models generally inherit pretrained representations without using this contextual capacity as episode memory. Memory-dependent polici"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.24115v1",
+        "authors": [
+          "Suhwan Choi",
+          "Jaeyoon Jung",
+          "Sungkyung Kim",
+          "Yunsung Lee",
+          "Youngjae Yu"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.AI"
+        ],
+        "paper_id": "2608.24115",
+        "pdf_url": "https://arxiv.org/pdf/2608.24115v1",
+        "published": "2026-08-25T06:24:36Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Multimodal large language models (MLLMs) can integrate long visual histories, reason under partial observability, and infer behavior from a few examples. Yet vision-language-action (VLA) models generally inherit pretrained representations without using this contextual capacity as episode memory. Memory-dependent policies address this gap through purpose-built history mechanisms. PonderPounce instead reuses an MLLM's native causal context as robot memory. Ponder, a System2 MLLM, accumulates episode observations, demonstrations, and prior cognition in its native causal context and can generate subgoal text and demonstration reasoning for internal use. Pounce, a System1 VLA, receives the current observation, instruction, and proprioception directly; through the Ponder--Pounce interface, it asynchronously receives only the newest continuous cognition token and its age. Both are jointly trained end to end without a purpose-built memory module or separate bridge pretraining. Optimized serving achieves p50 latencies of 78ms for cognition refresh and 25ms for action-model invocation, supporting 20Hz action playback. On RoboMME with base-scale training data, PonderPounce reaches 60.83% with 9B and 50.04% with 0.8B under the same Pounce architecture and interface, versus 44.51% for FrameSamp+Modul and 17.93% for the current-observation π_{0.5}. With 9x data, it reaches 75.54% versus 57.88% for FrameSamp+Modul. On RoboCasa-DC, the same interface learns from action supervision alone and reaches 12.5% versus 11.6% for the strongest published demonstration-conditioned baseline, falling to 8.6% when cognition is replaced by a learned null state.",
+        "title": "PonderPounce: A Pretrained MLLM as an Episode Context Engine for Robot Control",
+        "updated": "2026-08-25T06:24:36Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Robot actions are inherently embodiment-specific and only weakly aligned with image-space visual changes, limiting their effectiveness as conditioning signals for robot world models. In contrast, visual tracks provide an embodiment-agnostic representation of how task-relevant points move through a scene, offering dense"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Robot actions are inherently embodiment-specific and only weakly aligned with image-space visual changes, limiting their effectiveness as conditioning signals for robot world models. In contrast, visual tracks provide an embodiment-agnostic representation of how task-relevant points move through a scene, offering dense"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.24101v1",
+        "authors": [
+          "Zhi Cao",
+          "Howard Ji",
+          "Kevin Zhang",
+          "Kuangzhi Ge",
+          "Li Fei-Fei",
+          "Jiajun Wu",
+          "Huang Huang"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.24101",
+        "pdf_url": "https://arxiv.org/pdf/2608.24101v1",
+        "published": "2026-08-25T06:00:01Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Robot actions are inherently embodiment-specific and only weakly aligned with image-space visual changes, limiting their effectiveness as conditioning signals for robot world models. In contrast, visual tracks provide an embodiment-agnostic representation of how task-relevant points move through a scene, offering dense image-space guidance for accurate and spatially precise future video prediction. Building on this observation, we propose TrAct, a world-model-based robot decision-making framework that uses visual tracks as an intermediate interface between control and prediction. TrAct consists of three components: a Vision-Language-Action-and-Track model (VLAT) that jointly predicts candidate actions and corresponding visual tracks from the current observation and language instruction; a track-conditioned world model (TWM) that predicts future visual outcomes conditioned on the proposed tracks; and a vision-language reward model (VLAC) that scores the predicted outcomes. At inference time, VLAT generates candidate action-track pairs, TWM rolls out their visual consequences, and VLAC selects the track whose predicted outcome best satisfies the instruction; the action paired with the selected track is then executed by the robot. Experiments on the proposed LIBERO-INTEGRAL benchmark and real-world Franka manipulation show that TrAct improves success rates from 27% to 55% in simulation and from 49% to 76% on real-world tasks compared with the strong VLA baseline $π_{0.5}$. Furthermore, TWM consistently improves video prediction quality over the action-conditioned world model (AWM). These results demonstrate that visual tracks provide an effective shared interface between robot control and visual prediction, enabling more accurate world modeling and stronger robot generalization.",
+        "title": "TrAct: Bridging Robot Control and Visual Prediction with Visual Tracks",
+        "updated": "2026-08-25T06:00:01Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "While Vision-Language-Action (VLA) models pretrained on large-scale robot datasets provide a strong foundation for robot manipulation, their performance can degrade when adapted to new tasks with limited task-specific demonstrations. Retrieval offers a practical way to reuse existing demonstrations for data-efficient a"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "While Vision-Language-Action (VLA) models pretrained on large-scale robot datasets provide a strong foundation for robot manipulation, their performance can degrade when adapted to new tasks with limited task-specific demonstrations. Retrieval offers a practical way to reuse existing demonstrations for data-efficient a"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.24042v1",
+        "authors": [
+          "Haoran Hao",
+          "Shahram Najam Syed",
+          "Jeff Schneider",
+          "Jeffrey Ichnowski"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.AI",
+          "cs.LG"
+        ],
+        "paper_id": "2608.24042",
+        "pdf_url": "https://arxiv.org/pdf/2608.24042v1",
+        "published": "2026-08-25T04:04:49Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "While Vision-Language-Action (VLA) models pretrained on large-scale robot datasets provide a strong foundation for robot manipulation, their performance can degrade when adapted to new tasks with limited task-specific demonstrations. Retrieval offers a practical way to reuse existing demonstrations for data-efficient adaptation, but existing methods often rely on visual similarity, state-action representations, or task-level language matching. These approaches may overlook the hierarchical structure of long-horizon manipulation tasks, where complete task matches are rare but reusable skills are often abundant. To address this challenge, we propose Hierarchical Skill Retrieval (HSR), a retrieval framework for data-efficient VLA adaptation. Specifically, HSR first decomposes a target task into candidate skill sequences. It evaluates each plan based on both semantic plausibility and skill reliability estimated from the prior dataset. The selected decomposition is then used for hybrid retrieval. This combines subtask-level language retrieval with behavior-feature reranking to identify demonstrations that are both semantically relevant and compatible with the target task. Finally, we adapt the policy through a two-stage pretraining and finetuning pipeline, which separates general skill acquisition from task-specific adaptation. Experiments on the LIBERO benchmark and several real-world robot manipulation tasks show that HSR improves the average success rate by 10.3% and 21.3% over the strongest baseline, respectively. These results demonstrate the effectiveness of structured skill-level retrieval for data-efficient VLA adaptation. Videos and code are available at https://hoar012.github.io/HSR-Project.",
+        "title": "Hierarchical Skill Retrieval for Data-Efficient Adaptation of Vision-Language-Action Models",
+        "updated": "2026-08-25T04:04:49Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Vision-Language-Action (VLA) models can turn multimodal context into robot actions, but their action decoders are still trained largely by behavior cloning. This supervises which motor command was demonstrated while leaving implicit the local objective served by the behavior under the instruction. Future-based supervis"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Vision-Language-Action (VLA) models can turn multimodal context into robot actions, but their action decoders are still trained largely by behavior cloning. This supervises which motor command was demonstrated while leaving implicit the local objective served by the behavior under the instruction. Future-based supervis"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.23478v1",
+        "authors": [
+          "Sangoh Lee",
+          "Sangwoo Mo",
+          "Wook-Shin Han"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.AI",
+          "cs.CV"
+        ],
+        "paper_id": "2608.23478",
+        "pdf_url": "https://arxiv.org/pdf/2608.23478v1",
+        "published": "2026-08-24T16:42:49Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Vision-Language-Action (VLA) models can turn multimodal context into robot actions, but their action decoders are still trained largely by behavior cloning. This supervises which motor command was demonstrated while leaving implicit the local objective served by the behavior under the instruction. Future-based supervision enriches action learning with frames, latent observations, trajectories, or motion representations, but these signals capture particular realizations of what may happen rather than the shared semantic objective of the forthcoming behavior. We propose Intention Distillation (INDI), which distills behavior-level intent into the action decoder. During training, a frozen teacher VLM interprets a demonstrated segment from the current observation, instruction, coarse action summary, and corresponding execution video. From its standard inputs, the deployed VLA recovers the resulting multimodal intent representation at an intermediate decoder layer and uses it to organize action prediction together with representations of how the behavior unfolds and what it achieves. On SimplerEnv-Bridge, INDI improves GR00T-N1.7 from 64.3% to 84.7%, and on RoboCasa Kitchen it improves the controlled GR00T-N1.7 baseline from 64.1% to 70.3%, with consistent gains on $π_{0.5}$ across both benchmarks. In real-world tasks, INDI improves average success from 62.0% to 68.7%, with gains of up to 12.0 pp on longer-horizon tasks. Further analyses show that the recovered latent is used by the decoder, captures behavior objective and execution progress, and organizes downstream predictions in an objective-dependent manner. These results show that action decoders benefit from explicitly modeling the semantic objective of the behavior they generate.",
+        "title": "Act with Intent: Distilling Behavior Intent for Vision-Language-Action Models",
+        "updated": "2026-08-24T16:42:49Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Industrial demand changes the paradigms of production. Due to smaller batch sizes and more variations in products, companies face a growing challenge to adopt more adaptive production systems. In particular, robot-based automation is usually static and fails to respond to constantly changing processes. Vision-Language-"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Industrial demand changes the paradigms of production. Due to smaller batch sizes and more variations in products, companies face a growing challenge to adopt more adaptive production systems. In particular, robot-based automation is usually static and fails to respond to constantly changing processes. Vision-Language-"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.23320v1",
+        "authors": [
+          "Nils Mandischer",
+          "Noah Böckmann",
+          "Ludwig Holl",
+          "Lars Mikelsons"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.23320",
+        "pdf_url": "https://arxiv.org/pdf/2608.23320v1",
+        "published": "2026-08-24T14:36:52Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Industrial demand changes the paradigms of production. Due to smaller batch sizes and more variations in products, companies face a growing challenge to adopt more adaptive production systems. In particular, robot-based automation is usually static and fails to respond to constantly changing processes. Vision-Language-Action (VLA) Models are a promising opportunity to mitigate this challenge by generating robot actions based on the observed system state. However, current research either focuses on large models that cannot be computed on premise, creating compliance and security challenges, or use lab-grade robot hardware that obscures exploitation in real industrial settings. In this work, we adapt Hugging Face's SmolVLA for Universal Robots lightweight robots. Further, we release the open-source repository ROS2SmolVLA that implements an interface for ROS 2 to SmolVLA, and makes it applicable for industrial-grade hardware. By this, we allow a lenient adoption into lab and industrial environments. We validate the functionality of SmolVLA for a Universal Robots UR10e using a pick-and-place task and give implementation guidelines. Our findings support that SmolVLA is a well-suited option for small-sized tasks that need to be computed on premise.",
+        "title": "ROS2SmolVLA: Enabling Small Vision-Language-Action Models for Integration into Industrial-Grade Lightweight Robots",
+        "updated": "2026-08-24T14:36:52Z"
+      },
+      "prefilter_hits": [
+        "compliance",
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Retrieval can efficiently and effectively augment a frozen vision--language--action (VLA) policy without retraining, yet retrieved text becomes a control intervention once it enters the executed prompt. In a matched audit, raw appended text reduces mean success from 92.47\\% to 3.00\\%, while meaningful and length-matche"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Retrieval can efficiently and effectively augment a frozen vision--language--action (VLA) policy without retraining, yet retrieved text becomes a control intervention once it enters the executed prompt. In a matched audit, raw appended text reduces mean success from 92.47\\% to 3.00\\%, while meaningful and length-matche"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.23224v1",
+        "authors": [
+          "Zhiruo Zhou",
+          "Zelin Li",
+          "Xiwen Chen",
+          "Jiazhuo Li",
+          "Chenwei Wang",
+          "Huiming Chen",
+          "Xiaojun Zhu"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.AI",
+          "cs.CV"
+        ],
+        "paper_id": "2608.23224",
+        "pdf_url": "https://arxiv.org/pdf/2608.23224v1",
+        "published": "2026-08-24T13:18:01Z",
+        "query_names": [
+          "robot-vla"
+        ],
+        "summary": "Retrieval can efficiently and effectively augment a frozen vision--language--action (VLA) policy without retraining, yet retrieved text becomes a control intervention once it enters the executed prompt. In a matched audit, raw appended text reduces mean success from 92.47\\% to 3.00\\%, while meaningful and length-matched meaningless appends both fail on all 500 states. This result identifies \\emph{prompt-form collapse}: changing the instruction form, rather than adding useful semantics, can dominate execution. We introduce TOWN-VLA (Think Only When Needed), a prompt-authority interface that separates candidate generation from permission to alter the policy input. A fixed compatibility rule authorizes a canonical compact instruction; otherwise, the interface restores the original Base prompt exactly. Across 900 audited routes, every route follows this contract: 525 routes recover Base with matching hashes, and all 375 authorized prompts preserve the task signature. On a matched $4\\times7$ LIBERO-Plus evaluation with 10{,}030 episodes per method, success rises from 69.5\\% to 73.1\\% ($+362$ episodes; 95\\% CI 1.89--5.45 points), improving on six perturbation axes and all four suites. On a physical PiPER arm with a frozen \\pizerofive{} checkpoint, success rises from 52.7\\% to 78.7\\% over 150 trials per method ($p=3.16\\times10^{-6}$). Prompt authority is enforceable for a frozen controller; oracle-free admission calibration is the next deployment target.",
+        "title": "Think Only When Needed: Prompt-Authority Control for Selective Slow-Path Intervention in Vision-Language-Action Manipulation",
+        "updated": "2026-08-24T13:18:01Z"
+      },
+      "prefilter_hits": [
+        "vision-language-action"
+      ]
+    }
+  ],
+  "run_id": "2026-08-26T045523Z",
+  "stats": {
+    "accepted": 0,
+    "backlog": 0,
+    "deferred": 64,
+    "discovered": 117,
+    "needs_review": 8,
+    "new": 115,
+    "prefiltered": 72,
+    "queued": 8,
+    "rejected": 0
+  }
+}

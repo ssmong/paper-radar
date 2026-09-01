@@ -1,0 +1,524 @@
+{
+  "classifier": "heuristic",
+  "generated_at": "2026-08-28T07:00:51.014406Z",
+  "results": [
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "vision-language-action",
+            "vla"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+          "relevant": true,
+          "section_id": "2",
+          "source": "heuristic",
+          "summary": "Fusing tactile signals has proven effective for contact-rich manipulation, enabling robots to perceive contact states and adapt to rapidly changing physical interactions. Yet effectively integrating tactile feedback into dexterous manipulation remains underexplored. In this work, we introduce ReTouch, a vision-language"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "vision-language-action",
+              "vla"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 2: vision-language-action, vla.",
+            "relevant": true,
+            "section_id": "2",
+            "source": "heuristic",
+            "summary": "Fusing tactile signals has proven effective for contact-rich manipulation, enabling robots to perceive contact states and adapt to rapidly changing physical interactions. Yet effectively integrating tactile feedback into dexterous manipulation remains underexplored. In this work, we introduce ReTouch, a vision-language"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.01824v2",
+        "authors": [
+          "Shiqi Zhang",
+          "Xin Zhang",
+          "Yedong Shen",
+          "Yao Li",
+          "Yuxuan Gao",
+          "Sha Zhang",
+          "Yuan Zhang",
+          "Kaixue Long",
+          "Jiajia Wu",
+          "Jia Pan",
+          "Jiajun Deng",
+          "Yanyong Zhang"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.01824",
+        "pdf_url": "https://arxiv.org/pdf/2608.01824v2",
+        "published": "2026-08-03T07:31:10Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Fusing tactile signals has proven effective for contact-rich manipulation, enabling robots to perceive contact states and adapt to rapidly changing physical interactions. Yet effectively integrating tactile feedback into dexterous manipulation remains underexplored. In this work, we introduce ReTouch, a vision-language-action model (VLA) that supports contact-rich dexterous manipulation through tactile predictions continually refined online using execution-time feedback. ReTouch builds on two main innovations for tactile representation and closed-loop action generation. First, its Tactile-Patch Encoder represents tactile observations as structured tactile patch features that preserve finger identity and local contact structure, providing contact cues for fine-grained dexterous control. Second, its high-frequency action module jointly predicts future tactile states and action chunks and refines both using incoming tactile feedback during execution. This closed-loop refinement keeps tactile predictions aligned with evolving physical interactions, enabling responsive action correction and improving robustness to contact changes and execution errors. We further introduce XHT-Dataset, comprising 900 real-world demonstrations across seven contact-rich tasks collected on an XHand--UR7e platform, and evaluate ReTouch through closed-loop real-robot experiments. ReTouch surpasses the strongest baseline by 18.4 and 23.8 percentage points in average success rate under standard and challenging conditions, respectively, demonstrating its effectiveness and robustness.",
+        "title": "ReTouch: Empowering Contact-Rich Dexterous Manipulation with Online-Refined Tactile Prediction",
+        "updated": "2026-08-18T05:46:08Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile",
+        "vision-language-action"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.69,
+          "evidence": [
+            "teleoperation",
+            "teleop",
+            "retargeting",
+            "demonstration collection"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleoperation, teleop, retargeting, demonstration collection.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "Humanoid teleoperation for demonstration collection requires coordinated whole-body motion, continuous dexterous hand control, and viewpoint control. Existing systems either simplify hand commands or depend on dedicated wearable sensors for fine-grained hand motion. We introduce Teleopit, a full-embodiment teleoperatio"
+        },
+        "passes": [
+          {
+            "confidence": 0.69,
+            "evidence": [
+              "teleoperation",
+              "teleop",
+              "retargeting",
+              "demonstration collection"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleoperation, teleop, retargeting, demonstration collection.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "Humanoid teleoperation for demonstration collection requires coordinated whole-body motion, continuous dexterous hand control, and viewpoint control. Existing systems either simplify hand commands or depend on dedicated wearable sensors for fine-grained hand motion. We introduce Teleopit, a full-embodiment teleoperatio"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.01834v1",
+        "authors": [
+          "Bingqian Wu",
+          "Zicheng Xu",
+          "Xianghui Fan",
+          "Dayu Li",
+          "Xiangru Huang"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.01834",
+        "pdf_url": "https://arxiv.org/pdf/2608.01834v1",
+        "published": "2026-08-03T07:45:13Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Humanoid teleoperation for demonstration collection requires coordinated whole-body motion, continuous dexterous hand control, and viewpoint control. Existing systems either simplify hand commands or depend on dedicated wearable sensors for fine-grained hand motion. We introduce Teleopit, a full-embodiment teleoperation system that maps body, hand, and head signals from VR to a humanoid body, configurable dexterous hands, and a 2-DoF active vision module. A history encoder and failure-aware rewind sampling improve the motion tracker on both motion-capture and live VR references. An optimization-based hand retargeter combines normalized finger directions, fingertip closure, and thumb-frame alignment to map human hand motion to different dexterous hands without tuning hand-specific objective or solver hyperparameters. Component experiments evaluate tracking success rate and retargeting behavior, while real-robot teleoperation demonstrates coordinated locomotion, manipulation, and viewpoint control. ACT and GR00T N1.7 policies trained on 96 successful demonstrations collected with Teleopit achieve task success rates of 90.0% and 95.0%, respectively, when deployed on the humanoid. The project page is available at https://botrunner64.github.io/teleopit-page.",
+        "title": "Teleopit: A Full-Embodiment Humanoid Teleoperation System",
+        "updated": "2026-08-03T07:45:13Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "teleoperation",
+            "teleop"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "In robot teleoperation, haptic feedback can be used to help human operators accomplish dexterous manipulation tasks. However, existing haptic feedback methods try to replicate high-fidelity sensory haptics that are felt in real world interactions, which are constrained by the sensing and feedback hardware capability an"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "teleoperation",
+              "teleop"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "In robot teleoperation, haptic feedback can be used to help human operators accomplish dexterous manipulation tasks. However, existing haptic feedback methods try to replicate high-fidelity sensory haptics that are felt in real world interactions, which are constrained by the sensing and feedback hardware capability an"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.02780v1",
+        "authors": [
+          "Bingjian Huang",
+          "Sahar Aseeri",
+          "Jonas Schmidtler",
+          "Joseph Zhang",
+          "Sonny Chan",
+          "Andrew Doxon",
+          "Jom Preechayasomboon",
+          "Evan Pezent",
+          "Alberto Rigo",
+          "Amir Memar",
+          "Nicholas Colonnese",
+          "Chase Tymms"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.HC"
+        ],
+        "paper_id": "2608.02780",
+        "pdf_url": "https://arxiv.org/pdf/2608.02780v1",
+        "published": "2026-08-03T18:23:50Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "In robot teleoperation, haptic feedback can be used to help human operators accomplish dexterous manipulation tasks. However, existing haptic feedback methods try to replicate high-fidelity sensory haptics that are felt in real world interactions, which are constrained by the sensing and feedback hardware capability and may lead to higher workload. To addresses these limitations, this work introduces semantic haptics for teleoperation, which uses abstract haptic patterns to convey critical information about robot states. We categorize robot states into \"Confirmations\" and \"Exceptions\", implement a modular haptic rendering pipeline in robot simulation, and deliver semantic haptic feedback to operators through pneumatic and vibrotactile wristbands. This simplifies hardware requirements and enables one-to-many mappings between haptic patterns and robot states. Through three evaluation studies, we identify the most effective semantic haptic design for a common pick and place teleoperation task and compare semantic haptics to other teleoperation feedback approaches including sensory haptics and visual feedback. Results suggest that while semantic haptics performs similarly as other feedback in unimanual tasks, it achieves superior performance in bimanual tasks, with reduced task workload, increased situational awareness, and overall preference.",
+        "title": "Semantic Haptic Feedback Enhances Dexterous Robotic Teleoperation",
+        "updated": "2026-08-03T18:23:50Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "impedance"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 5: impedance.",
+          "relevant": true,
+          "section_id": "5",
+          "source": "heuristic",
+          "summary": "Diffusion policies have shown strong performance in learning complex, multi-modal behaviors for robotic manipulation. However, their application to contact-rich disassembly tasks remains limited by a key trade-off: the iterative denoising process introduces inference latencies that makes high frequency control difficul"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "impedance"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 5: impedance.",
+            "relevant": true,
+            "section_id": "5",
+            "source": "heuristic",
+            "summary": "Diffusion policies have shown strong performance in learning complex, multi-modal behaviors for robotic manipulation. However, their application to contact-rich disassembly tasks remains limited by a key trade-off: the iterative denoising process introduces inference latencies that makes high frequency control difficul"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.03103v1",
+        "authors": [
+          "Rishabh Shukla",
+          "Adithya Santhosh",
+          "Shaili Gandhi",
+          "Samrudh Moode",
+          "Satyandra K. Gupta"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.AI"
+        ],
+        "paper_id": "2608.03103",
+        "pdf_url": "https://arxiv.org/pdf/2608.03103v1",
+        "published": "2026-08-04T04:21:00Z",
+        "query_names": [
+          "force-tactile"
+        ],
+        "summary": "Diffusion policies have shown strong performance in learning complex, multi-modal behaviors for robotic manipulation. However, their application to contact-rich disassembly tasks remains limited by a key trade-off: the iterative denoising process introduces inference latencies that makes high frequency control difficult, which is essential for realizing dynamic interactions such as chiseling and prying. Recent action-chunking techniques mitigate latency but use an open-loop execution window, rendering the system blind to rapid force transients caused by fracture events. To bridge this gap, we introduce the Diffusion Policy Augmented by Fast Trajectory Generation (DPA-FTG). Compared to recent visual-tactile approaches that focus on positional correction, DPA-FTG decouples low-frequency planning from high-frequency force regulation. At the high level ($5$ Hz), a conditional diffusion model predicts a sequence of latent parameters for selecting a strategy from a learned vocabulary of task primitives. At the low level ($60$ Hz), a lightweight, force-conditioned policy acts as a neural impedance controller, modulating execution in real-time to maintain contact stability. We validate our approach on a bimanual battery disassembly task involving the separation of a compliant sheet. Experimental evaluation demonstrates that DPA-FTG outperforms state-of-the-art baselines, including Reactive Diffusion Policy (RDP).",
+        "title": "A Hierarchical Approach to Imitation Learning for Manipulation Tasks Requiring Time Varying Forces",
+        "updated": "2026-08-04T04:21:00Z"
+      },
+      "prefilter_hits": [
+        "tactile",
+        "impedance"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "data collection",
+            "demonstrations"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 8: data collection, demonstrations.",
+          "relevant": true,
+          "section_id": "8",
+          "source": "heuristic",
+          "summary": "Humanoid robots have the potential to perform dexterous manipulation in human environments, yet acquiring diverse and generalizable skills remains costly due to expensive hardware data collection and labor-intensive annotation. Recent advances in video generative models provide a promising opportunity to synthesize ric"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "data collection",
+              "demonstrations"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 8: data collection, demonstrations.",
+            "relevant": true,
+            "section_id": "8",
+            "source": "heuristic",
+            "summary": "Humanoid robots have the potential to perform dexterous manipulation in human environments, yet acquiring diverse and generalizable skills remains costly due to expensive hardware data collection and labor-intensive annotation. Recent advances in video generative models provide a promising opportunity to synthesize ric"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.03387v2",
+        "authors": [
+          "Shuliang He",
+          "Shuai Wang",
+          "Bo Yue",
+          "Junchi Teng",
+          "Changyu Wang",
+          "Guiliang Liu"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.03387",
+        "pdf_url": "https://arxiv.org/pdf/2608.03387v2",
+        "published": "2026-08-04T09:37:06Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Humanoid robots have the potential to perform dexterous manipulation in human environments, yet acquiring diverse and generalizable skills remains costly due to expensive hardware data collection and labor-intensive annotation. Recent advances in video generative models provide a promising opportunity to synthesize rich manipulation experiences from visual observations, but transferring such imagined behaviors into executable whole-body humanoid skills remains largely unexplored. In this work, we present RoboReact, a framework that automatically synthesizes whole-body humanoid manipulation skills from a single egocentric RGB-D observation. RoboReact generates human manipulation videos, extracts geometry-preserving interaction keyframes through depth-aware 3D reconstruction, and retargets them to high-DoF humanoid platforms while preserving hand-object interaction geometry. To bridge the gap between imagined plans and physical execution, RoboReact performs online object-centric re-grounding and leverages a vision-language model-guided refinement loop to adapt skills under geometric mismatch and execution deviations. The refined skills are executed through a whole-body controller, enabling coordinated whole-body manipulation and dexterous interaction. Experiments on real humanoid robots demonstrate that RoboReact generalizes across diverse object configurations and robustly recovers from execution disturbances without requiring teleoperation or human demonstrations. These results highlight the potential of combining generative models, vision-language reasoning, and closed-loop control for scalable humanoid skill acquisition.",
+        "title": "RoboReact: Agentic Skill Distillation from Generated Egocentric Videos for Generalizable Whole-Body Manipulation",
+        "updated": "2026-08-05T07:43:28Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "Recent years have witnessed an explosive trend of scaling ego-centric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present SiMDex, a similarity-based data mining framework that casts human data selection for VLA post-training in dexterous manipulati"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "Recent years have witnessed an explosive trend of scaling ego-centric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present SiMDex, a similarity-based data mining framework that casts human data selection for VLA post-training in dexterous manipulati"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.04196v1",
+        "authors": [
+          "Nie Lin",
+          "Takehiko Ohkawa",
+          "Sijin Chen",
+          "Ruoshi Wen",
+          "Zhuohang Li",
+          "Liqun Huang",
+          "Zhengming Zhu",
+          "Yiming Bao",
+          "Yunfei Li",
+          "Minjie Cai",
+          "Xiao Ma",
+          "Wei Xu",
+          "Yoichi Sato"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.CV",
+          "cs.LG"
+        ],
+        "paper_id": "2608.04196",
+        "pdf_url": "https://arxiv.org/pdf/2608.04196v1",
+        "published": "2026-08-04T19:55:12Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Recent years have witnessed an explosive trend of scaling ego-centric human videos for robot manipulation, yet it remains unclear which data actually benefits dexterous manipulation. We present SiMDex, a similarity-based data mining framework that casts human data selection for VLA post-training in dexterous manipulation as a recommendation problem. For each robot demonstration, SiMDex employs a three-layer recall-ranking-re-ranking pipeline to extract task-relevant subsets from a pool of ~32M egocentric human samples, operating in a morphology-agnostic action space that requires no changes to VLA architecture or training. Against a strong baseline trained with an equal amount of randomly sampled human data, SiMDex uses only ~1.49M mined samples (<5% of the pool) yet improves the overall success rate from 47.7% to 61.1%, showing that selective curation outperforms indiscriminate data mixing.",
+        "title": "SiMDex: Mining Similar Egocentric Videos for Cross-Embodiment Dexterous Manipulation",
+        "updated": "2026-08-04T19:55:12Z"
+      },
+      "prefilter_hits": [
+        "dexterous"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "sim-to-real"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 7: sim-to-real.",
+          "relevant": true,
+          "section_id": "7",
+          "source": "heuristic",
+          "summary": "Replicating real-world environments into simulation by realistic visual representation like NeRF and 3D Gaussian Splatting (3DGS) has emerged as an effective strategy to reduce the sim-to-real gap in robot learning. However, implementing object articulation during the real-to-sim process is still a challenging task. Ex"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "sim-to-real"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 7: sim-to-real.",
+            "relevant": true,
+            "section_id": "7",
+            "source": "heuristic",
+            "summary": "Replicating real-world environments into simulation by realistic visual representation like NeRF and 3D Gaussian Splatting (3DGS) has emerged as an effective strategy to reduce the sim-to-real gap in robot learning. However, implementing object articulation during the real-to-sim process is still a challenging task. Ex"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.04842v1",
+        "authors": [
+          "Hyesung Lee",
+          "Youngseon Lee",
+          "Kyutae Lee",
+          "Dongjun Lee",
+          "Yongseok Lee"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.GR"
+        ],
+        "paper_id": "2608.04842",
+        "pdf_url": "https://arxiv.org/pdf/2608.04842v1",
+        "published": "2026-08-05T13:36:58Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Replicating real-world environments into simulation by realistic visual representation like NeRF and 3D Gaussian Splatting (3DGS) has emerged as an effective strategy to reduce the sim-to-real gap in robot learning. However, implementing object articulation during the real-to-sim process is still a challenging task. Existing motion tracking or learning based articulation methods shows low success rates on complex kinematic structures having multiple joints. Furthermore, those methods require scan of dynamic motion of objects, which makes reconstruction process much complicated. In this work, we propose the first end-to-end pipeline that reconstructs simulation-ready assets with accurate articulation from a single static object video input through suggestion based human-in-the-loop process. Our approach exports a hybrid representation combining 3DGS for photorealistic rendering and mesh-based geometry for physical interaction. In the reconstruction process, our pipeline performs convex decomposition followed by user grouping for intuitive part segmentation, subsequently binding 3D Gaussians to the corresponding mesh parts. An Automatic Joint Suggestion Algorithm then calculates candidate joint axes from local boundary geometries and presents them to users for efficient articulated asset reconstruction. We have shown that our method achieves precise articulation results on partnet-mobility-v0 dataset and real objects. Additionally we presented a potential usage of our framework on robot learning, deploying the reconstructed assets in Unreal Engine and NVIDIA Isaac Sim, demonstrating real-time dexterous hand manipulation tasks.",
+        "title": "RORA: Realistic Object Reconstruction with Articulation",
+        "updated": "2026-08-05T13:36:58Z"
+      },
+      "prefilter_hits": [
+        "dexterous"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "impedance",
+            "stiffness"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 5: impedance, stiffness.",
+          "relevant": true,
+          "section_id": "5",
+          "source": "heuristic",
+          "summary": "Contact-rich manipulation requires precise tracking and mechanical compliance, where variable impedance control can improve robustness in task success, whereas static compliance cannot adapt to varying contact constraints. Variable impedance skills can be learned from demonstrations, avoiding complex modeling, but comp"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "impedance",
+              "stiffness"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 5: impedance, stiffness.",
+            "relevant": true,
+            "section_id": "5",
+            "source": "heuristic",
+            "summary": "Contact-rich manipulation requires precise tracking and mechanical compliance, where variable impedance control can improve robustness in task success, whereas static compliance cannot adapt to varying contact constraints. Variable impedance skills can be learned from demonstrations, avoiding complex modeling, but comp"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.06210v1",
+        "authors": [
+          "Hisham Khalil",
+          "Neil Fernandes",
+          "Thomas M. Kwok",
+          "Hsiu-Chin Lin",
+          "Yue Hu"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.06210",
+        "pdf_url": "https://arxiv.org/pdf/2608.06210v1",
+        "published": "2026-08-06T16:03:00Z",
+        "query_names": [
+          "force-tactile"
+        ],
+        "summary": "Contact-rich manipulation requires precise tracking and mechanical compliance, where variable impedance control can improve robustness in task success, whereas static compliance cannot adapt to varying contact constraints. Variable impedance skills can be learned from demonstrations, avoiding complex modeling, but compliance is a hidden variable in force-agnostic kinematic data. While existing methods infer compliance from trajectory variations, these variations may reflect geometric adaptation and not intentional compliance when subject to changing spatial layouts. Therefore, this letter introduces Variable Impedance Diffusion Policy (VIDP), an imitation learning-based variable impedance control framework leveraging a Task-Parameterized Directionality-Aware Mixture Model (TP-DAMM) to extract physically consistent trajectory distributions from diverse demonstrations. By mapping distributions to stiffness profiles, VIDP jointly predicts pose actions and task compliance without force sensors. Real-world experiments show that VIDP significantly outperforms fixed-impedance baselines in task success rate while reducing interaction forces with respect to high stiffness controllers and tracking errors with respect to low stiffness baselines.",
+        "title": "VIDP: Variable Impedance Diffusion Policy for Compliant Robot Manipulation from Diverse Demonstrations",
+        "updated": "2026-08-06T16:03:00Z"
+      },
+      "prefilter_hits": [
+        "impedance",
+        "compliance"
+      ]
+    }
+  ],
+  "run_id": "2026-08-28T070051Z",
+  "stats": {
+    "accepted": 0,
+    "backlog": 58,
+    "deferred": 56,
+    "discovered": 117,
+    "needs_review": 8,
+    "new": 50,
+    "prefiltered": 64,
+    "queued": 8,
+    "rejected": 0
+  }
+}

@@ -1,0 +1,513 @@
+{
+  "classifier": "heuristic",
+  "generated_at": "2026-08-29T04:16:31.077524Z",
+  "results": [
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.55,
+          "evidence": [],
+          "needs_full_text": true,
+          "rationale": "No section-specific keyword was found by the deterministic fallback.",
+          "relevant": false,
+          "section_id": "0",
+          "source": "heuristic",
+          "summary": "With the rapid advancement of humanoid robotics and embodied intelligence technologies, numerous musical instrument-playing robots have emerged in recent years, such as pianos, chime bells, and taiko drums. These robots primarily employ open-loop positional control, rendering them incapable of operating instruments req"
+        },
+        "passes": [
+          {
+            "confidence": 0.55,
+            "evidence": [],
+            "needs_full_text": true,
+            "rationale": "No section-specific keyword was found by the deterministic fallback.",
+            "relevant": false,
+            "section_id": "0",
+            "source": "heuristic",
+            "summary": "With the rapid advancement of humanoid robotics and embodied intelligence technologies, numerous musical instrument-playing robots have emerged in recent years, such as pianos, chime bells, and taiko drums. These robots primarily employ open-loop positional control, rendering them incapable of operating instruments req"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.07002v1",
+        "authors": [
+          "Tianwei Zhang",
+          "Hanming Yan",
+          "Yang Yang. Ziya Wang"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.07002",
+        "pdf_url": "https://arxiv.org/pdf/2608.07002v1",
+        "published": "2026-08-07T09:18:58Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "With the rapid advancement of humanoid robotics and embodied intelligence technologies, numerous musical instrument-playing robots have emerged in recent years, such as pianos, chime bells, and taiko drums. These robots primarily employ open-loop positional control, rendering them incapable of operating instruments requiring dexterous hands and precise tactile perception, such as a violin, guitar, and guqin. This paper describes the design and validation of a high-precision tactile-sensing finger. By mimicking the shape of the fingertip and fingernail found on a human finger, we develop a biomimetic multimodal haptic fingertip and validate it on selected guqin string-contact tasks, including open-string and stopped-note comparisons, harmonic-tuning, and tactile-triggered bimanual coordination, using the guqin, a traditional Chinese musical instrument, as a challenging validation scenario rather than as a fully demonstrated robotic performance system. This research integrates tactile sensing with robotics technology, thereby contributing to applications in world heritage conservation and cultural dissemination.",
+        "title": "A Haptic Robot Finger Designed for Guqin Instrument Playing",
+        "updated": "2026-08-07T09:18:58Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "High-quality demonstrations for dexterous robot manipulation are costly and difficult to collect, whereas monocular human videos provide a scalable source of diverse manipulation behaviors. However, transferring such demonstrations to dexterous robots remains challenging: monocular hand-object interaction (HOI) reconst"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "High-quality demonstrations for dexterous robot manipulation are costly and difficult to collect, whereas monocular human videos provide a scalable source of diverse manipulation behaviors. However, transferring such demonstrations to dexterous robots remains challenging: monocular hand-object interaction (HOI) reconst"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.07045v1",
+        "authors": [
+          "Jie Ren",
+          "Zhehao Jiang",
+          "Yinhong Yang",
+          "Haorui Jia",
+          "Han Jiang",
+          "Ben Li",
+          "Yao Yao",
+          "Cheng Lin",
+          "Qiu Shen",
+          "Zhenshan Bing",
+          "Xiao-Xiao Long",
+          "Xun Cao"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.CV"
+        ],
+        "paper_id": "2608.07045",
+        "pdf_url": "https://arxiv.org/pdf/2608.07045v1",
+        "published": "2026-08-07T09:54:00Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "High-quality demonstrations for dexterous robot manipulation are costly and difficult to collect, whereas monocular human videos provide a scalable source of diverse manipulation behaviors. However, transferring such demonstrations to dexterous robots remains challenging: monocular hand-object interaction (HOI) reconstruction often produces temporally unstable contacts and physically implausible interactions, while conventional retargeting methods struggle to preserve task-relevant contacts and local interaction geometry across different hand embodiments. We present C2Dex, a video-to-dexterous-manipulation framework built around a shared interaction representation: stable object-side contacts recovered by aggregating noisy frame-wise observations in the canonical object space. These stable contacts serve a dual role: as trajectory-level constraints that guide reconstruction toward temporally coherent and physically plausible human HOI trajectories, and as explicit transfer targets for the dexterous hand, where Laplacian interaction optimization preserves the local hand-object geometry across embodiments and residual reinforcement learning refines the trajectory in simulation. Experiments on DexYCB and TACO show that C2Dex achieves end-to-end trajectory success rates of 57.78% and 26.67%, respectively, substantially outperforming the strongest baselines (17.78% and 10.00%) under identical evaluation criteria. Real-robot replay experiments further demonstrate physical feasibility across diverse contact-rich manipulation tasks. Project page: https://k-jie.github.io/C2Dex/",
+        "title": "C2Dex: Contact-Consistent Reconstruction and Retargeting for Dexterous Manipulation from Monocular Video",
+        "updated": "2026-08-07T09:54:00Z"
+      },
+      "prefilter_hits": [
+        "dexterous"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "teleoperation",
+            "teleop"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "Robotic manipulation with dexterous hands is a cornerstone of Embodied AI, yet its progress is stifled by the high cost of collecting embodiment-aware teleoperation data. While abundant egocentric videos of human hands offer a scalable alternative, the profound discrepancies in appearance, articulation, and camera view"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "teleoperation",
+              "teleop"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleoperation, teleop.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "Robotic manipulation with dexterous hands is a cornerstone of Embodied AI, yet its progress is stifled by the high cost of collecting embodiment-aware teleoperation data. While abundant egocentric videos of human hands offer a scalable alternative, the profound discrepancies in appearance, articulation, and camera view"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.12122v1",
+        "authors": [
+          "Zhenjie Yang",
+          "Xingyu Jiao",
+          "Guopeng Zhong",
+          "Shuzhe Yang",
+          "Shi Che",
+          "Chao Wu",
+          "Chenyu Jiang",
+          "Dongjie Zhang",
+          "Yideng Zhang",
+          "Zheng Zhang",
+          "Muyun Jiang",
+          "Haisheng Su",
+          "Shuang Jin",
+          "Donghang Zhang",
+          "Chao Yang",
+          "Li Chen",
+          "Hongyang Li",
+          "Zuxuan Wu",
+          "Yu-Gang Jiang",
+          "Xiaosong Jia",
+          "Junchi Yan"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.CV"
+        ],
+        "paper_id": "2608.12122",
+        "pdf_url": "https://arxiv.org/pdf/2608.12122v1",
+        "published": "2026-08-12T14:41:53Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Robotic manipulation with dexterous hands is a cornerstone of Embodied AI, yet its progress is stifled by the high cost of collecting embodiment-aware teleoperation data. While abundant egocentric videos of human hands offer a scalable alternative, the profound discrepancies in appearance, articulation, and camera viewpoints between human and robotic data raise significant challenges for co-training. Though existing general image-editing models demonstrate strong capabilities, they lack necessary embodiment-specific priors to fully bridge this gap. In this work, we present HandEdit, a unified large-scale embodiment-aware image-editing dataset and benchmark specifically designed to transform human hands and arms into various dexterous robotic embodiments within egocentric frames. HandEdit comprises over 200M editing instances derived from five diverse source datasets, covering 26 distinct URDFs, including 13 hand-only and 13 hand-arm configurations. Alongside the dataset, we establish a unified benchmark protocol with two tracks: Hand-only and Hand-Arm, supporting URDF-conditioned evaluation. We conduct extensive evaluations of 11 representative image-editing baselines using a multi-dimensional metric suite, including generic similarity metrics, VLM-based judgment, and embodiment-aware metrics. HandEdit serves as a critical resource at the intersection of image editing and robotics: it advances embodiment-aware editing models while enabling scalable dexterous robotic learning from abundant human video data, paving the way for more generalizable Embodied AI.",
+        "title": "HandEdit: A Unified Benchmark for Egocentric Human-to-Robot Dexterous Hand Image Editing",
+        "updated": "2026-08-12T14:41:53Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.63,
+          "evidence": [
+            "teleoperation",
+            "teleop",
+            "demonstration collection"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleoperation, teleop, demonstration collection.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "Dexterous manipulation promises substantially richer robot interaction with the physical world, but learning these behaviours remains constrained by the difficulty of collecting consistent, complete-task demonstrations. Unlike parallel-jaw manipulation, dexterous tasks require the operator to coordinate arm motion with"
+        },
+        "passes": [
+          {
+            "confidence": 0.63,
+            "evidence": [
+              "teleoperation",
+              "teleop",
+              "demonstration collection"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleoperation, teleop, demonstration collection.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "Dexterous manipulation promises substantially richer robot interaction with the physical world, but learning these behaviours remains constrained by the difficulty of collecting consistent, complete-task demonstrations. Unlike parallel-jaw manipulation, dexterous tasks require the operator to coordinate arm motion with"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.13362v1",
+        "authors": [
+          "James Zhao",
+          "Jinhe Tang",
+          "Mingyuan Ba",
+          "Weiming Zhi"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.13362",
+        "pdf_url": "https://arxiv.org/pdf/2608.13362v1",
+        "published": "2026-08-13T15:25:39Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Dexterous manipulation promises substantially richer robot interaction with the physical world, but learning these behaviours remains constrained by the difficulty of collecting consistent, complete-task demonstrations. Unlike parallel-jaw manipulation, dexterous tasks require the operator to coordinate arm motion with precise, contact-rich finger behaviour throughout the task. We introduce NestDex, a nested policy-learning framework that reduces this burden by using learned hand skills to assist demonstration collection. The operator controls the arm and regulates the active hand skill through a single-DoF clutch, rather than directly specifying the full finger trajectory. The inner hand policy adapts its motion from the latest proprioceptive history, while a vision-language selector activates the appropriate skill for each task stage. The resulting demonstrations train a separate outer visuomotor policy that controls both the arm and hand without the inner policies at deployment. A hand-action variational autoencoder provides compact hand-action targets while retaining arm commands in joint space. Across real-world dexterous manipulation experiments, NestDex improves demonstration reliability and efficiency, and the resulting empirical evaluations support effective autonomous policy learning. Video Demo are available at project website https://aus.bot/research/nestdex.",
+        "title": "NestDex: Nested Policy Learning with Copilot Assisted Teleoperation for Dexterous Manipulation",
+        "updated": "2026-08-13T15:25:39Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "teleoperation"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.56,
+          "evidence": [
+            "dataset",
+            "demonstrations"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 8: dataset, demonstrations.",
+          "relevant": true,
+          "section_id": "8",
+          "source": "heuristic",
+          "summary": "Dexterous manipulation is a fundamental capability for embodied intelligence, but scaling it remains difficult because robot demonstrations are expensive to collect and action spaces vary across embodiments. Policies trained on heterogeneous data can also entangle task-relevant visual cues with embodiment-specific appe"
+        },
+        "passes": [
+          {
+            "confidence": 0.56,
+            "evidence": [
+              "dataset",
+              "demonstrations"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 8: dataset, demonstrations.",
+            "relevant": true,
+            "section_id": "8",
+            "source": "heuristic",
+            "summary": "Dexterous manipulation is a fundamental capability for embodied intelligence, but scaling it remains difficult because robot demonstrations are expensive to collect and action spaces vary across embodiments. Policies trained on heterogeneous data can also entangle task-relevant visual cues with embodiment-specific appe"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.14028v1",
+        "authors": [
+          "Zhiyue Zhao",
+          "Jingyi Wu",
+          "Hairuo Liu",
+          "Mingyu Liu",
+          "Liyang Li",
+          "Hengdi Zhang",
+          "Tong He",
+          "Zhengxue Cheng"
+        ],
+        "categories": [
+          "cs.RO",
+          "cs.AI"
+        ],
+        "paper_id": "2608.14028",
+        "pdf_url": "https://arxiv.org/pdf/2608.14028v1",
+        "published": "2026-08-14T07:19:06Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Dexterous manipulation is a fundamental capability for embodied intelligence, but scaling it remains difficult because robot demonstrations are expensive to collect and action spaces vary across embodiments. Policies trained on heterogeneous data can also entangle task-relevant visual cues with embodiment-specific appearance, limiting cross-embodiment generalization. We present AdvDex, a unified Vision-Language-Action framework for learning dexterous manipulation from human and robot demonstrations. First, we introduce OmniShare, a large-scale multimodal dataset of human manipulation demonstrations that provides high-quality kinematic supervision and tactile measurements while reducing reliance on robot teleoperation. Second, we propose the Joint-Aligned Action Space (JAAS), a canonical action representation comprising an $\\mathrm{SE}(3)$ wrist pose and 15 finger joints, thereby functionally aligning human hands, dexterous robot hands, and parallel grippers. Finally, we use domain-adversarial learning to reduce embodiment-specific information in the learned visual representation. Experiments on hand-action prediction and real-world dexterous manipulation show consistent improvements over baselines, effective zero-shot human-to-robot skill transfer, generalization to unseen objects and environments, and data-efficient few-shot adaptation.",
+        "title": "AdvDex: Learning Dexterous Manipulation from Human Demonstrations via Joint-Aligned Actions and Adversarial Learning",
+        "updated": "2026-08-14T07:19:06Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile",
+        "vision-language-action",
+        "teleoperation",
+        "robot hand"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.49,
+          "evidence": [
+            "dexterous manipulation"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+          "relevant": true,
+          "section_id": "1",
+          "source": "heuristic",
+          "summary": "Touch is fundamental to dexterous manipulation, yet most egocentric human data increasingly used for robot learning lacks tactile information. Directly collecting large-scale tactile data is challenging due to sensor limitations, while human video data is abundant, contact-rich, and easily scalable. This motivates a na"
+        },
+        "passes": [
+          {
+            "confidence": 0.49,
+            "evidence": [
+              "dexterous manipulation"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 1: dexterous manipulation.",
+            "relevant": true,
+            "section_id": "1",
+            "source": "heuristic",
+            "summary": "Touch is fundamental to dexterous manipulation, yet most egocentric human data increasingly used for robot learning lacks tactile information. Directly collecting large-scale tactile data is challenging due to sensor limitations, while human video data is abundant, contact-rich, and easily scalable. This motivates a na"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.15060v1",
+        "authors": [
+          "Wenkang Zhang",
+          "Chengbo Yuan",
+          "Zicheng Zhang",
+          "Zhengxue Cheng",
+          "Yang Gao"
+        ],
+        "categories": [
+          "cs.CV",
+          "cs.RO"
+        ],
+        "paper_id": "2608.15060",
+        "pdf_url": "https://arxiv.org/pdf/2608.15060v1",
+        "published": "2026-08-15T06:18:13Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Touch is fundamental to dexterous manipulation, yet most egocentric human data increasingly used for robot learning lacks tactile information. Directly collecting large-scale tactile data is challenging due to sensor limitations, while human video data is abundant, contact-rich, and easily scalable. This motivates a natural question: can tactile signals be inferred purely from vision? To address this, we introduce EgoTac, a generalizable model that predicts rich tactile information directly from egocentric human videos. EgoTac is trained on a unified corpus of over 5.7M image-tactile pairs, covering both continuous force measurements and binary contacts. By learning from this diverse dataset, EgoTac captures nuanced touch dynamics across varied interactions. Experiments demonstrate strong performance: in-domain prediction achieves an average force error below 0.06N. On out-of-domain contact prediction benchmarks, EgoTac consistently outperforms the state-of-the-art contact estimator. It also captures the rise and fall patterns of real tactile data and enables zero-shot predictions on unconstrained real-world videos. Scaling analyses further reveal that both data diversity and volume improve performance steadily. Overall, EgoTac provides a scalable pathway to extract tactile priors from egocentric human videos, enabling broadly applicable tactile-aware robot learning.",
+        "title": "EgoTac: In-the-wild Tactile Prediction from Egocentric Vision",
+        "updated": "2026-08-15T06:18:13Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "tactile"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.55,
+          "evidence": [],
+          "needs_full_text": true,
+          "rationale": "No section-specific keyword was found by the deterministic fallback.",
+          "relevant": false,
+          "section_id": "0",
+          "source": "heuristic",
+          "summary": "Contact-rich manipulation poses a discrete question and a continuous one at once, namely which contacts are active and how to move while they hold. The two are coupled by a change of dimension, since each contact that a robot maintains confines its motion to a lower-dimensional manifold. We make that coupling the expli"
+        },
+        "passes": [
+          {
+            "confidence": 0.55,
+            "evidence": [],
+            "needs_full_text": true,
+            "rationale": "No section-specific keyword was found by the deterministic fallback.",
+            "relevant": false,
+            "section_id": "0",
+            "source": "heuristic",
+            "summary": "Contact-rich manipulation poses a discrete question and a continuous one at once, namely which contacts are active and how to move while they hold. The two are coupled by a change of dimension, since each contact that a robot maintains confines its motion to a lower-dimensional manifold. We make that coupling the expli"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.15541v1",
+        "authors": [
+          "Phone Thiha Kyaw",
+          "Jonathan Kelly"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.15541",
+        "pdf_url": "https://arxiv.org/pdf/2608.15541v1",
+        "published": "2026-08-16T05:28:07Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Contact-rich manipulation poses a discrete question and a continuous one at once, namely which contacts are active and how to move while they hold. The two are coupled by a change of dimension, since each contact that a robot maintains confines its motion to a lower-dimensional manifold. We make that coupling the explicit object of planning by observing that a contact mode is not merely analogous to a stratum of the configuration space; it is one. A plan is then a walk over strata whose within-stratum segments are geodesics. On two contact-rich manipulation tasks in simulation, pushing a T-shaped block around obstacles and reorienting a cube in a dexterous hand, our planner returns solutions within seconds with no mode, contact sequence, or stratum given in advance.",
+        "title": "Contact Modes Are Strata: What Geometric Structure Buys in Discrete-Continuous Planning",
+        "updated": "2026-08-16T05:28:07Z"
+      },
+      "prefilter_hits": [
+        "dexterous"
+      ]
+    },
+    {
+      "decision": {
+        "disagreement": false,
+        "final": {
+          "confidence": 0.63,
+          "evidence": [
+            "teleoperation",
+            "teleop",
+            "retargeting"
+          ],
+          "needs_full_text": true,
+          "rationale": "Keyword fallback matched section 10: teleoperation, teleop, retargeting.",
+          "relevant": true,
+          "section_id": "10",
+          "source": "heuristic",
+          "summary": "Human demonstrations offer a scalable data source for dexterous manipulation, but transferring them to robot actions remains challenging due to the embodiment gap. Today's retargeting is mostly kinematic, yet manipulation is decided by force, which governs how the hand interacts with the object and how the object moves"
+        },
+        "passes": [
+          {
+            "confidence": 0.63,
+            "evidence": [
+              "teleoperation",
+              "teleop",
+              "retargeting"
+            ],
+            "needs_full_text": true,
+            "rationale": "Keyword fallback matched section 10: teleoperation, teleop, retargeting.",
+            "relevant": true,
+            "section_id": "10",
+            "source": "heuristic",
+            "summary": "Human demonstrations offer a scalable data source for dexterous manipulation, but transferring them to robot actions remains challenging due to the embodiment gap. Today's retargeting is mostly kinematic, yet manipulation is decided by force, which governs how the hand interacts with the object and how the object moves"
+          }
+        ],
+        "status": "needs_review"
+      },
+      "paper": {
+        "abs_url": "https://arxiv.org/abs/2608.15560v1",
+        "authors": [
+          "Yuhang Wu",
+          "Lingqi Zeng",
+          "Changwei Jing",
+          "Jianglong Ye",
+          "Xiaolong Wang"
+        ],
+        "categories": [
+          "cs.RO"
+        ],
+        "paper_id": "2608.15560",
+        "pdf_url": "https://arxiv.org/pdf/2608.15560v1",
+        "published": "2026-08-16T06:13:14Z",
+        "query_names": [
+          "dexterous-manipulation"
+        ],
+        "summary": "Human demonstrations offer a scalable data source for dexterous manipulation, but transferring them to robot actions remains challenging due to the embodiment gap. Today's retargeting is mostly kinematic, yet manipulation is decided by force, which governs how the hand interacts with the object and how the object moves. In this paper, we present ReForce, a Force-aware Retargeting method that turns human motion and forces into robot actions that reproduce the intended contact. ReForce predicts a residual on the kinematically retargeted action to reach the desired force, using a general force tracker trained on large-scale simulation interactions. It supports both online force-aware teleoperation and offline data translation. In simulation and on real hardware, ReForce achieves lower force-tracking error and stronger multi-finger contact engagement on contact-rich tasks such as paper-cup grasping and tongs manipulation.",
+        "title": "ReForce: Learning Force-aware Retargeting for Dexterous Manipulation",
+        "updated": "2026-08-16T06:13:14Z"
+      },
+      "prefilter_hits": [
+        "dexterous",
+        "multi-finger",
+        "force-aware",
+        "teleoperation"
+      ]
+    }
+  ],
+  "run_id": "2026-08-29T041631Z",
+  "stats": {
+    "accepted": 0,
+    "backlog": 56,
+    "deferred": 48,
+    "discovered": 117,
+    "needs_review": 8,
+    "new": 44,
+    "prefiltered": 56,
+    "queued": 8,
+    "rejected": 0
+  }
+}
