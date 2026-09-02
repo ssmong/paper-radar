@@ -99,11 +99,17 @@
   },
   "slack": {
     "enabled": true,
-    "webhook_env": "SLACK_WEBHOOK_URL",
+    "token_env": "SLACK_BOT_TOKEN",
+    "channel_env": "SLACK_CHANNEL_ID",
     "max_papers": 6,
     "notify_when_empty": false,
     "request_attempts": 3,
     "request_timeout_seconds": 15
+  },
+  "publish": {
+    "remote": "origin",
+    "branch": "main",
+    "codex_timeout_seconds": 900
   },
   "output": {
     "runs_dir": "automation/runs",

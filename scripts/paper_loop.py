@@ -4,12 +4,11 @@
 The loop is intentionally conservative: it never edits the main survey tables.
 It discovers papers, removes duplicates, classifies candidates, runs a second
 LLM review (and an adjudication pass on disagreement), then writes reviewable
-artifacts.  A scheduled GitHub Action turns those artifacts into a pull request.
+artifacts for the owner's Slack approval flow.
 
-Only the Python standard library is required.  With ``ANTHROPIC_API_KEY`` set,
-classification uses the Anthropic Messages API.  Without a key, the pipeline
-falls back to deterministic keyword classification and marks every candidate as
-``needs_review`` rather than pretending that heuristic output is AI-verified.
+The discovery loop itself uses only the Python standard library.  A deterministic
+fallback marks every candidate as ``needs_review`` rather than pretending that
+heuristic output is AI-verified.
 """
 
 from __future__ import annotations
@@ -1905,6 +1904,54 @@ def build_slack_payload(
                 ],
             }
         )
+        action_value = json.dumps(
+            {
+                "run_id": report["run_id"],
+                "paper_id": paper["paper_id"],
+                "section_id": final["section_id"],
+            },
+            ensure_ascii=True,
+            separators=(",", ":"),
+        )
+        blocks.append(
+            {
+                "type": "actions",
+                "block_id": f"review_{paper['paper_id'].replace('.', '_')}",
+                "elements": [
+                    {
+                        "type": "button",
+                        "action_id": "paper_approve",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "승인 후 반영",
+                            "emoji": True,
+                        },
+                        "style": "primary",
+                        "value": action_value,
+                        "confirm": {
+                            "title": {"type": "plain_text", "text": "공개 반영"},
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "원문 확인·빌드가 통과하면 공개 사이트에 반영합니다.",
+                            },
+                            "confirm": {"type": "plain_text", "text": "승인"},
+                            "deny": {"type": "plain_text", "text": "취소"},
+                        },
+                    },
+                    {
+                        "type": "button",
+                        "action_id": "paper_reject",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "제외",
+                            "emoji": True,
+                        },
+                        "style": "danger",
+                        "value": action_value,
+                    },
+                ],
+            }
+        )
         if index < len(reviewable):
             blocks.append({"type": "divider"})
 
@@ -1941,22 +1988,25 @@ def post_slack_payload(payload: dict[str, Any], config: dict[str, Any]) -> bool:
     if not slack.get("enabled", False):
         print("Slack digest disabled in configuration.")
         return False
-    webhook_env = str(slack.get("webhook_env", "SLACK_WEBHOOK_URL"))
-    webhook_url = os.environ.get(webhook_env, "").strip()
-    if not webhook_url:
-        print(f"Slack digest skipped: {webhook_env} is not configured.")
+    token_env = str(slack.get("token_env", "SLACK_BOT_TOKEN"))
+    channel_env = str(slack.get("channel_env", "SLACK_CHANNEL_ID"))
+    token = os.environ.get(token_env, "").strip()
+    channel = os.environ.get(channel_env, "").strip()
+    if not token or not channel:
+        print(f"Slack digest skipped: {token_env} or {channel_env} is not configured.")
         return False
 
-    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    body = json.dumps({**payload, "channel": channel}, ensure_ascii=False).encode("utf-8")
     attempts = max(1, int(slack.get("request_attempts", 3)))
     timeout = max(1, int(slack.get("request_timeout_seconds", 15)))
     last_error: Exception | None = None
     for attempt in range(attempts):
         request = urllib.request.Request(
-            webhook_url,
+            "https://slack.com/api/chat.postMessage",
             data=body,
             method="POST",
             headers={
+                "authorization": f"Bearer {token}",
                 "content-type": "application/json; charset=utf-8",
                 "user-agent": config["source"]["user_agent"],
             },
@@ -1964,14 +2014,17 @@ def post_slack_payload(payload: dict[str, Any], config: dict[str, Any]) -> bool:
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 response_text = response.read().decode("utf-8", "replace").strip()
-            if response_text.lower() != "ok":
-                raise RuntimeError(f"unexpected Slack response: {response_text[:200]}")
+            response_payload = json.loads(response_text)
+            if not response_payload.get("ok"):
+                raise RuntimeError(
+                    f"Slack API error: {response_payload.get('error', 'unknown_error')}"
+                )
             print("Slack digest sent.")
             return True
         except urllib.error.HTTPError as error:
             detail = error.read().decode("utf-8", "replace")[:400]
             last_error = RuntimeError(f"Slack HTTP {error.code}: {detail}")
-        except (urllib.error.URLError, TimeoutError, RuntimeError) as error:
+        except (urllib.error.URLError, TimeoutError, RuntimeError, json.JSONDecodeError) as error:
             last_error = error
         if attempt + 1 < attempts:
             time.sleep(2**attempt)
@@ -2398,29 +2451,54 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
     return report
 
 
+def record_review_decision(
+    *,
+    feedback_path: Path,
+    config: dict[str, Any],
+    paper_id: str,
+    decision: str,
+    section_id: str,
+    note: str = "",
+) -> tuple[dict[str, Any], bool]:
+    """Append one human decision and ignore an identical repeated click."""
+    if decision not in {"accept", "reject"}:
+        raise ValueError("decision must be accept or reject")
+    valid_sections = set(section_map(config))
+    if decision == "accept" and section_id not in valid_sections:
+        raise ValueError(
+            f"Accepted review requires a valid --section-id; choose from "
+            f"{', '.join(sorted(valid_sections, key=int))}"
+        )
+    record = {
+        "paper_id": paper_id,
+        "decision": decision,
+        "section_id": section_id if decision == "accept" else "0",
+        "note": note,
+        "reviewed_at": utc_now().isoformat().replace("+00:00", "Z"),
+    }
+    for existing in load_feedback(feedback_path):
+        if all(existing.get(key) == record[key] for key in ("paper_id", "decision", "section_id")):
+            return existing, False
+    feedback_path.parent.mkdir(parents=True, exist_ok=True)
+    with feedback_path.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(record, ensure_ascii=False) + "\n")
+    return record, True
+
+
 def record_review(args: argparse.Namespace) -> None:
     repo_root = Path(args.repo_root).resolve()
     config_path = (repo_root / args.config).resolve()
     config = load_json(config_path, None)
     if not isinstance(config, dict):
         raise ValueError(f"Config must be a JSON object: {config_path}")
-    valid_sections = set(section_map(config))
-    if args.decision == "accept" and args.section_id not in valid_sections:
-        raise ValueError(
-            f"Accepted review requires a valid --section-id; choose from "
-            f"{', '.join(sorted(valid_sections, key=int))}"
-        )
-    feedback_path = (repo_root / args.feedback).resolve()
-    record = {
-        "paper_id": args.paper_id,
-        "decision": args.decision,
-        "section_id": args.section_id if args.decision == "accept" else "0",
-        "note": args.note,
-        "reviewed_at": utc_now().isoformat().replace("+00:00", "Z"),
-    }
-    feedback_path.parent.mkdir(parents=True, exist_ok=True)
-    with feedback_path.open("a", encoding="utf-8") as stream:
-        stream.write(json.dumps(record, ensure_ascii=False) + "\n")
+    record, _ = record_review_decision(
+        feedback_path=(repo_root / args.feedback).resolve(),
+        config=config,
+        paper_id=args.paper_id,
+        decision=args.decision,
+        section_id=args.section_id,
+        note=args.note,
+    )
     print(json.dumps(record, ensure_ascii=False, indent=2))
 
 
@@ -2447,7 +2525,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument(
         "--notify-slack",
         action="store_true",
-        help="Send the run digest through the configured Slack webhook",
+        help="Send the run digest through the configured Slack bot",
     )
     run.set_defaults(func=run_pipeline)
 

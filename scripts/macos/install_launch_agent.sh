@@ -6,10 +6,13 @@ umask 077
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 readonly SCRIPT_DIR="${0:A:h}"
 readonly REPO_ROOT="${1:-${SCRIPT_DIR:h:h}}"
-readonly TEMPLATE="$SCRIPT_DIR/com.ssmong.paper-radar.plist.example"
+readonly DAILY_TEMPLATE="$SCRIPT_DIR/com.ssmong.paper-radar.plist.example"
+readonly SLACK_TEMPLATE="$SCRIPT_DIR/com.ssmong.paper-radar-slack.plist.example"
 readonly AGENT_DIR="$HOME/Library/LaunchAgents"
 readonly LOG_DIR="$HOME/Library/Logs/paper-radar"
-readonly TARGET="$AGENT_DIR/com.ssmong.paper-radar.plist"
+readonly DAILY_TARGET="$AGENT_DIR/com.ssmong.paper-radar.plist"
+readonly SLACK_TARGET="$AGENT_DIR/com.ssmong.paper-radar-slack.plist"
+readonly VENV="$REPO_ROOT/.venv"
 readonly DOMAIN="gui/$(/usr/bin/id -u)"
 
 if [[ -n "${PAPER_RADAR_PYTHON:-}" ]]; then
@@ -35,25 +38,35 @@ if ! "$PYTHON_BIN" -c \
   print -u2 -- "Python 3.10 or newer is required: $PYTHON_BIN"
   exit 69
 fi
-/bin/zsh -n "$SCRIPT_DIR/run_paper_radar.sh" "$0"
+/bin/zsh -n "$SCRIPT_DIR/run_paper_radar.sh" "$SCRIPT_DIR/run_slack_review_bot.sh" "$0"
 
 /bin/mkdir -p "$AGENT_DIR" "$LOG_DIR"
-"$PYTHON_BIN" - "$TEMPLATE" "$TARGET" "$REPO_ROOT" "$PYTHON_BIN" "$LOG_DIR" <<'PY'
+"$PYTHON_BIN" -m venv "$VENV"
+"$VENV/bin/python3" -m pip install --disable-pip-version-check \
+  -r "$REPO_ROOT/requirements-paper-radar.txt"
+"$PYTHON_BIN" - \
+  "$DAILY_TEMPLATE" "$DAILY_TARGET" \
+  "$SLACK_TEMPLATE" "$SLACK_TARGET" \
+  "$REPO_ROOT" "$PYTHON_BIN" "$LOG_DIR" <<'PY'
 import sys
 from pathlib import Path
 
-template, target, repo_root, python_bin, log_dir = sys.argv[1:]
-text = Path(template).read_text(encoding="utf-8")
-text = text.replace("__REPO_ROOT__", repo_root)
-text = text.replace("__PYTHON_BIN__", python_bin)
-text = text.replace("__LOG_DIR__", log_dir)
-Path(target).write_text(text, encoding="utf-8")
+daily_template, daily_target, slack_template, slack_target, repo_root, python_bin, log_dir = sys.argv[1:]
+for template, target in ((daily_template, daily_target), (slack_template, slack_target)):
+    text = Path(template).read_text(encoding="utf-8")
+    text = text.replace("__REPO_ROOT__", repo_root)
+    text = text.replace("__PYTHON_BIN__", python_bin)
+    text = text.replace("__LOG_DIR__", log_dir)
+    Path(target).write_text(text, encoding="utf-8")
 PY
-/bin/chmod 600 "$TARGET"
-/usr/bin/plutil -lint "$TARGET"
+/bin/chmod 600 "$DAILY_TARGET" "$SLACK_TARGET"
+/usr/bin/plutil -lint "$DAILY_TARGET" "$SLACK_TARGET"
 
-/bin/launchctl bootout "$DOMAIN" "$TARGET" 2>/dev/null || true
-/bin/launchctl bootstrap "$DOMAIN" "$TARGET"
+/bin/launchctl bootout "$DOMAIN" "$DAILY_TARGET" 2>/dev/null || true
+/bin/launchctl bootout "$DOMAIN" "$SLACK_TARGET" 2>/dev/null || true
+/bin/launchctl bootstrap "$DOMAIN" "$DAILY_TARGET"
+/bin/launchctl bootstrap "$DOMAIN" "$SLACK_TARGET"
 /bin/launchctl enable "$DOMAIN/com.ssmong.paper-radar"
-print -- "Installed $TARGET"
+/bin/launchctl enable "$DOMAIN/com.ssmong.paper-radar-slack"
+print -- "Installed $DAILY_TARGET and $SLACK_TARGET"
 print -- "Run now: launchctl kickstart -k $DOMAIN/com.ssmong.paper-radar"

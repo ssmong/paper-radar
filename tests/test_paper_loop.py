@@ -11,6 +11,7 @@ from pathlib import Path
 from unittest import mock
 
 from scripts import paper_loop
+from scripts import publish_approved_paper
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -527,14 +528,16 @@ class SlackDigestTests(unittest.TestCase):
         self.assertIn(self.paper.abs_url, serialized)
         self.assertIn("검토 필요", serialized)
         self.assertIn("원문 확인 필요", serialized)
+        self.assertIn("paper_approve", serialized)
+        self.assertIn("paper_reject", serialized)
 
-    def test_missing_webhook_skips_without_exposing_secret(self):
+    def test_missing_bot_configuration_skips_without_exposing_secret(self):
         with mock.patch.dict("os.environ", {}, clear=True):
             with contextlib.redirect_stdout(io.StringIO()) as output:
                 sent = paper_loop.send_slack_digest(self.report(), CONFIG)
 
         self.assertFalse(sent)
-        self.assertIn("SLACK_WEBHOOK_URL is not configured", output.getvalue())
+        self.assertIn("SLACK_BOT_TOKEN or SLACK_CHANNEL_ID", output.getvalue())
 
     def test_payload_prefers_grounded_insight_over_abstract_summary(self):
         report = self.report()
@@ -557,7 +560,7 @@ class SlackDigestTests(unittest.TestCase):
         self.assertIn("*Gap 후보*", serialized)
         self.assertIn("직접 비교 가능한 동일 조건 수치 없음", serialized)
 
-    def test_configured_webhook_posts_block_kit_payload(self):
+    def test_configured_bot_posts_block_kit_payload(self):
         class FakeResponse:
             def __enter__(self):
                 return self
@@ -567,10 +570,11 @@ class SlackDigestTests(unittest.TestCase):
 
             @staticmethod
             def read():
-                return b"ok"
+                return b'{"ok": true}'
 
         with mock.patch.dict(
-            "os.environ", {"SLACK_WEBHOOK_URL": "https://hooks.slack.test/secret"}
+            "os.environ",
+            {"SLACK_BOT_TOKEN": "xoxb-secret", "SLACK_CHANNEL_ID": "C123"},
         ):
             with mock.patch(
                 "scripts.paper_loop.urllib.request.urlopen",
@@ -582,7 +586,8 @@ class SlackDigestTests(unittest.TestCase):
         self.assertTrue(sent)
         request = urlopen.call_args.args[0]
         payload = json.loads(request.data.decode("utf-8"))
-        self.assertEqual(request.full_url, "https://hooks.slack.test/secret")
+        self.assertEqual(request.full_url, "https://slack.com/api/chat.postMessage")
+        self.assertEqual(payload["channel"], "C123")
         self.assertIn("blocks", payload)
 
     def test_failed_slack_payload_remains_in_durable_outbox(self):
@@ -592,7 +597,8 @@ class SlackDigestTests(unittest.TestCase):
             root = Path(directory)
             path = paper_loop.queue_slack_digest(root, self.report(), config)
             with mock.patch.dict(
-                "os.environ", {"SLACK_WEBHOOK_URL": "https://hooks.slack.test/secret"}
+                "os.environ",
+                {"SLACK_BOT_TOKEN": "xoxb-secret", "SLACK_CHANNEL_ID": "C123"},
             ):
                 with mock.patch(
                     "scripts.paper_loop.urllib.request.urlopen",
@@ -614,13 +620,14 @@ class SlackDigestTests(unittest.TestCase):
 
             @staticmethod
             def read():
-                return b"ok"
+                return b'{"ok": true}'
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             path = paper_loop.queue_slack_digest(root, self.report(), CONFIG)
             with mock.patch.dict(
-                "os.environ", {"SLACK_WEBHOOK_URL": "https://hooks.slack.test/secret"}
+                "os.environ",
+                {"SLACK_BOT_TOKEN": "xoxb-secret", "SLACK_CHANNEL_ID": "C123"},
             ):
                 with mock.patch(
                     "scripts.paper_loop.urllib.request.urlopen",
@@ -958,6 +965,41 @@ class ReviewFeedbackTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "valid --section-id"):
                 paper_loop.record_review(args)
+
+    def test_identical_slack_click_is_recorded_once(self):
+        with tempfile.TemporaryDirectory() as directory:
+            feedback = Path(directory) / "review.jsonl"
+            first, first_added = paper_loop.record_review_decision(
+                feedback_path=feedback,
+                config=CONFIG,
+                paper_id="2608.00001",
+                decision="reject",
+                section_id="0",
+            )
+            second, second_added = paper_loop.record_review_decision(
+                feedback_path=feedback,
+                config=CONFIG,
+                paper_id="2608.00001",
+                decision="reject",
+                section_id="0",
+            )
+
+            self.assertTrue(first_added)
+            self.assertFalse(second_added)
+            self.assertEqual(first, second)
+            self.assertEqual(len(paper_loop.load_feedback(feedback)), 1)
+
+
+class ApprovedPublishTests(unittest.TestCase):
+    def test_publisher_rejects_changes_outside_content_and_docs(self):
+        publish_approved_paper.require_allowed_changes(
+            {"content/survey.md", "docs/index.html"}, ("content/", "docs/")
+        )
+        with self.assertRaisesRegex(publish_approved_paper.PublishError, "Unexpected"):
+            publish_approved_paper.require_allowed_changes(
+                {"content/survey.md", "scripts/paper_loop.py"},
+                ("content/", "docs/"),
+            )
 
 
 if __name__ == "__main__":

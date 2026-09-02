@@ -17,7 +17,6 @@ jobs:
     timeout-minutes: 45
     env:
       PYTHONUTF8: "1"
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
       - name: Check out the default branch
@@ -50,7 +49,7 @@ jobs:
           fi
 
       - name: Discover and classify recent papers
-        run: python scripts/paper_loop.py run --llm-provider deterministic --notify-slack
+        run: python scripts/paper_loop.py run --llm-provider deterministic
 
       - name: Create or update the human-review pull request
         continue-on-error: true

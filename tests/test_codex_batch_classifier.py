@@ -147,6 +147,8 @@ class CodexBatchClassifierTests(unittest.TestCase):
                 "HOME": str(ROOT),
                 "LANG": "en_US.UTF-8",
                 "SLACK_WEBHOOK_URL": "https://hooks.slack.test/secret",
+                "SLACK_BOT_TOKEN": "xoxb-secret",
+                "SLACK_APP_TOKEN": "xapp-secret",
                 "GH_TOKEN": "github-secret",
                 "ANTHROPIC_API_KEY": "anthropic-secret",
                 "OPENAI_API_KEY": "openai-secret",
@@ -184,6 +186,8 @@ class CodexBatchClassifierTests(unittest.TestCase):
             )
             self.assertNotEqual(Path(kwargs["cwd"]), ROOT.resolve())
             self.assertNotIn("SLACK_WEBHOOK_URL", kwargs["env"])
+            self.assertNotIn("SLACK_BOT_TOKEN", kwargs["env"])
+            self.assertNotIn("SLACK_APP_TOKEN", kwargs["env"])
             self.assertNotIn("GH_TOKEN", kwargs["env"])
             self.assertNotIn("OPENAI_API_KEY", kwargs["env"])
             self.assertNotIn("ANTHROPIC_API_KEY", kwargs["env"])
@@ -253,12 +257,16 @@ class CodexBatchClassifierTests(unittest.TestCase):
                 "HOME": "/Users/test",
                 "CODEX_HOME": "/Users/test/.codex",
                 "SLACK_WEBHOOK_URL": "secret",
+                "SLACK_BOT_TOKEN": "secret",
+                "SLACK_APP_TOKEN": "secret",
                 "MY_UNEXPECTED_TOKEN": "secret",
             }
         )
         self.assertEqual(clean["PATH"], "/usr/bin:/bin")
         self.assertEqual(clean["CODEX_HOME"], "/Users/test/.codex")
         self.assertNotIn("SLACK_WEBHOOK_URL", clean)
+        self.assertNotIn("SLACK_BOT_TOKEN", clean)
+        self.assertNotIn("SLACK_APP_TOKEN", clean)
         self.assertNotIn("MY_UNEXPECTED_TOKEN", clean)
 
     def test_schema_is_strict_at_both_levels(self) -> None:
@@ -318,12 +326,18 @@ class CodexBatchClassifierTests(unittest.TestCase):
 
     def test_macos_assets_keep_secrets_out_of_plist_and_harden_scheduler(self) -> None:
         macos = ROOT / "scripts" / "macos"
-        plist_text = (macos / "com.ssmong.paper-radar.plist.example").read_text(
+        daily_plist = (macos / "com.ssmong.paper-radar.plist.example").read_text(
             encoding="utf-8"
         )
-        ET.fromstring(plist_text)
-        self.assertNotIn("SLACK_WEBHOOK_URL", plist_text)
-        rendered = plist_text.replace("__REPO_ROOT__", "/Users/test/paper-radar")
+        slack_plist = (
+            macos / "com.ssmong.paper-radar-slack.plist.example"
+        ).read_text(encoding="utf-8")
+        plist_text = daily_plist + slack_plist
+        self.assertNotIn("SLACK_BOT_TOKEN", plist_text)
+        self.assertNotIn("SLACK_APP_TOKEN", plist_text)
+        ET.fromstring(daily_plist)
+        ET.fromstring(slack_plist)
+        rendered = daily_plist.replace("__REPO_ROOT__", "/Users/test/paper-radar")
         rendered = rendered.replace("__PYTHON_BIN__", "/opt/homebrew/bin/python3")
         rendered = rendered.replace("__LOG_DIR__", "/Users/test/Library/Logs/paper-radar")
         root = ET.fromstring(rendered)

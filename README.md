@@ -127,6 +127,12 @@ method, contribution over prior work, tentative gap, and up to two numeric
 comparisons. It links to the analyzed source and explicitly retains the
 full-paper verification requirement.
 
+Each candidate has owner-only `승인 후 반영` and `제외` buttons.
+
+Approval is received through Slack Socket Mode on the Mac mini, so GitHub Pages remains a static output host and no public callback server is required.
+
+An approved paper is edited in an isolated worktree and pushed only after full-text retrieval, generated-site build, unit tests, arXiv-ID verification, and changed-path checks succeed.
+
 `max_candidates_per_run` and `screening.max_abstracts_per_run` bound batch
 classification; `analysis.max_papers_per_run` separately bounds expensive
 full-text analysis. Reports expose collected, prefiltered, classified,
@@ -151,7 +157,7 @@ For a rejection, use `--decision reject`; the section is stored as `0`.
 ### Mac mini scheduling and manual recovery
 
 The supported daily scheduler is a single-user Mac mini LaunchAgent. It runs at
-08:30 local time, retrieves the Slack webhook from Login Keychain, checks Codex
+08:30 local time, retrieves Slack credentials from Login Keychain, checks Codex
 authentication, prevents overlapping runs, and rotates bounded logs. Follow
 [`docs/mac-mini-codex-operator-guide.md`](docs/mac-mini-codex-operator-guide.md)
 for the one-time install, security model, preflight, inspection, and removal

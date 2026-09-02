@@ -10,7 +10,8 @@ readonly DEFAULT_REPO_ROOT="${SCRIPT_DIR:h:h}"
 readonly REPO_ROOT="${PAPER_RADAR_REPO_ROOT:-$DEFAULT_REPO_ROOT}"
 readonly PYTHON_BIN="${PAPER_RADAR_PYTHON:-/usr/bin/python3}"
 readonly CODEX_BIN_VALUE="${CODEX_BIN:-codex}"
-readonly KEYCHAIN_SERVICE="${PAPER_RADAR_SLACK_KEYCHAIN_SERVICE:-paper-radar-slack-webhook}"
+readonly BOT_TOKEN_SERVICE="${PAPER_RADAR_SLACK_BOT_SERVICE:-paper-radar-slack-bot-token}"
+readonly CHANNEL_SERVICE="${PAPER_RADAR_SLACK_CHANNEL_SERVICE:-paper-radar-slack-channel-id}"
 readonly ACCOUNT_NAME="$(/usr/bin/id -un)"
 readonly LOCK_DIR="${TMPDIR:-/tmp}/paper-radar-${UID}.lock"
 readonly LOCK_PID_FILE="$LOCK_DIR/pid"
@@ -65,11 +66,11 @@ fi
 
 function cleanup {
   local status=$?
-  if (( status != 0 )) && [[ -n "${SLACK_WEBHOOK_URL:-}" ]]; then
+  if (( status != 0 )) && [[ -n "${SLACK_BOT_TOKEN:-}" ]]; then
     "$PYTHON_BIN" "$REPO_ROOT/scripts/macos/notify_slack_failure.py" \
       "exit=$status; inspect the launchd error log" || true
   fi
-  unset SLACK_WEBHOOK_URL
+  unset SLACK_BOT_TOKEN SLACK_CHANNEL_ID
   local owner_pid=""
   if [[ -r "$LOCK_PID_FILE" ]]; then
     read -r owner_pid < "$LOCK_PID_FILE" || owner_pid=""
@@ -87,13 +88,21 @@ trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
-if [[ -z "${SLACK_WEBHOOK_URL:-}" ]]; then
-  SLACK_WEBHOOK_URL="$(/usr/bin/security find-generic-password \
-    -a "$ACCOUNT_NAME" -s "$KEYCHAIN_SERVICE" -w 2>/dev/null)" || {
-      print -u2 -- "paper-radar: Slack webhook missing from Login Keychain"
+if [[ -z "${SLACK_BOT_TOKEN:-}" ]]; then
+  SLACK_BOT_TOKEN="$(/usr/bin/security find-generic-password \
+    -a "$ACCOUNT_NAME" -s "$BOT_TOKEN_SERVICE" -w 2>/dev/null)" || {
+      print -u2 -- "paper-radar: Slack bot token missing from Login Keychain"
       exit 78
     }
-  export SLACK_WEBHOOK_URL
+  export SLACK_BOT_TOKEN
+fi
+if [[ -z "${SLACK_CHANNEL_ID:-}" ]]; then
+  SLACK_CHANNEL_ID="$(/usr/bin/security find-generic-password \
+    -a "$ACCOUNT_NAME" -s "$CHANNEL_SERVICE" -w 2>/dev/null)" || {
+      print -u2 -- "paper-radar: Slack channel ID missing from Login Keychain"
+      exit 78
+    }
+  export SLACK_CHANNEL_ID
 fi
 
 # Fail closed if the main loop has not been integrated with this backend. This
