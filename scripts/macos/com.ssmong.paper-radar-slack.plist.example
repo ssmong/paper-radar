@@ -20,6 +20,8 @@
     <string>__REPO_ROOT__</string>
     <key>PAPER_RADAR_BOT_PYTHON</key>
     <string>__REPO_ROOT__/.venv/bin/python3</string>
+    <key>CODEX_BIN</key>
+    <string>__CODEX_BIN__</string>
     <key>PATH</key>
     <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
   </dict>

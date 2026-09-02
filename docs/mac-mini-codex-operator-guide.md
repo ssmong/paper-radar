@@ -94,6 +94,7 @@ Run the installer from the repository root with an absolute path.
 ```
 
 The installer creates `.venv`, installs Slack Bolt, and installs two per-user LaunchAgents.
+It also records the absolute `codex` path from the interactive shell, so standalone installs such as `~/.local/bin/codex` work under launchd.
 
 `com.ssmong.paper-radar` runs the daily discovery job at 08:30 local time.
 

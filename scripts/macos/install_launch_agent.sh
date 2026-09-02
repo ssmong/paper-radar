@@ -3,6 +3,7 @@
 set -euo pipefail
 umask 077
 
+readonly CODEX_BIN="${PAPER_RADAR_CODEX:-$(command -v codex 2>/dev/null || true)}"
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 readonly SCRIPT_DIR="${0:A:h}"
 readonly REPO_ROOT="${1:-${SCRIPT_DIR:h:h}}"
@@ -33,6 +34,10 @@ if [[ ! -x "$PYTHON_BIN" ]]; then
   print -u2 -- "Python is not executable: $PYTHON_BIN"
   exit 69
 fi
+if [[ ! -x "$CODEX_BIN" ]]; then
+  print -u2 -- "Codex is not executable; install it or set PAPER_RADAR_CODEX"
+  exit 69
+fi
 if ! "$PYTHON_BIN" -c \
   'import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)'; then
   print -u2 -- "Python 3.10 or newer is required: $PYTHON_BIN"
@@ -47,15 +52,16 @@ fi
 "$PYTHON_BIN" - \
   "$DAILY_TEMPLATE" "$DAILY_TARGET" \
   "$SLACK_TEMPLATE" "$SLACK_TARGET" \
-  "$REPO_ROOT" "$PYTHON_BIN" "$LOG_DIR" <<'PY'
+  "$REPO_ROOT" "$PYTHON_BIN" "$CODEX_BIN" "$LOG_DIR" <<'PY'
 import sys
 from pathlib import Path
 
-daily_template, daily_target, slack_template, slack_target, repo_root, python_bin, log_dir = sys.argv[1:]
+daily_template, daily_target, slack_template, slack_target, repo_root, python_bin, codex_bin, log_dir = sys.argv[1:]
 for template, target in ((daily_template, daily_target), (slack_template, slack_target)):
     text = Path(template).read_text(encoding="utf-8")
     text = text.replace("__REPO_ROOT__", repo_root)
     text = text.replace("__PYTHON_BIN__", python_bin)
+    text = text.replace("__CODEX_BIN__", codex_bin)
     text = text.replace("__LOG_DIR__", log_dir)
     Path(target).write_text(text, encoding="utf-8")
 PY

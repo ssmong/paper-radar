@@ -339,6 +339,7 @@ class CodexBatchClassifierTests(unittest.TestCase):
         ET.fromstring(slack_plist)
         rendered = daily_plist.replace("__REPO_ROOT__", "/Users/test/paper-radar")
         rendered = rendered.replace("__PYTHON_BIN__", "/opt/homebrew/bin/python3")
+        rendered = rendered.replace("__CODEX_BIN__", "/Users/test/.local/bin/codex")
         rendered = rendered.replace("__LOG_DIR__", "/Users/test/Library/Logs/paper-radar")
         root = ET.fromstring(rendered)
         strings = [element.text for element in root.iter("string") if element.text]
@@ -346,6 +347,8 @@ class CodexBatchClassifierTests(unittest.TestCase):
         self.assertIn(
             "/Users/test/paper-radar/scripts/macos/run_paper_radar.sh", strings
         )
+        self.assertIn("/Users/test/.local/bin/codex", strings)
+        self.assertIn("__CODEX_BIN__", slack_plist)
 
         runner = (macos / "run_paper_radar.sh").read_text(encoding="utf-8")
         installer = (macos / "install_launch_agent.sh").read_text(encoding="utf-8")
@@ -354,6 +357,7 @@ class CodexBatchClassifierTests(unittest.TestCase):
         self.assertIn("LOCK_PID_FILE", runner)
         self.assertIn("sys.version_info >= (3, 10)", runner)
         self.assertIn("/opt/homebrew/bin/python3", installer)
+        self.assertIn("command -v codex", installer)
         self.assertIn('/bin/zsh -n', installer)
         self.assertNotIn("/usr/bin/sed", installer)
 

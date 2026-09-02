@@ -20,6 +20,8 @@
     <string>__REPO_ROOT__</string>
     <key>PAPER_RADAR_PYTHON</key>
     <string>__PYTHON_BIN__</string>
+    <key>CODEX_BIN</key>
+    <string>__CODEX_BIN__</string>
     <key>PAPER_RADAR_LOG_DIR</key>
     <string>__LOG_DIR__</string>
     <key>PATH</key>
