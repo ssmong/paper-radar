@@ -356,6 +356,8 @@ class CodexBatchClassifierTests(unittest.TestCase):
         self.assertNotIn('$USER" -s "$KEYCHAIN_SERVICE', runner)
         self.assertIn("LOCK_PID_FILE", runner)
         self.assertIn("sys.version_info >= (3, 10)", runner)
+        self.assertIn('"$PYTHON_BIN" -m scripts.paper_loop', runner)
+        self.assertNotIn("local status=", runner)
         self.assertIn("/opt/homebrew/bin/python3", installer)
         self.assertIn("command -v codex", installer)
         self.assertIn('/bin/zsh -n', installer)

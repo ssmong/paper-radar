@@ -49,7 +49,7 @@ jobs:
           fi
 
       - name: Discover and classify recent papers
-        run: python scripts/paper_loop.py run --llm-provider deterministic
+        run: python -m scripts.paper_loop run --llm-provider deterministic
 
       - name: Create or update the human-review pull request
         continue-on-error: true

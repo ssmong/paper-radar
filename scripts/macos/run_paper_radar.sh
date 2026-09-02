@@ -65,10 +65,10 @@ if ! acquire_lock; then
 fi
 
 function cleanup {
-  local status=$?
-  if (( status != 0 )) && [[ -n "${SLACK_BOT_TOKEN:-}" ]]; then
+  local exit_code=$?
+  if (( exit_code != 0 )) && [[ -n "${SLACK_BOT_TOKEN:-}" ]]; then
     "$PYTHON_BIN" "$REPO_ROOT/scripts/macos/notify_slack_failure.py" \
-      "exit=$status; inspect the launchd error log" || true
+      "exit=$exit_code; inspect the launchd error log" || true
   fi
   unset SLACK_BOT_TOKEN SLACK_CHANNEL_ID
   local owner_pid=""
@@ -82,7 +82,7 @@ function cleanup {
   if [[ -d "$LOG_DIR" ]]; then
     "$PYTHON_BIN" "$REPO_ROOT/scripts/macos/rotate_logs.py" "$LOG_DIR" || true
   fi
-  return $status
+  return $exit_code
 }
 trap cleanup EXIT
 trap 'exit 130' INT
@@ -107,7 +107,8 @@ fi
 
 # Fail closed if the main loop has not been integrated with this backend. This
 # avoids a scheduled run silently using heuristic or Anthropic classification.
-if ! "$PYTHON_BIN" "$REPO_ROOT/scripts/paper_loop.py" run --help \
+cd "$REPO_ROOT"
+if ! "$PYTHON_BIN" -m scripts.paper_loop run --help \
   | /usr/bin/grep -q -- "--llm-provider"; then
   print -u2 -- "paper-radar: main loop lacks required --llm-provider integration"
   exit 70
@@ -119,8 +120,7 @@ export CODEX_BIN="$CODEX_BIN_VALUE"
   --codex-bin "$CODEX_BIN_VALUE" \
   --preflight-only >/dev/null
 
-cd "$REPO_ROOT"
-"$PYTHON_BIN" "$REPO_ROOT/scripts/paper_loop.py" \
+"$PYTHON_BIN" -m scripts.paper_loop \
   --repo-root "$REPO_ROOT" \
   run \
   --llm-provider codex \

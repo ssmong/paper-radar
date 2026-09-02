@@ -72,8 +72,8 @@ authentication. Sign in once as the operating user and verify the saved session:
 ```bash
 codex login
 python scripts/codex_batch_classifier.py --preflight-only
-python scripts/paper_loop.py run --llm-provider codex --dry-run
-python scripts/paper_loop.py run --llm-provider codex --notify-slack
+python -m scripts.paper_loop run --llm-provider codex --dry-run
+python -m scripts.paper_loop run --llm-provider codex --notify-slack
 ```
 
 Codex receives bounded paper batches in an isolated temporary directory with an
@@ -86,14 +86,14 @@ Use the deterministic fallback for a zero-cost check. It never auto-accepts a
 paper and labels every matching item `needs_review`:
 
 ```bash
-python scripts/paper_loop.py run --no-llm --dry-run
+python -m scripts.paper_loop run --no-llm --dry-run
 ```
 
 An offline fixture is available for repeatable development without network or
 API access:
 
 ```bash
-python scripts/paper_loop.py run \
+python -m scripts.paper_loop run \
   --fixture tests/fixtures/arxiv_sample.xml \
   --now 2026-08-25T00:00:00Z \
   --no-llm --dry-run
@@ -145,7 +145,7 @@ After checking a paper, record the decision so later LLM passes can use it as a
 calibration example:
 
 ```bash
-python scripts/paper_loop.py review \
+python -m scripts.paper_loop review \
   --paper-id 2608.00001 \
   --decision accept \
   --section-id 5 \
