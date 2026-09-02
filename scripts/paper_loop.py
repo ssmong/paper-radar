@@ -490,6 +490,7 @@ def fetch_arxiv(config: dict[str, Any]) -> list[Paper]:
     collected: list[Paper] = []
     queries = config.get("queries", [])
     request_number = 0
+    successful_requests = 0
     for query in queries:
         for page in range(max_pages):
             if request_number:
@@ -503,17 +504,27 @@ def fetch_arxiv(config: dict[str, Any]) -> list[Paper]:
                     "sortOrder": "descending",
                 }
             )
-            payload = request_bytes(
-                f"{base_url}?{params}",
-                attempts=attempts,
-                timeout=timeout,
-                user_agent=user_agent,
-            )
+            try:
+                payload = request_bytes(
+                    f"{base_url}?{params}",
+                    attempts=attempts,
+                    timeout=timeout,
+                    user_agent=user_agent,
+                )
+            except RuntimeError as error:
+                print(
+                    f"arXiv query skipped after retries: {query['name']}: {error}",
+                    file=sys.stderr,
+                )
+                break
             request_number += 1
+            successful_requests += 1
             page_papers = parse_arxiv_atom(payload, query_name=query["name"])
             collected.extend(page_papers)
             if len(page_papers) < max_results:
                 break
+    if queries and successful_requests == 0:
+        raise RuntimeError("All arXiv queries failed after retries")
     return merge_papers(collected)
 
 

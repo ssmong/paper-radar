@@ -119,6 +119,38 @@ class PaperParsingTests(unittest.TestCase):
         self.assertIn("start=0", urls[0])
         self.assertIn("start=3", urls[1])
 
+    def test_one_timed_out_query_does_not_abort_the_remaining_queries(self):
+        config = json.loads(json.dumps(CONFIG))
+        config["queries"] = [
+            {"name": "offline", "search_query": "cat:cs.RO"},
+            {"name": "working", "search_query": "cat:cs.AI"},
+        ]
+        config["source"]["max_pages_per_query"] = 1
+        config["source"]["request_delay_seconds"] = 0
+
+        with mock.patch(
+            "scripts.paper_loop.request_bytes",
+            side_effect=(RuntimeError("timeout"), FIXTURE.read_bytes()),
+        ):
+            with contextlib.redirect_stderr(io.StringIO()) as output:
+                papers = paper_loop.fetch_arxiv(config)
+
+        self.assertEqual(len(papers), 3)
+        self.assertIn("offline", output.getvalue())
+
+    def test_all_timed_out_queries_still_fail_closed(self):
+        config = json.loads(json.dumps(CONFIG))
+        config["queries"] = [{"name": "offline", "search_query": "cat:cs.RO"}]
+        config["source"]["max_pages_per_query"] = 1
+        config["source"]["request_delay_seconds"] = 0
+
+        with mock.patch(
+            "scripts.paper_loop.request_bytes", side_effect=RuntimeError("timeout")
+        ):
+            with contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaisesRegex(RuntimeError, "All arXiv queries failed"):
+                    paper_loop.fetch_arxiv(config)
+
     def test_arxiv_overlapping_queries_merge_provenance(self):
         config = json.loads(json.dumps(CONFIG))
         config["queries"] = [
