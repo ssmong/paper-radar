@@ -2,9 +2,9 @@
 
 An interactive survey of 150+ papers on contact-rich dexterous manipulation, covering RL-based methods, vision-language-action models, force-aware control, teleoperation, tactile sensing, and dexterous hand hardware.
 
-**Live site:** https://ssmong.github.io/survey-contact-rich-dexterous-manipulation/
+**Live site:** https://ssmong.github.io/paper-radar/
 
-Available in English, [Korean](https://ssmong.github.io/survey-contact-rich-dexterous-manipulation/ko/), and [Chinese](https://ssmong.github.io/survey-contact-rich-dexterous-manipulation/zh/).
+Available in English, [Korean](https://ssmong.github.io/paper-radar/ko/), and [Chinese](https://ssmong.github.io/paper-radar/zh/).
 
 ## Features
 

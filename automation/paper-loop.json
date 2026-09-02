@@ -9,7 +9,7 @@
     "request_attempts": 3,
     "request_delay_seconds": 3,
     "request_timeout_seconds": 30,
-    "user_agent": "survey-paper-loop/1.0 (+https://github.com/ssmong/survey-contact-rich-dexterous-manipulation)"
+    "user_agent": "paper-radar/1.0 (+https://github.com/ssmong/paper-radar)"
   },
   "llm": {
     "provider": "codex",
