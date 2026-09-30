@@ -22,7 +22,7 @@
 <p class="dp-p"><strong>Main contributions:</strong></p>
 <ul class="dp-list">
 <li>Unified grasp perception framework covering both spatial (single-frame) and temporal (cross-frame tracking) domains.</li>
-<li>93.3% success rate on 300+ unseen objects in bin clearing, with >900 mean picks per hour on a single-arm system.</li>
+<li>93.3% success rate on 300+ unseen objects in bin clearing, with &gt;900 mean picks per hour on a single-arm system.</li>
 <li>Dynamic grasping capability (catching a moving robot fish) via temporal grasp tracking.</li>
 <li>Widely adopted as upstream perception module; the AnyGrasp SDK and GSNet have been integrated into numerous downstream manipulation systems.</li>
 </ul>
@@ -37,7 +37,7 @@
 </tr>
 <tr>
 <td>Mean picks per hour</td>
-<td>>900 (single arm)</td>
+<td>&gt;900 (single arm)</td>
 </tr>
 <tr>
 <td>Dynamic grasping</td>
@@ -61,11 +61,11 @@
 <li>No language conditioning or semantic grasp selection.</li>
 </ul>
 <p class="dp-p"><strong>Code availability:</strong> AnyGrasp SDK available at <a href="https://github.com/graspnet/anygrasp_sdk" target="_blank" rel="noopener">GitHub</a> with license registration (proprietary, compiled library). The underlying GSNet architecture has third-party open implementations.</p>
-<p class="dp-p"><strong>Relevance to dexterous manipulation:</strong> While AnyGrasp itself detects parallel-jaw grasps, its point cloud processing pipeline and grasp quality estimation approach have influenced dexterous grasping methods. The GraspNet-1Billion dataset it was trained on has been extended with multi-finger grasp annotations in subsequent works. AnyGrasp's real-time detection speed (>900 picks/hour) sets a practical baseline that dexterous grasp planners must approach for deployment.</p>
+<p class="dp-p"><strong>Relevance to dexterous manipulation:</strong> While AnyGrasp itself detects parallel-jaw grasps, its point cloud processing pipeline and grasp quality estimation approach have influenced dexterous grasping methods. The GraspNet-1Billion dataset it was trained on has been extended with multi-finger grasp annotations in subsequent works. AnyGrasp's real-time detection speed (&gt;900 picks/hour) sets a practical baseline that dexterous grasp planners must approach for deployment.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Real-time grasp detection at >900 mean picks per hour on a single-arm system, implying grasp detection runs at well above real-time rates. Specific per-frame inference latency not explicitly reported but fast enough for continuous grasp tracking.</li>
+<li><strong>Inference latency:</strong> Real-time grasp detection at &gt;900 mean picks per hour on a single-arm system, implying grasp detection runs at well above real-time rates. Specific per-frame inference latency not explicitly reported but fast enough for continuous grasp tracking.</li>
 <li><strong>Deployment hardware:</strong> Single-arm robot with parallel-jaw gripper + RGB-D camera (consumer-grade). Point cloud processing runs on a desktop GPU. The AnyGrasp SDK provides the inference pipeline.</li>
-<li><strong>Real-time capable?</strong> Yes. >900 picks/hour demonstrated on real hardware. Dynamic grasping (catching a moving object) further confirms real-time capability.</li>
+<li><strong>Real-time capable?</strong> Yes. &gt;900 picks/hour demonstrated on real hardware. Dynamic grasping (catching a moving object) further confirms real-time capability.</li>
 </ul>
 <details class="dp-reviews"><summary>Peer Reviews</summary><div class="dp-review-body"><p class="dp-p"><a href="https://openreview.net/forum?id=U26asOu6gd" target="_blank" rel="noopener">OpenReview</a></p></div></details>

@@ -18,7 +18,7 @@
 <p class="dp-p"><strong>한계점:</strong> Limited to single-axis rotation (not arbitrary SE(3) reorientation); relies on proprioception only (no vision or tactile); objects must remain in a palm-up configuration; limited to rigid objects</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not explicitly reported. The MLP policy with RMA adaptation module runs in <1ms per forward pass, enabling high-frequency control.</li>
+<li><strong>추론 지연 시간:</strong> Not explicitly reported. The MLP policy with RMA adaptation module runs in &lt;1ms per forward pass, enabling high-frequency control.</li>
 <li><strong>배포 하드웨어:</strong> Allegro Hand (16 DoF). Policy trained in IsaacGym; deployed via zero-shot sim-to-real transfer with online RMA adaptation. MLP policy is lightweight enough for any compute platform.</li>
 <li><strong>실시간 가능 여부:</strong> Yes. MLP-based RL policy with lightweight RMA module runs at real-time rates on the Allegro Hand.</li>
 </ul>

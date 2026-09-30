@@ -25,7 +25,7 @@
 <p class="dp-p"><strong>Results:</strong> CHEQ achieved more consistent contact force regulation than fixed-impedance and basic RL baselines during polishing tasks. Force tracking error reduced by 20-40% compared to position-controlled polishing. The hybrid discrete-continuous action space improved learning stability at contact transitions.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Not reported. The Q-network (MLP with discrete mode head and continuous impedance head) runs in <1ms per forward pass. Real-time impedance updates are feasible given the lightweight architecture.</li>
+<li><strong>Inference latency:</strong> Not reported. The Q-network (MLP with discrete mode head and continuous impedance head) runs in &lt;1ms per forward pass. Real-time impedance updates are feasible given the lightweight architecture.</li>
 <li><strong>Deployment hardware:</strong> Industrial robot arm for real-hardware polishing/grinding evaluation. Specific GPU or compute hardware not reported.</li>
 <li><strong>Real-time capable?</strong> Yes, likely. The hybrid Q-network is lightweight (MLP-based), and the system was evaluated on real hardware for industrial polishing tasks, suggesting real-time operation. Specific control frequency not reported.</li>
 </ul>

@@ -195,7 +195,8 @@ function renderTabs(){
   detailTabs.forEach(t=>{
     const tab=document.createElement("button");
     tab.className="dp-tab"+(t.id===activeTabId?" active":"");
-    tab.innerHTML=`<span>${t.title}</span><span class="dp-tab-close" data-tab-id="${t.id}">&times;</span>`;
+    tab.innerHTML=`<span></span><span class="dp-tab-close" data-tab-id="${t.id}">&times;</span>`;
+    tab.firstElementChild.textContent=t.title;
     tab.addEventListener("click",e=>{
       if(e.target.classList.contains("dp-tab-close")){
         closeTab(+e.target.dataset.tabId);

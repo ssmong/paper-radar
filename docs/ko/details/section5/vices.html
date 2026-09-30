@@ -25,9 +25,9 @@
 <p class="dp-p"><strong>결과:</strong> VICES action space achieved higher success rates and faster convergence than joint torque, joint position, and Cartesian position action spaces on all four contact-rich tasks in Robosuite. Door opening: ~90% vs. ~50% (position space). Peg insertion: ~85% vs. ~30% (torque space). The learned impedance profiles showed interpretable patterns (e.g., low lateral stiffness during insertion search).</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not reported. The policy is a standard MLP (~256-256 hidden units), which runs in <1ms per forward pass on any modern hardware. The bottleneck is the simulation step, not policy inference.</li>
+<li><strong>추론 지연 시간:</strong> Not reported. The policy is a standard MLP (~256-256 hidden units), which runs in &lt;1ms per forward pass on any modern hardware. The bottleneck is the simulation step, not policy inference.</li>
 <li><strong>배포 하드웨어:</strong> Simulation only (Robosuite/MuJoCo). No real-robot deployment. Policy inference uses standard MLP, deployable on any hardware.</li>
-<li><strong>실시간 가능 여부:</strong> Yes, for the policy itself. MLP inference is trivially fast (<1ms). However, the system was only evaluated in simulation; real-time deployment on physical hardware was not demonstrated.</li>
+<li><strong>실시간 가능 여부:</strong> Yes, for the policy itself. MLP inference is trivially fast (&lt;1ms). However, the system was only evaluated in simulation; real-time deployment on physical hardware was not demonstrated.</li>
 </ul>
 <h2 class="dp-h2">데이터셋 / 데이터 수집</h2>
 <ul class="dp-list">

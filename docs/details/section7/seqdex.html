@@ -7,7 +7,7 @@
 <p class="dp-p"><strong>Hand hardware:</strong> Allegro Hand (16 DoF) mounted on a Kuka arm</p>
 <p class="dp-p"><strong>Sim platform:</strong> IsaacGym (NVIDIA)</p>
 <p class="dp-p"><strong>Sim2Real?</strong> Yes. Sim-to-real transfer demonstrated via domain randomization and teacher-student distillation from privileged state to point-cloud observations (real).</p>
-<p class="dp-p"><strong>Tasks:</strong> Long-horizon sequential manipulation decomposed into stages: search (locate object) -> orient (rotate to desired pose) -> grasp (acquire stable grasp) -> insert (place into slot). The full chain executes autonomously with learned transition triggers between sub-policies.</p>
+<p class="dp-p"><strong>Tasks:</strong> Long-horizon sequential manipulation decomposed into stages: search (locate object) -&gt; orient (rotate to desired pose) -&gt; grasp (acquire stable grasp) -&gt; insert (place into slot). The full chain executes autonomously with learned transition triggers between sub-policies.</p>
 <p class="dp-p"><strong>Key methodology:</strong> SeqDex decomposes long-horizon dexterous tasks into a sequence of shorter-horizon sub-policies, each independently trained with RL. A key innovation is the automatic chaining mechanism that uses learned binary classifiers to detect when one phase has succeeded and the next should begin, avoiding manual thresholds or state machines. Teacher policies use privileged simulation state; student policies operate from 3D point clouds.</p>
 <p class="dp-p"><strong>Main contributions:</strong></p>
 <ul class="dp-list">
@@ -19,7 +19,7 @@
 <p class="dp-p"><strong>Results:</strong> Successfully completed the full search-orient-grasp-insert chain in real-world experiments (real). Code and pretrained weights publicly available.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Not explicitly reported. Each sub-policy (MLP) runs in <1ms per forward pass. Phase transition classifiers add negligible overhead. Total pipeline is real-time.</li>
+<li><strong>Inference latency:</strong> Not explicitly reported. Each sub-policy (MLP) runs in &lt;1ms per forward pass. Phase transition classifiers add negligible overhead. Total pipeline is real-time.</li>
 <li><strong>Deployment hardware:</strong> Allegro Hand (16 DoF) + Kuka arm. Policies trained in IsaacGym; deployed via zero-shot sim-to-real transfer.</li>
 <li><strong>Real-time capable?</strong> Yes. Chained MLP sub-policies support real-time dexterous manipulation on real hardware.</li>
 </ul>

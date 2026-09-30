@@ -42,7 +42,7 @@
 <ul class="dp-list">
 <li><strong>推理延迟：</strong> RT-2（PaLI-X 55B）由于庞大的55B参数模型和顺序自回归动作token解码（7个token逐一解码），运行频率约为1-3 Hz。较小的PaLM-E 12B变体更快但仍限于约3-5 Hz。每个动作需要通过完整VLM解码7个顺序token。</li>
 <li><strong>部署硬件：</strong> 55B模型使用Google内部TPU基础设施。PaLM-E 12B变体可能在高端GPU上运行但仍需大量计算。无法在边缘设备上部署。</li>
-<li><strong>可实时运行？</strong> 对灵巧操作不可行。在1-3 Hz（55B）或3-5 Hz（12B）下，RT-2对于需要>10 Hz控制的任务来说太慢。7D动作的自回归逐token解码本质上是顺序的，无法并行化。仅适用于Google移动操作器上的慢速、粗糙操作任务。</li>
+<li><strong>可实时运行？</strong> 对灵巧操作不可行。在1-3 Hz（55B）或3-5 Hz（12B）下，RT-2对于需要&gt;10 Hz控制的任务来说太慢。7D动作的自回归逐token解码本质上是顺序的，无法并行化。仅适用于Google移动操作器上的慢速、粗糙操作任务。</li>
 </ul>
 <h2 class="dp-h2">数据集/数据收集</h2>
 <ul class="dp-list">

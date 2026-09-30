@@ -23,10 +23,10 @@
 <li>RL策略范围窄：按任务训练，无跨任务泛化</li>
 <li>未展示可变阻抗；柔顺有用但是静态的</li>
 </ul>
-<p class="dp-p"><strong>实验结果:</strong> IndustReal在NIST装配任务的仿真到现实迁移中取得了高成功率：圆形轴孔插入>90%，齿轮啮合>85%，零真实世界训练数据。固定阻抗控制器对成功的仿真到现实迁移至关重要——位置控制基线因接触敏感性而失败。代码和RL策略见github.com/NVlabs/industreallib。</p>
+<p class="dp-p"><strong>实验结果:</strong> IndustReal在NIST装配任务的仿真到现实迁移中取得了高成功率：圆形轴孔插入&gt;90%，齿轮啮合&gt;85%，零真实世界训练数据。固定阻抗控制器对成功的仿真到现实迁移至关重要——位置控制基线因接触敏感性而失败。代码和RL策略见github.com/NVlabs/industreallib。</p>
 <h2 class="dp-h2">推理/部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟:</strong> 未明确报告。RL策略是标准MLP(~256-256)，每次前向传播<1ms。训练使用GPU并行化IsaacGym环境。</li>
+<li><strong>推理延迟:</strong> 未明确报告。RL策略是标准MLP(~256-256)，每次前向传播&lt;1ms。训练使用GPU并行化IsaacGym环境。</li>
 <li><strong>部署硬件:</strong> Franka Emika Panda用于真实机器人评估。在NVIDIA GPU上的IsaacGym中训练。MLP策略足够轻量，可部署在任何计算平台上。</li>
 <li><strong>可实时运行?</strong> 是。MLP策略以高频生成期望末端执行器位姿，固定笛卡尔阻抗控制器以Franka原生1 kHz控制率运行。在NIST装配任务上成功演示了真实机器人部署。</li>
 </ul>

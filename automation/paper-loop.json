@@ -14,7 +14,7 @@
   "llm": {
     "provider": "codex",
     "base_url": "https://api.anthropic.com",
-    "model": "claude-sonnet-4-20250514",
+    "model": "claude-sonnet-4-6",
     "max_tokens": 800,
     "request_attempts": 3,
     "request_timeout_seconds": 60,

@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""Discover, classify, and queue new survey papers for human review.
+"""Discover and classify papers; optionally publish validated candidates.
 
-The loop is intentionally conservative: it never edits the main survey tables.
-It discovers papers, removes duplicates, classifies candidates, runs a second
-LLM review (and an adjudication pass on disagreement), then writes reviewable
-artifacts for the owner's Slack approval flow.
+Automatic publication uses an isolated worktree and records reversible additions.
+Slack lets the owner reject and remove a paper after publication.
 
 The discovery loop itself uses only the Python standard library.  A deterministic
 fallback marks every candidate as ``needs_review`` rather than pretending that
@@ -290,9 +288,13 @@ def fetch_analysis_source(
 
 
 def validate_insight(
-    value: dict[str, Any], *, source_kind: str, source_url: str
+    value: dict[str, Any], *, source_kind: str, source_url: str, source_text: str
 ) -> dict[str, Any]:
     """Validate grounded insight output and calculate comparable deltas in code."""
+    try:
+        from .codex_batch_classifier import CodexOutputError, validate_comparison_source
+    except ImportError:
+        from codex_batch_classifier import CodexOutputError, validate_comparison_source
     if not isinstance(value, dict):
         raise ValueError("Insight output must be a JSON object")
     insight: dict[str, Any] = {}
@@ -315,10 +317,13 @@ def validate_insight(
     insight["evidence"] = [
         normalize_space(str(item)) for item in evidence[:8] if str(item).strip()
     ]
+    valid_locators = set(SOURCE_LOCATOR_RE.findall(source_text))
     if not insight["evidence"] or any(
-        not SOURCE_LOCATOR_RE.search(item) for item in insight["evidence"]
+        not SOURCE_LOCATOR_RE.findall(item)
+        or not set(SOURCE_LOCATOR_RE.findall(item)) <= valid_locators
+        for item in insight["evidence"]
     ):
-        raise ValueError("Every insight must include numbered [L####] evidence")
+        raise ValueError("Every insight must cite existing [L####] source lines")
 
     checked_comparisons: list[dict[str, Any]] = []
     required = (
@@ -338,6 +343,10 @@ def validate_insight(
     for raw in comparisons[:6]:
         if not isinstance(raw, dict) or any(key not in raw for key in required):
             raise ValueError("Each comparison must contain every required field")
+        try:
+            validate_comparison_source(raw, source_text=source_text, source_kind=source_kind)
+        except CodexOutputError as error:
+            raise ValueError(str(error)) from error
         current = float(raw["proposed_value"])
         baseline = float(raw["baseline_value"])
         if not isinstance(raw["conditions_match"], bool):
@@ -1287,6 +1296,7 @@ Numbered source:
                             block["input"],
                             source_kind=source_kind,
                             source_url=source_url,
+                            source_text=source_text,
                         )
                 raise RuntimeError("Anthropic response did not contain analyze_paper tool input")
             except urllib.error.HTTPError as error:
@@ -1337,6 +1347,7 @@ def enrich_results_with_insights(
         item
         for item in results
         if item["decision"]["status"] in {"accepted", "needs_review"}
+        and not item.get("retryable_error")
     )[:limit]
     for record in reviewable:
         paper = paper_from_dict(record["paper"])
@@ -1368,7 +1379,7 @@ def enrich_results_with_codex_insights(
     )[:limit]
     items: list[dict[str, Any]] = []
     records_by_id: dict[str, dict[str, Any]] = {}
-    sources_by_id: dict[str, tuple[str, str]] = {}
+    sources_by_id: dict[str, tuple[str, str, str]] = {}
     for record in selected:
         paper = paper_from_dict(record["paper"])
         try:
@@ -1386,17 +1397,17 @@ def enrich_results_with_codex_insights(
             }
         )
         records_by_id[paper.paper_id] = record
-        sources_by_id[paper.paper_id] = (source_kind, source_url)
+        sources_by_id[paper.paper_id] = (source_kind, source_url, source_text)
     if not items:
         return
     try:
         rows = make_codex_client(config, repo_root=repo_root).analyze_batch(items)
         for row in rows:
             paper_id = str(row["paper_id"])
-            source_kind, source_url = sources_by_id[paper_id]
+            source_kind, source_url, source_text = sources_by_id[paper_id]
             raw = {key: value for key, value in row.items() if key != "paper_id"}
             records_by_id[paper_id]["insight"] = validate_insight(
-                raw, source_kind=source_kind, source_url=source_url
+                raw, source_kind=source_kind, source_url=source_url, source_text=source_text
             )
     except (RuntimeError, ValueError) as error:
         message = truncate(f"Codex deep analysis failed: {error}", 600)
@@ -1489,7 +1500,7 @@ def make_codex_client(config: dict[str, Any], *, repo_root: Path) -> Any:
     settings = config.get("codex", {})
     return CodexBatchClient(
         repo_root,
-        codex_bin=str(settings.get("binary", "codex")),
+        codex_bin=os.environ.get("CODEX_BIN") or str(settings.get("binary", "codex")),
         model=settings.get("model"),
         batch_size=int(settings.get("batch_size", 24)),
         max_prompt_chars=int(settings.get("max_prompt_chars", 90000)),
@@ -1796,7 +1807,7 @@ def build_slack_payload(
 ) -> dict[str, Any]:
     """Build a compact Korean Slack digest from one auditable run report."""
     slack = config.get("slack", {})
-    max_papers = max(1, min(int(slack.get("max_papers", 6)), 12))
+    max_papers = max(1, min(int(slack.get("max_papers", 6)), 6))
     sections = section_map(config)
     generated_at = parse_iso_datetime(report["generated_at"]).astimezone(KST)
     stats = report["stats"]
@@ -1924,6 +1935,15 @@ def build_slack_payload(
             ensure_ascii=True,
             separators=(",", ":"),
         )
+        publication = item.get("publication", {})
+        publication_status = publication.get("status")
+        label = {
+            "published": "✅ 사이트 자동 반영 완료",
+            "already_published": "✅ 사이트에 이미 등록됨",
+            "rejected": "❌ 거부됨 · 자동 재등록하지 않음",
+            "failed": "⚠️ 사이트 반영 실패 · 다음 실행에서 재시도",
+        }.get(publication_status, "사이트 미반영 · 검증된 후보만 자동 반영")
+        blocks.append({"type": "context", "elements": [{"type": "mrkdwn", "text": label}]})
         blocks.append(
             {
                 "type": "actions",
@@ -1931,30 +1951,10 @@ def build_slack_payload(
                 "elements": [
                     {
                         "type": "button",
-                        "action_id": "paper_approve",
-                        "text": {
-                            "type": "plain_text",
-                            "text": "승인 후 반영",
-                            "emoji": True,
-                        },
-                        "style": "primary",
-                        "value": action_value,
-                        "confirm": {
-                            "title": {"type": "plain_text", "text": "공개 반영"},
-                            "text": {
-                                "type": "mrkdwn",
-                                "text": "원문 확인·빌드가 통과하면 공개 사이트에 반영합니다.",
-                            },
-                            "confirm": {"type": "plain_text", "text": "승인"},
-                            "deny": {"type": "plain_text", "text": "취소"},
-                        },
-                    },
-                    {
-                        "type": "button",
                         "action_id": "paper_reject",
                         "text": {
                             "type": "plain_text",
-                            "text": "제외",
+                            "text": "거부 · 사이트에서 삭제",
                             "emoji": True,
                         },
                         "style": "danger",
@@ -2056,14 +2056,17 @@ def queue_slack_digest(repo_root: Path, report: dict[str, Any], config: dict[str
         "slack_outbox", "automation/outbox/slack"
     )
     path = outbox_root / f"{report['run_id']}.json"
-    write_json(
-        path,
-        {
+    reviewable = prioritized_results(item for item in report["results"]
+                                    if item["decision"]["status"] in {"accepted", "needs_review"})
+    size = max(1, min(int(config.get("slack", {}).get("max_papers", 6)), 6))
+    # Every published paper needs a rejection button, including later digest pages.
+    for index, start in enumerate(range(0, max(1, len(reviewable)), size)):
+        page_path = path if index == 0 else outbox_root / f"{report['run_id']}-{index + 1:02d}.json"
+        write_json(page_path, {
             "run_id": report["run_id"],
             "queued_at": utc_now().isoformat().replace("+00:00", "Z"),
-            "payload": build_slack_payload(report, config),
-        },
-    )
+            "payload": build_slack_payload({**report, "results": reviewable[start:start + size]}, config),
+        })
     return path
 
 
@@ -2106,11 +2109,43 @@ def make_classifier(
     config: dict[str, Any], *, provider: str, feedback: list[dict[str, Any]]
 ) -> Classifier:
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
-    if provider == "deterministic" or (provider == "anthropic" and not api_key):
+    if provider == "deterministic":
         return HeuristicClassifier(config)
     if provider != "anthropic":
         raise ValueError(f"Provider {provider!r} uses the batch path, not Classifier")
+    if not api_key:
+        raise RuntimeError("ANTHROPIC_API_KEY is required for the anthropic provider")
     return AnthropicClassifier(config, api_key=api_key, feedback=feedback)
+
+
+def publish_report(repo_root: Path, report: dict[str, Any]) -> bool:
+    try:
+        from .publish_approved_paper import publish
+    except ImportError:
+        from publish_approved_paper import publish
+    attempted = False
+    for record in report["results"]:
+        if (record["decision"]["status"] != "accepted" or record.get("retryable_error")
+                or record.get("publication", {}).get("status") in {"published", "already_published", "rejected"}):
+            continue
+        attempted = True
+        try:
+            record["publication"] = publish(
+                repo_root=repo_root, run_id=report["run_id"], paper_id=record["paper"]["paper_id"],
+                section_id=record["decision"]["final"]["section_id"], dry_run=False,
+            )
+        except (OSError, ValueError, RuntimeError) as error:
+            record["publication"] = {"status": "failed", "error": str(error)[:500]}
+    return attempted
+
+
+def retry_publications(repo_root: Path, config: dict[str, Any]) -> None:
+    # ponytail: scan local run reports; index them only if history makes this slow.
+    for path in sorted((repo_root / config["output"]["runs_dir"]).glob("*.json")):
+        report = load_json(path, {})
+        if report.get("auto_publish") and publish_report(repo_root, report):
+            queue_slack_digest(repo_root, report, config)
+            write_json(path, report)
 
 
 def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
@@ -2130,8 +2165,16 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
     config = load_json(config_path, None)
     if not isinstance(config, dict):
         raise ValueError(f"Config must be a JSON object: {config_path}")
+    auto_publish = getattr(args, "auto_publish", False)
+    if auto_publish and (not getattr(args, "notify_slack", False)
+                         or not config.get("slack", {}).get("enabled", False)
+                         or resolve_llm_provider(config, args) == "deterministic"):
+        raise ValueError("--auto-publish requires enabled Slack, --notify-slack, and an LLM provider")
     if not args.dry_run and getattr(args, "notify_slack", False):
         flush_slack_outbox(repo_root, config)
+        if auto_publish:
+            retry_publications(repo_root, config)
+            flush_slack_outbox(repo_root, config)
     state_path = (repo_root / args.state).resolve()
     feedback_path = (repo_root / args.feedback).resolve()
     state = load_json(state_path, {"version": 1, "papers": {}, "pending": {}})
@@ -2286,6 +2329,7 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
 
     for candidate, screening_result in queued:
         paper = candidate.paper
+        retry_error = codex_error
         if provider == "codex":
             if paper.paper_id in retryable_ids:
                 fallback = HeuristicClassifier(config).classify(paper, mode="initial")
@@ -2305,11 +2349,13 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
             try:
                 decision = decide_with_review_loop(paper, classifier, config)
             except RuntimeError as error:
+                retryable_ids.add(paper.paper_id)
+                retry_error = truncate(str(error), 600)
                 fallback = HeuristicClassifier(config).classify(paper, mode="initial")
                 fallback = dataclasses.replace(
                     fallback,
                     rationale=f"LLM loop failed ({error}); {fallback.rationale}",
-                    source="heuristic_after_llm_failure",
+                    source="anthropic_retryable_failure",
                 )
                 decision = LoopDecision("needs_review", fallback, (fallback,), True)
         record = result_record(
@@ -2319,7 +2365,7 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
             screening=screening_result,
         )
         if paper.paper_id in retryable_ids:
-            record["retryable_error"] = codex_error
+            record["retryable_error"] = retry_error
         results.append(record)
 
     if provider == "anthropic" and classifier is not None and classifier.is_llm:
@@ -2357,6 +2403,7 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
     }
     report = {
         "run_id": run_id,
+        "auto_publish": auto_publish,
         "generated_at": generated_at,
         "classifier": (
             "codex"
@@ -2422,6 +2469,8 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
     runs_dir = repo_root / config["output"]["runs_dir"]
     inbox_path = repo_root / config["output"]["latest_report"]
     write_json(runs_dir / f"{run_id}.json", report)
+    if auto_publish:
+        publish_report(repo_root, report)
     write_text_atomic(
         inbox_path,
         render_markdown_report(run_id=run_id, stats=stats, results=results, config=config),
@@ -2455,6 +2504,7 @@ def _run_pipeline_unlocked(args: argparse.Namespace) -> dict[str, Any]:
     if getattr(args, "notify_slack", False):
         queue_slack_digest(repo_root, report, config)
         slack_queued = True
+    write_json(runs_dir / f"{run_id}.json", report)
     write_json(state_path, state)
     if slack_queued:
         flush_slack_outbox(repo_root, config)
@@ -2533,6 +2583,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Classification backend; 'config' uses llm.provider",
     )
     run.add_argument("--dry-run", action="store_true", help="Print output without writing files")
+    run.add_argument("--auto-publish", action="store_true", help="Publish validated candidates automatically; allow Slack retraction")
     run.add_argument(
         "--notify-slack",
         action="store_true",

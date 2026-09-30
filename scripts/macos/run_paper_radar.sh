@@ -124,4 +124,5 @@ export CODEX_BIN="$CODEX_BIN_VALUE"
   --repo-root "$REPO_ROOT" \
   run \
   --llm-provider codex \
-  --notify-slack
+  --notify-slack \
+  --auto-publish

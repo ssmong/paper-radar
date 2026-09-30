@@ -56,7 +56,7 @@
 </ul>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not explicitly reported. The LSTM policy runs in <5ms per forward pass including recurrent state update. The system ran at real-time control rates on the Shadow Hand.</li>
+<li><strong>추론 지연 시간:</strong> Not explicitly reported. The LSTM policy runs in &lt;5ms per forward pass including recurrent state update. The system ran at real-time control rates on the Shadow Hand.</li>
 <li><strong>배포 하드웨어:</strong> Shadow Dexterous Hand (24 DoF) on a fixed base. Policy trained in MuJoCo with massive distributed compute; deployed via zero-shot sim-to-real transfer with ADR.</li>
 <li><strong>실시간 가능 여부:</strong> Yes. Demonstrated real-time in-hand object rotation on the physical Shadow Hand. The LSTM policy supports real-time control at the Shadow Hand's native servo rate.</li>
 </ul>

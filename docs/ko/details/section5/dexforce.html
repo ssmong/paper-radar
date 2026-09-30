@@ -27,7 +27,7 @@
 <p class="dp-p"><strong>결과:</strong> DexForce demonstrated successful force-sensitive dexterous manipulation on the Allegro Hand for tasks where position-only imitation failed (e.g., cap twisting required reproducing the force profile, not just the finger trajectory). Force-relevant decomposition improved task success by 25-40% over position-only demonstration replay.</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not reported. The system uses a structured demonstration processing pipeline with a fixed force scaling factor, not a neural network -- inference is essentially a lookup/scaling operation (<1ms).</li>
+<li><strong>추론 지연 시간:</strong> Not reported. The system uses a structured demonstration processing pipeline with a fixed force scaling factor, not a neural network -- inference is essentially a lookup/scaling operation (&lt;1ms).</li>
 <li><strong>배포 하드웨어:</strong> Allegro Hand (16 DoF) + robot arm, real-robot only. No GPU required for inference as the approach uses fixed force scaling, not learned model inference.</li>
 <li><strong>실시간 가능 여부:</strong> Yes. The fixed scaling factor k_f applied to force-relevant action components is computationally trivial, enabling real-time joint torque command generation for the Allegro Hand.</li>
 </ul>

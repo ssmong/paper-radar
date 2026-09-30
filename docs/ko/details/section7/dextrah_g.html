@@ -18,7 +18,7 @@
 <p class="dp-p"><strong>한계점:</strong> Geometric fabrics require hand-tuned parameters; limited to grasping (no in-hand manipulation or tool use); the separation between arm and hand control may limit performance on tasks requiring tight arm-hand coordination; evaluation on a relatively small object set compared to UniDexGrasp/ResDex</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not explicitly reported. The MLP hand policy runs in <1ms; geometric fabrics for arm control compute analytically in <1ms. Combined system supports high-frequency control.</li>
+<li><strong>추론 지연 시간:</strong> Not explicitly reported. The MLP hand policy runs in &lt;1ms; geometric fabrics for arm control compute analytically in &lt;1ms. Combined system supports high-frequency control.</li>
 <li><strong>배포 하드웨어:</strong> Allegro Hand (16 DoF) + Kuka arm. Policy trained in Isaac Lab; deployed via zero-shot sim-to-real transfer. Forms the basis of NVIDIA GR00T-Dexterity.</li>
 <li><strong>실시간 가능 여부:</strong> Yes. Both the MLP policy and geometric fabrics are computationally lightweight, supporting real-time arm-hand control on real hardware.</li>
 </ul>

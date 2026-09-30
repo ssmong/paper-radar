@@ -27,7 +27,7 @@
 <p class="dp-p"><strong>Results:</strong> Demonstrated safe physical interactions on the Unitree G1 humanoid, with the VLM-guided impedance controller producing appropriate compliance levels for different interaction types. Reduced peak interaction forces compared to fixed-impedance baselines during handover and collaborative manipulation tasks.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Not explicitly benchmarked. Molmo-7B inference (open-weight, on-device) likely requires ~200-500ms per query on a modern GPU, plus FAISS retrieval time (<10ms). Impedance parameters are set per task phase.</li>
+<li><strong>Inference latency:</strong> Not explicitly benchmarked. Molmo-7B inference (open-weight, on-device) likely requires ~200-500ms per query on a modern GPU, plus FAISS retrieval time (&lt;10ms). Impedance parameters are set per task phase.</li>
 <li><strong>Deployment hardware:</strong> Unitree G1 humanoid. VLM inference (Molmo-7B) can run on a local GPU (specific model not reported), avoiding cloud API dependency. FAISS retrieval runs locally.</li>
 <li><strong>Real-time capable?</strong> No, for impedance adaptation. The low-level impedance controller on the G1 runs at real-time rates, but VLM-based impedance updates are limited to ~1-10 Hz. The use of an open-weight model (Molmo-7B) enables on-device deployment but does not achieve real-time continuous impedance modulation.</li>
 </ul>

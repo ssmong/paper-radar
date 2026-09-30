@@ -23,7 +23,7 @@
 <p class="dp-p"><strong>结果：</strong> 慢-快架构在3项接触丰富任务上均优于触觉无关扩散策略和单速度触觉扩散策略。代码和模型检查点可在GitHub（github.com/xiaoxiaoxh/reactive_diffusion_policy）和HuggingFace获取。</p>
 <h2 class="dp-h2">推理/部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 快策略（不对称分词器）：每步<strong><1 ms</strong>（理论>300 Hz）。慢策略（潜在扩散策略）：每步<strong>约100 ms</strong>（高层规划约1--2 Hz）。组合系统在实验中以<strong>24 FPS</strong>运行（匹配触觉传感器约束）。</li>
+<li><strong>推理延迟：</strong> 快策略（不对称分词器）：每步<strong>&lt;1 ms</strong>（理论&gt;300 Hz）。慢策略（潜在扩散策略）：每步<strong>约100 ms</strong>（高层规划约1--2 Hz）。组合系统在实验中以<strong>24 FPS</strong>运行（匹配触觉传感器约束）。</li>
 <li><strong>部署硬件：</strong> NVIDIA RTX 4090 GPU + Intel Core i9-14900K CPU。Flexiv Rizon 4机械臂 + 平行夹爪配备GelSight Mini传感器。</li>
 <li><strong>是否支持实时？</strong> 是。分层慢-快设计实现了真正的闭环反应性：快网络提供亚毫秒级触觉/力反馈控制，而慢网络以较低频率处理复杂轨迹建模。这是综述文献中最快的反应系统之一。</li>
 </ul>

@@ -42,7 +42,7 @@
 <ul class="dp-list">
 <li><strong>Inference latency:</strong> RT-2 (PaLI-X 55B) runs at approximately 1-3 Hz due to the massive 55B parameter model and sequential autoregressive action token decoding (7 tokens decoded one at a time). The smaller PaLM-E 12B variant is faster but still limited to ~3-5 Hz. Each action requires decoding 7 sequential tokens through the full VLM.</li>
 <li><strong>Deployment hardware:</strong> Google's internal TPU infrastructure for the 55B model. The PaLM-E 12B variant may run on high-end GPUs but still requires substantial compute. Not deployable on edge devices.</li>
-<li><strong>Real-time capable?</strong> No, for dexterous manipulation. At 1-3 Hz (55B) or 3-5 Hz (12B), RT-2 is too slow for tasks requiring >10 Hz control. The autoregressive token-by-token decoding of 7D actions is inherently sequential and cannot be parallelized. Suitable only for slow, coarse manipulation tasks on Google's mobile manipulators.</li>
+<li><strong>Real-time capable?</strong> No, for dexterous manipulation. At 1-3 Hz (55B) or 3-5 Hz (12B), RT-2 is too slow for tasks requiring &gt;10 Hz control. The autoregressive token-by-token decoding of 7D actions is inherently sequential and cannot be parallelized. Suitable only for slow, coarse manipulation tasks on Google's mobile manipulators.</li>
 </ul>
 <h2 class="dp-h2">Dataset / Data Collection</h2>
 <ul class="dp-list">

@@ -7,7 +7,7 @@
 <p class="dp-p"><strong>手部硬件：</strong> Allegro Hand（16自由度）安装在Kuka臂上</p>
 <p class="dp-p"><strong>仿真平台：</strong> IsaacGym（NVIDIA）</p>
 <p class="dp-p"><strong>仿真到真实？</strong> 是。通过域随机化和从特权状态到点云观测的教师-学生蒸馏实现仿真到真实迁移（真实）。</p>
-<p class="dp-p"><strong>任务：</strong> 分解为阶段的长时域顺序操作：搜索（定位物体）-> 定向（旋转到期望姿态）-> 抓取（获取稳定抓取）-> 插入（放入槽中）。完整链通过子策略间学习的转换触发器自主执行。</p>
+<p class="dp-p"><strong>任务：</strong> 分解为阶段的长时域顺序操作：搜索（定位物体）-&gt; 定向（旋转到期望姿态）-&gt; 抓取（获取稳定抓取）-&gt; 插入（放入槽中）。完整链通过子策略间学习的转换触发器自主执行。</p>
 <p class="dp-p"><strong>核心方法论：</strong> SeqDex将长时域灵巧任务分解为更短时域的子策略序列，每个独立用RL训练。关键创新是自动链接机制，使用学习的二元分类器检测一个阶段何时成功以及下一个阶段何时应该开始，避免手动阈值或状态机。教师策略使用特权仿真状态；学生策略从3D点云操作。</p>
 <p class="dp-p"><strong>主要贡献：</strong></p>
 <ul class="dp-list">
@@ -19,7 +19,7 @@
 <p class="dp-p"><strong>结果：</strong> 在真实世界实验中成功完成完整搜索-定向-抓取-插入链（真实）。代码和预训练权重公开可用。</p>
 <h2 class="dp-h2">推理 / 部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 未明确报告。每个子策略（MLP）每次前向传播 <1ms。阶段转换分类器增加可忽略开销。总流程为实时。</li>
+<li><strong>推理延迟：</strong> 未明确报告。每个子策略（MLP）每次前向传播 &lt;1ms。阶段转换分类器增加可忽略开销。总流程为实时。</li>
 <li><strong>部署硬件：</strong> Allegro Hand（16自由度）+ Kuka臂。策略在IsaacGym中训练；通过零样本仿真到真实迁移部署。</li>
 <li><strong>支持实时？</strong> 是。链式MLP子策略支持真实硬件上的实时灵巧操作。</li>
 </ul>

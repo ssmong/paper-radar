@@ -20,7 +20,7 @@
 <p class="dp-p"><strong>결과:</strong> 저속-고속 아키텍처가 3개 접촉이 풍부한 작업에서 촉각 미인식 확산 정책과 단일 속도 촉각 확산 정책 모두를 능가.</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> 고속 정책(Asymmetric Tokenizer): <strong>단계당 <1 ms</strong> (이론상 >300 Hz). 저속 정책(Latent Diffusion Policy): <strong>단계당 ~100 ms</strong> (~1-2 Hz 고수준 계획). 결합 시스템 <strong>24 FPS</strong>로 작동.</li>
+<li><strong>추론 지연 시간:</strong> 고속 정책(Asymmetric Tokenizer): <strong>단계당 &lt;1 ms</strong> (이론상 &gt;300 Hz). 저속 정책(Latent Diffusion Policy): <strong>단계당 ~100 ms</strong> (~1-2 Hz 고수준 계획). 결합 시스템 <strong>24 FPS</strong>로 작동.</li>
 <li><strong>배포 하드웨어:</strong> NVIDIA RTX 4090 GPU + Intel Core i9-14900K CPU. GelSight Mini가 장착된 Flexiv Rizon 4 팔.</li>
 <li><strong>실시간 가능 여부:</strong> 예. 계층적 저속-고속 설계로 진정한 폐루프 반응성 가능: 고속 네트워크가 서브밀리초 촉각/힘 피드백 제어, 저속 네트워크가 저주파에서 복잡한 궤적 모델링.</li>
 </ul>

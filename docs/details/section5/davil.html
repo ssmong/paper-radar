@@ -25,7 +25,7 @@
 <p class="dp-p"><strong>Results:</strong> DA-VIL outperformed fixed-impedance and unconstrained RL baselines on dual-arm cooperative tasks in simulation. QP-constrained impedance reduced internal forces on shared objects and improved task success rates.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Not reported. The two-level architecture (RL policy MLP + QP solver) should run in <5ms per step. QP solvers for impedance optimization typically solve in <1ms for the constraint dimensions involved.</li>
+<li><strong>Inference latency:</strong> Not reported. The two-level architecture (RL policy MLP + QP solver) should run in &lt;5ms per step. QP solvers for impedance optimization typically solve in &lt;1ms for the constraint dimensions involved.</li>
 <li><strong>Deployment hardware:</strong> Simulation only (dual-arm simulation environment). No real-robot deployment demonstrated. Specific compute hardware not reported.</li>
 <li><strong>Real-time capable?</strong> Yes, in principle. Both the MLP policy and the QP solver are lightweight and should support real-time control. However, only simulation evaluation was performed.</li>
 </ul>

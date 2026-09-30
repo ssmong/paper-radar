@@ -18,7 +18,7 @@
 <p class="dp-p"><strong>局限性/差距：</strong> D'Claw是三指手，相比五指手灵巧性有限；深度相机对透明/反光物体有局限；仅重定向（无平移控制）；需要腕部安装相机且有清晰物体视野</p>
 <h2 class="dp-h2">推理 / 部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 未明确报告。带深度图像输入的MLP策略每次前向传播 <5ms（深度图像编码 + MLP）。</li>
+<li><strong>推理延迟：</strong> 未明确报告。带深度图像输入的MLP策略每次前向传播 &lt;5ms（深度图像编码 + MLP）。</li>
 <li><strong>部署硬件：</strong> D'Claw手（9-12自由度）+ 腕部安装Intel RealSense深度相机。策略在IsaacGym中训练；通过域随机化零样本仿真到真实迁移部署。</li>
 <li><strong>支持实时？</strong> 是。轻量策略支持实时控制。已在真实D'Claw手上使用100+新颖物体验证。</li>
 </ul>

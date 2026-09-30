@@ -38,7 +38,7 @@
 <p class="dp-p"><strong>开放权重/代码：</strong> ✅ 代码：<a href="https://github.com/2toinf/UniAct" target="_blank" rel="noopener">GitHub</a>。✗ 预训练权重未公开。</p>
 <h2 class="dp-h2">推理/部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 未明确基准测试。VQ-VAE码本查找很快（<1ms），但预测码本索引的VLA骨干决定了整体速度。使用VLM骨干时，推理速度取决于VLM大小以及解码是自回归还是并行。</li>
+<li><strong>推理延迟：</strong> 未明确基准测试。VQ-VAE码本查找很快（&lt;1ms），但预测码本索引的VLA骨干决定了整体速度。使用VLM骨干时，推理速度取决于VLM大小以及解码是自回归还是并行。</li>
 <li><strong>部署硬件：</strong> 未报告。取决于VLM骨干大小。</li>
 <li><strong>可实时运行？</strong> 取决于VLA骨干。码本解码步骤（索引到连续动作）是微不足道的快速操作。瓶颈在于VLA预测码本索引的推理速度。</li>
 </ul>

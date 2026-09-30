@@ -507,7 +507,9 @@ class FullTextInsightTests(unittest.TestCase):
         }
 
         insight = paper_loop.validate_insight(
-            base, source_kind="arxiv_html", source_url="https://arxiv.org/html/test"
+            base, source_kind="arxiv_html", source_url="https://arxiv.org/html/test",
+            source_text=("[L0010] Problem and method\n[L0030] Proposed 82%, baseline 70%\n"
+                         "[L0031] Proposed 90%\n[L0032] Baseline 60%"),
         )
 
         matched, mismatched = insight["comparisons"]
@@ -560,7 +562,7 @@ class SlackDigestTests(unittest.TestCase):
         self.assertIn(self.paper.abs_url, serialized)
         self.assertIn("검토 필요", serialized)
         self.assertIn("원문 확인 필요", serialized)
-        self.assertIn("paper_approve", serialized)
+        self.assertNotIn("paper_approve", serialized)
         self.assertIn("paper_reject", serialized)
 
     def test_missing_bot_configuration_skips_without_exposing_secret(self):
@@ -673,6 +675,51 @@ class SlackDigestTests(unittest.TestCase):
 
 
 class PipelineTests(unittest.TestCase):
+    def test_codex_binary_override_matches_scheduler_preflight(self):
+        with mock.patch.dict("os.environ", {"CODEX_BIN": "/Users/test/.local/bin/codex"}):
+            client = paper_loop.make_codex_client(CONFIG, repo_root=REPO_ROOT)
+        self.assertEqual(client.codex_bin, "/Users/test/.local/bin/codex")
+
+    def test_anthropic_missing_key_fails_without_consuming_queue(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            args = self.run_args(root)
+            args.no_llm = False
+            args.llm_provider = "anthropic"
+            state_before = (root / args.state).read_bytes()
+            with mock.patch.dict("os.environ", {}, clear=True):
+                with self.assertRaisesRegex(RuntimeError, "ANTHROPIC_API_KEY"):
+                    self.run_silently(args)
+            self.assertEqual((root / args.state).read_bytes(), state_before)
+
+    def test_anthropic_failure_remains_pending_until_success(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.make_repo(root)
+            args = self.run_args(root)
+            args.no_llm = False
+            args.llm_provider = "anthropic"
+            with mock.patch.dict("os.environ", {"ANTHROPIC_API_KEY": "fake-test-key"}), mock.patch(
+                "scripts.paper_loop.AnthropicClassifier.classify", side_effect=RuntimeError("429")
+            ), mock.patch("scripts.paper_loop.fetch_analysis_source") as fetch:
+                first = self.run_silently(args)
+            state = paper_loop.load_json(root / args.state, None)
+            self.assertEqual(first["stats"]["retryable_failures"], 1)
+            self.assertEqual(first["results"][0]["retryable_error"], "429")
+            self.assertIn("2608.00001", state["pending"])
+            self.assertNotIn("2608.00001", state["papers"])
+            fetch.assert_not_called()
+            with mock.patch.dict("os.environ", {"ANTHROPIC_API_KEY": "fake-test-key"}), mock.patch(
+                "scripts.paper_loop.AnthropicClassifier.classify", return_value=classification()
+            ), mock.patch("scripts.paper_loop.enrich_results_with_insights"):
+                second = self.run_silently(args)
+            state = paper_loop.load_json(root / args.state, None)
+            self.assertEqual(second["stats"]["queued"], 1)
+            self.assertEqual(second["stats"]["retryable_failures"], 0)
+            self.assertNotIn("2608.00001", state["pending"])
+            self.assertIn("2608.00001", state["papers"])
+
     def make_repo(self, root: Path) -> None:
         (root / "automation").mkdir(parents=True)
         (root / "content").mkdir()
@@ -1023,6 +1070,67 @@ class ReviewFeedbackTests(unittest.TestCase):
 
 
 class ApprovedPublishTests(unittest.TestCase):
+    def test_requires_one_row_per_language_and_preserves_existing_content(self):
+        publisher = publish_approved_paper
+        original = b"## 7. Papers\n| Paper | Year |\n|---|---|\n| Existing | 2025 |\n"
+        addition = b"| [New](https://arxiv.org/abs/2608.00001) | 2026 |\n"
+        before = {name: original for name in publisher.SURVEYS}
+        before["detailed/section7/existing.md"] = b"Existing detail"
+        after = {**before, **{name: original + addition for name in publisher.SURVEYS}}
+        publisher.validate_content_addition(before, after, "2608.00001", "7")
+        bad_changes = [
+            {"survey_ko.md": original},
+            {"survey.md": addition},
+            {"survey.md": original + addition + addition},
+            {"survey.md": original + b"## 8. Other\n| Paper | Year |\n|---|---|\n" + addition},
+            {"survey.md": original + b"https://arxiv.org/abs/2608.00001\n"},
+            {"survey.md": original + addition.replace(b" | 2026", b" | extra | 2026")},
+            {"detailed/section7/existing.md": b"Changed"},
+            {"extra.py": b"unexpected code"},
+        ]
+        for change in bad_changes:
+            with self.subTest(change=change), self.assertRaises(publisher.PublishError):
+                publisher.validate_content_addition(before, {**after, **change}, "2608.00001", "7")
+        del after["detailed/section7/existing.md"]
+        with self.assertRaises(publisher.PublishError):
+            publisher.validate_content_addition(before, after, "2608.00001", "7")
+
+    def test_invalid_agent_edit_never_reaches_build_or_push(self):
+        publisher = publish_approved_paper
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "content").mkdir()
+            paper = paper_loop.load_fixture(FIXTURE)[0]
+            paper_loop.write_json(root / "automation/paper-loop.json", CONFIG)
+            paper_loop.write_json(root / "automation/runs/test.json", {
+                "results": [{"paper": paper.as_dict()}]
+            })
+            calls = []
+
+            def fake_run(command, *, cwd, **kwargs):
+                calls.append(tuple(command))
+                if command[:3] == ("git", "worktree", "add"):
+                    content = Path(command[4]) / "content"
+                    content.mkdir(parents=True)
+                    for name in publisher.SURVEYS:
+                        (content / name).write_text("Existing survey", encoding="utf-8")
+                elif command[1] == "exec":
+                    (cwd / "content/survey.md").write_text(paper.abs_url, encoding="utf-8")
+                elif command[:3] == ("git", "diff", "--name-only"):
+                    return "content/survey.md"
+                return ""
+
+            with mock.patch.object(publisher, "run", side_effect=fake_run), mock.patch.object(
+                publisher.shutil, "which", return_value="/fake/codex"
+            ), mock.patch.object(publisher, "fetch_analysis_source", return_value=(
+                "arxiv_html", paper.abs_url, "[L0001] Source"
+            )), mock.patch.object(publisher.subprocess, "run"):
+                with self.assertRaises(publisher.PublishError):
+                    publisher.publish(repo_root=root, run_id="test", paper_id=paper.paper_id,
+                                      section_id="7", dry_run=False)
+            self.assertFalse(any(command[:2] == ("git", "push") for command in calls))
+            self.assertFalse(any("build.py" in command for command in calls))
+
     def test_publisher_rejects_changes_outside_content_and_docs(self):
         publish_approved_paper.require_allowed_changes(
             {"content/survey.md", "docs/index.html"}, ("content/", "docs/")

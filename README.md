@@ -121,17 +121,19 @@ baseline values; Python recomputes the absolute difference and relative
 improvement. A mismatch in task, dataset, metric, or evaluation condition is
 shown as `comparison deferred` rather than converted into a misleading delta.
 
-The Slack message contains the daily counts and up to six review priorities.
+Each Slack message contains the daily counts and up to six papers. Additional messages include the remaining papers so every candidate has a rejection button.
 When full-text insight is available, each item shows the research problem,
 method, contribution over prior work, tentative gap, and up to two numeric
 comparisons. It links to the analyzed source and explicitly retains the
 full-paper verification requirement.
 
-Each candidate has owner-only `승인 후 반영` and `제외` buttons.
+The Mac daily runner uses `--auto-publish --notify-slack`. AI-accepted papers are published automatically after full-text retrieval, isolated editing, three-language insertion checks, site build, and unit tests. Uncertain or failed classifications stay unpublished. Failed publications are retried from saved run reports on the next automatic run. Manual and deterministic recovery runs do not publish unless explicitly requested; deterministic publication is refused.
 
-Approval is received through Slack Socket Mode on the Mac mini, so GitHub Pages remains a static output host and no public callback server is required.
+Each candidate has an owner-only `거부 · 사이트에서 삭제` button. It removes the recorded survey rows and newly created detail pages, rebuilds the site, and pushes a rejection record that prevents republication. If the recorded content has since been edited, removal stops rather than deleting someone else's work. Papers predating automatic publication have no removal record and require manual removal.
 
-An approved paper is edited in an isolated worktree and pushed only after full-text retrieval, generated-site build, unit tests, arXiv-ID verification, and changed-path checks succeed.
+Rejection clicks still use the Mac's Slack Socket Mode listener. The Mac must be awake when clicking; removing publication approval does not remove this callback requirement. GitHub Pages remains static hosting. No Claude Code backend or scheduled GitHub Actions migration is included in this setup.
+
+Keep `automation/runs/` on the Mac: it supplies the paper identity for later deletion and publication retries. `automation/publications/` is committed alongside each site's content change. Rejection removes the paper from the current site, not from Git history.
 
 `max_candidates_per_run` and `screening.max_abstracts_per_run` bound batch
 classification; `analysis.max_papers_per_run` separately bounds expensive

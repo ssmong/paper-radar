@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import re
 import shutil
@@ -314,6 +315,29 @@ def _locators(value: str) -> set[str]:
     return set(SOURCE_LOCATOR_RE.findall(value))
 
 
+def validate_comparison_source(
+    comparison: Mapping[str, Any], *, source_text: str, source_kind: str
+) -> None:
+    if source_kind != "arxiv_html":
+        raise CodexOutputError("Numerical comparisons require full-text sources")
+    lines = dict(re.findall(r"^(\[L\d{4}\])\s*(.*)$", source_text, re.MULTILINE))
+    for field_name, evidence_name in (
+        ("proposed_value", "proposed_evidence"),
+        ("baseline_value", "baseline_evidence"),
+    ):
+        value = comparison[field_name]
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise CodexOutputError(f"{field_name} must be a finite number")
+        cited = _locators(str(comparison[evidence_name]))
+        if not cited or not cited <= lines.keys():
+            raise CodexOutputError(f"{evidence_name} cites a missing source locator")
+        text = " ".join(lines[locator] for locator in cited).replace("−", "-")
+        # ponytail: literal numbers only; defer unit conversions and derived values to human review.
+        numbers = re.findall(r"(?<![\w.])[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:[eE][+-]?\d+)?(?![\w.])", text)
+        if float(value) not in {float(number.replace(",", "")) for number in numbers}:
+            raise CodexOutputError(f"{field_name} is absent from the cited source lines")
+
+
 def validate_insight_batch_output(
     payload: Any,
     *,
@@ -400,6 +424,10 @@ def validate_insight_batch_output(
             if not isinstance(comparison["conditions_match"], bool):
                 raise CodexOutputError(f"{current}.conditions_match must be boolean")
             normalized_comparison = dict(comparison)
+            validate_comparison_source(
+                comparison, source_text=source,
+                source_kind=str(item_by_id[paper_id]["source_kind"]),
+            )
             for locator_field in ("proposed_evidence", "baseline_evidence"):
                 text = _nonempty_string(comparison[locator_field], f"{current}.{locator_field}")
                 cited = _locators(text)

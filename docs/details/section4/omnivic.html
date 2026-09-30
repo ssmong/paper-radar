@@ -26,7 +26,7 @@
 <p class="dp-p"><strong>Results:</strong> Self-improving RAG outperformed pure zero-shot VLM impedance generation across all evaluated tasks. After several iterations, the system converged to impedance parameters comparable to expert-tuned values. F/T sensor feedback confirmed reduced peak forces and improved task success rates relative to fixed-impedance baselines.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Not explicitly benchmarked. VLM inference via GPT-4o-mini API adds ~100ms-1s per impedance parameter query, plus RAG retrieval overhead (FAISS nearest-neighbor search, typically <10ms). Impedance parameters are generated per task phase, not per control step.</li>
+<li><strong>Inference latency:</strong> Not explicitly benchmarked. VLM inference via GPT-4o-mini API adds ~100ms-1s per impedance parameter query, plus RAG retrieval overhead (FAISS nearest-neighbor search, typically &lt;10ms). Impedance parameters are generated per task phase, not per control step.</li>
 <li><strong>Deployment hardware:</strong> Franka Emika Panda with 6-axis F/T sensor. VLM inference runs via cloud API (GPT-4o-mini); FAISS retrieval runs on a local machine (hardware not specified).</li>
 <li><strong>Real-time capable?</strong> No, for impedance adaptation. The low-level impedance controller runs at real-time rates on the Franka, but VLM-based impedance updates are limited to ~1-10 Hz due to API call latency. Continuous impedance modulation during fast contact transitions is not supported.</li>
 </ul>

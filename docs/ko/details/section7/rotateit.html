@@ -19,7 +19,7 @@
 <p class="dp-p"><strong>한계점:</strong> Still limited to single-axis rotation; DIGIT sensors add cost and fragility; tactile sim-to-real gap remains (simulated tactile is simplified compared to real optical signals); limited to rigid objects</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not explicitly reported. The tactile-conditioned MLP policy runs in <1ms per forward pass. Tactile image processing (DIGIT sensor) adds minor overhead.</li>
+<li><strong>추론 지연 시간:</strong> Not explicitly reported. The tactile-conditioned MLP policy runs in &lt;1ms per forward pass. Tactile image processing (DIGIT sensor) adds minor overhead.</li>
 <li><strong>배포 하드웨어:</strong> Allegro Hand (16 DoF) + DIGIT tactile sensors. Policy trained in IsaacGym; deployed via zero-shot sim-to-real transfer.</li>
 <li><strong>실시간 가능 여부:</strong> Yes. MLP-based policy with tactile conditioning is fast enough for real-time dexterous control on real hardware.</li>
 </ul>

@@ -26,7 +26,7 @@
 <p class="dp-p"><strong>결과:</strong> CHIP policies achieved higher contact-rich task success rates than fixed-impedance and unperturbed RL baselines across all tested humanoid manipulation tasks. The hindsight perturbation improved robustness to contact variations by 15-30% compared to standard PPO training.</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not reported. The policy is a standard MLP, which runs in <1ms per forward pass. Training uses GPU-parallelized Isaac Sim environments.</li>
+<li><strong>추론 지연 시간:</strong> Not reported. The policy is a standard MLP, which runs in &lt;1ms per forward pass. Training uses GPU-parallelized Isaac Sim environments.</li>
 <li><strong>배포 하드웨어:</strong> Simulation only (NVIDIA Isaac Sim). Training leverages NVIDIA GPUs for massively parallel simulation. No real-robot deployment demonstrated.</li>
 <li><strong>실시간 가능 여부:</strong> Yes, for inference. The MLP policy is trivially fast. However, the system was only evaluated in simulation; real-robot deployment with real-time impedance control was not demonstrated.</li>
 </ul>

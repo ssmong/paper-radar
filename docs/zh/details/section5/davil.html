@@ -25,7 +25,7 @@
 <p class="dp-p"><strong>实验结果:</strong> DA-VIL在仿真中的双臂协作任务上优于固定阻抗和无约束RL基线。QP约束阻抗减少了共享物体上的内力并提高了任务成功率。</p>
 <h2 class="dp-h2">推理/部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟:</strong> 未报告。两级架构(RL策略MLP + QP求解器)每步应在<5ms内运行。针对所涉约束维度的阻抗优化QP求解器通常在<1ms内求解。</li>
+<li><strong>推理延迟:</strong> 未报告。两级架构(RL策略MLP + QP求解器)每步应在&lt;5ms内运行。针对所涉约束维度的阻抗优化QP求解器通常在&lt;1ms内求解。</li>
 <li><strong>部署硬件:</strong> 仅仿真(双臂仿真环境)。未演示真实机器人部署。未报告具体计算硬件。</li>
 <li><strong>可实时运行?</strong> 原则上可以。MLP策略和QP求解器都是轻量级的，应支持实时控制。但仅进行了仿真评估。</li>
 </ul>

@@ -23,10 +23,10 @@
 <li>RL policies are narrow: trained per task, no cross-task generalization</li>
 <li>Does not demonstrate variable impedance; compliance is useful but static</li>
 </ul>
-<p class="dp-p"><strong>Results:</strong> IndustReal achieved high success rates on sim-to-real transfer for NIST assembly tasks: >90% on round peg insertion, >85% on gear meshing, with zero real-world training data. The fixed impedance controller was essential for successful sim-to-real transfer -- position-controlled baselines failed due to contact sensitivity. Code and RL policies at github.com/NVlabs/industreallib.</p>
+<p class="dp-p"><strong>Results:</strong> IndustReal achieved high success rates on sim-to-real transfer for NIST assembly tasks: &gt;90% on round peg insertion, &gt;85% on gear meshing, with zero real-world training data. The fixed impedance controller was essential for successful sim-to-real transfer -- position-controlled baselines failed due to contact sensitivity. Code and RL policies at github.com/NVlabs/industreallib.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Not explicitly reported. The RL policy is a standard MLP (~256-256), running in <1ms per forward pass. Training uses GPU-parallelized IsaacGym environments.</li>
+<li><strong>Inference latency:</strong> Not explicitly reported. The RL policy is a standard MLP (~256-256), running in &lt;1ms per forward pass. Training uses GPU-parallelized IsaacGym environments.</li>
 <li><strong>Deployment hardware:</strong> Franka Emika Panda for real-robot evaluation. Training in IsaacGym on NVIDIA GPUs. The MLP policy is lightweight enough for deployment on any compute platform.</li>
 <li><strong>Real-time capable?</strong> Yes. The MLP policy generates desired EE poses at high frequency, and the fixed Cartesian impedance controller runs at the Franka's native 1 kHz control rate. Successful real-robot deployment demonstrated on NIST assembly tasks.</li>
 </ul>

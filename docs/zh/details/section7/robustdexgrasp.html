@@ -40,7 +40,7 @@
 <p class="dp-p"><strong>局限性/差距：</strong> 仅抓取（无后续操作）；使用RaiSim，社区比IsaacGym/MuJoCo小；教师-学生差距可能限制高度新颖几何体的性能；无触觉反馈</p>
 <h2 class="dp-h2">推理 / 部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 未明确报告。蒸馏后学生策略（MLP + 点云编码器）每次前向传播 <5ms。</li>
+<li><strong>推理延迟：</strong> 未明确报告。蒸馏后学生策略（MLP + 点云编码器）每次前向传播 &lt;5ms。</li>
 <li><strong>部署硬件：</strong> Allegro Hand（16自由度）+ UR5臂。策略在RaiSim中训练；通过零样本仿真到真实迁移部署。94.6%真实世界成功率，512个物体。</li>
 <li><strong>支持实时？</strong> 是。轻量蒸馏策略支持真实硬件上的实时抓取控制。</li>
 </ul>

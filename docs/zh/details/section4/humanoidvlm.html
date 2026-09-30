@@ -27,7 +27,7 @@
 <p class="dp-p"><strong>结果：</strong> 在Unitree G1人形机器人上展示了安全的物理交互，VLM引导的阻抗控制器为不同交互类型产生了适当的柔顺性水平。与固定阻抗基线相比，在交接和协作操作任务中降低了峰值交互力。</p>
 <h2 class="dp-h2">推理 / 部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 未明确进行基准测试。Molmo-7B推理（开放权重，设备端）在现代GPU上可能需要每次查询约200-500ms，加上FAISS检索时间（<10ms）。阻抗参数按任务阶段设定。</li>
+<li><strong>推理延迟：</strong> 未明确进行基准测试。Molmo-7B推理（开放权重，设备端）在现代GPU上可能需要每次查询约200-500ms，加上FAISS检索时间（&lt;10ms）。阻抗参数按任务阶段设定。</li>
 <li><strong>部署硬件：</strong> Unitree G1人形机器人。VLM推理（Molmo-7B）可在本地GPU上运行（具体型号未报告），避免云API依赖。FAISS检索在本地运行。</li>
 <li><strong>是否支持实时？</strong> 阻抗自适应不支持实时。G1上的底层阻抗控制器以实时速率运行，但VLM阻抗更新限制在约1-10 Hz。使用开放权重模型（Molmo-7B）实现了设备端部署，但未实现实时连续阻抗调制。</li>
 </ul>

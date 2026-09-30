@@ -4,7 +4,9 @@
 import json
 import re
 from datetime import datetime
+from html import escape, unescape
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).parent
 DOCS_DIR = ROOT / "docs"
@@ -205,37 +207,47 @@ REVIEW_UI = {
     "zh": {"title": "同行评审", "avg": "平均分", "reviews": "条评审"},
 }
 
+def safe_href(value: str) -> str:
+    value = unescape(value)
+    try:
+        if urlsplit(value).scheme.lower() not in {"", "http", "https"}:
+            return "#"
+    except ValueError:
+        return "#"
+    return escape(value, quote=True)
+
+
 def render_review_section(review_data: dict, lang: str = "en") -> str:
     ru = REVIEW_UI.get(lang, REVIEW_UI["en"])
     if not review_data.get("found") or not review_data.get("reviews"):
         if review_data.get("url"):
-            return f'<details class="dp-reviews"><summary>{ru["title"]}</summary><div class="dp-review-body"><p class="dp-p"><a href="{review_data["url"]}" target="_blank" rel="noopener">OpenReview</a></p></div></details>'
+            return f'<details class="dp-reviews"><summary>{ru["title"]}</summary><div class="dp-review-body"><p class="dp-p"><a href="{safe_href(review_data["url"])}" target="_blank" rel="noopener">OpenReview</a></p></div></details>'
         return ""
-    url = review_data["url"]
+    url = safe_href(review_data["url"])
     avg = review_data.get("avg_rating")
     n = review_data.get("num_reviews", len(review_data["reviews"]))
     venue = review_data.get("venue", "")
 
     h = f'<details class="dp-reviews"><summary>{ru["title"]}'
     if avg is not None:
-        h += f' <span class="dp-review-score-badge">{avg}</span>'
+        h += f' <span class="dp-review-score-badge">{escape(str(avg))}</span>'
     h += '</summary>\n<div class="dp-review-body">\n'
     h += f'<p class="dp-review-meta">'
     if avg is not None:
-        h += f'{ru["avg"]}: <strong>{avg}</strong> · '
-    h += f'{n} {ru["reviews"]}'
+        h += f'{ru["avg"]}: <strong>{escape(str(avg))}</strong> · '
+    h += f'{escape(str(n))} {ru["reviews"]}'
     if venue:
-        h += f' · {venue}'
+        h += f' · {escape(str(venue))}'
     h += f' · <a href="{url}" target="_blank" rel="noopener">OpenReview</a></p>\n'
 
     for i, r in enumerate(review_data["reviews"]):
         rating = r.get("rating", "—")
         summary = r.get("summary", "")
         h += f'<div class="dp-review-item">'
-        h += f'<span class="dp-review-r">R{i+1}: {rating}</span>'
+        h += f'<span class="dp-review-r">R{i+1}: {escape(str(rating))}</span>'
         if summary:
             short = summary[:200] + ("…" if len(summary) > 200 else "")
-            h += f' <span class="dp-review-text">{short}</span>'
+            h += f' <span class="dp-review-text">{escape(short, quote=False)}</span>'
         h += '</div>\n'
 
     h += '</div>\n</details>\n'
@@ -269,10 +281,11 @@ def build_detail_pages(detail_map: dict[str, str], detail_dir: Path, out_base: P
 def render_inline(text: str) -> str:
     if not text:
         return ""
+    text = escape(text, quote=False)
     text = re.sub(r"\[(\*\*(.+?)\*\*)\]\(([^)]+)\)",
-                  r'<a href="\3" target="_blank" rel="noopener"><strong>\2</strong></a>', text)
+                  lambda m: f'<a href="{safe_href(m[3])}" target="_blank" rel="noopener"><strong>{m[2]}</strong></a>', text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)",
-                  r'<a href="\2" target="_blank" rel="noopener">\1</a>', text)
+                  lambda m: f'<a href="{safe_href(m[2])}" target="_blank" rel="noopener">{m[1]}</a>', text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"(?<!\w)\*([^*]+)\*(?!\w)", r"<em>\1</em>", text)
     text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
@@ -379,7 +392,7 @@ def render_table(headers: list[str], rows: list[list[str]], sec_id: str,
     h += f'    <table class="survey-table" data-section="{sec_id}" data-total="{n}">\n'
     h += '      <thead><tr>\n'
     for col in headers:
-        h += f'        <th class="sortable">{col}</th>\n'
+        h += f'        <th class="sortable">{escape(col)}</th>\n'
     h += '      </tr></thead>\n      <tbody>\n'
     for row in rows:
         m = row_meta(row, headers)
@@ -392,7 +405,7 @@ def render_table(headers: list[str], rows: list[list[str]], sec_id: str,
                 nk = norm(pname)
                 dp = detail_map.get(nk)
                 if dp:
-                    rendered += f' <button class="detail-btn" data-detail="details/{dp}.html" data-title="{pname}" title="View details">{DETAIL_BTN}</button>'
+                    rendered += f' <button class="detail-btn" data-detail="details/{escape(dp)}.html" data-title="{escape(pname)}" title="View details">{DETAIL_BTN}</button>'
             h += f'        <td>{rendered}</td>\n'
         h += '      </tr>\n'
     h += '      </tbody>\n    </table>\n  </div>\n</div>\n'
@@ -473,13 +486,13 @@ def parse_md(md: str, detail_map: dict[str, str], search_ph: str) -> tuple[str, 
             short = sec["title"][:30] + "…" if len(sec["title"]) > 32 else sec["title"]
             subs = [it for it in sec["content"] if it[0] == "sub"]
             sb += f'<div class="sb-group" data-section="{sec["id"]}">\n'
-            sb += f'  <a href="#{sec["id"]}" class="sb-link" data-target="{sec["id"]}"><span class="sb-num">{n}</span>{short}</a>\n'
+            sb += f'  <a href="#{sec["id"]}" class="sb-link" data-target="{sec["id"]}"><span class="sb-num">{n}</span>{escape(short)}</a>\n'
             if subs:
                 sb += '  <div class="sb-subs">\n'
                 for it in subs:
                     _, sn, st, si = it
                     ss = st[:26] + "…" if len(st) > 26 else st
-                    sb += f'    <a href="#sub-{si}" class="sb-sub">{sn} {ss}</a>\n'
+                    sb += f'    <a href="#sub-{si}" class="sb-sub">{sn} {escape(ss)}</a>\n'
                 sb += '  </div>\n'
             sb += '</div>\n'
 
@@ -496,7 +509,7 @@ def render_sections(sections: list[dict]) -> str:
         if sec["number"]:
             n = sec["number"].zfill(2) if len(sec["number"]) == 1 else sec["number"]
             out += f'      <span class="section-number">{n}</span>\n'
-        out += f'      <h2>{sec["title"]}</h2>\n    </div>\n'
+        out += f'      <h2>{escape(sec["title"])}</h2>\n    </div>\n'
         for item in sec["content"]:
             if item[0] == "text":
                 rendered = render_inline(item[1])
@@ -507,7 +520,7 @@ def render_sections(sections: list[dict]) -> str:
                 out += f'    <div class="subsection" id="sub-{sub_id}"><h3>'
                 if num:
                     out += f'<span class="sub-number">{num}</span> '
-                out += f'{title}</h3></div>\n'
+                out += f'{escape(title)}</h3></div>\n'
             elif item[0] == "table":
                 out += f'    {item[1]}\n'
         out += '  </div>\n</section>\n\n'

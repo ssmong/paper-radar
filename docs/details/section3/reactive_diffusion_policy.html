@@ -23,7 +23,7 @@
 <p class="dp-p"><strong>Results:</strong> The slow-fast architecture outperforms both tactile-unaware diffusion policies and single-speed tactile diffusion policies across 3 contact-rich tasks. Code and model checkpoints available at GitHub (github.com/xiaoxiaoxh/reactive_diffusion_policy) and HuggingFace.</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Fast policy (Asymmetric Tokenizer): <strong><1 ms</strong> per step (theoretical >300 Hz). Slow policy (Latent Diffusion Policy): <strong>~100 ms</strong> per step (~1--2 Hz for high-level planning). Combined system operates at <strong>24 FPS</strong> during experiments (matching tactile sensor constraints).</li>
+<li><strong>Inference latency:</strong> Fast policy (Asymmetric Tokenizer): <strong>&lt;1 ms</strong> per step (theoretical &gt;300 Hz). Slow policy (Latent Diffusion Policy): <strong>~100 ms</strong> per step (~1--2 Hz for high-level planning). Combined system operates at <strong>24 FPS</strong> during experiments (matching tactile sensor constraints).</li>
 <li><strong>Deployment hardware:</strong> NVIDIA RTX 4090 GPU + Intel Core i9-14900K CPU. Flexiv Rizon 4 arm + parallel-jaw gripper with GelSight Mini sensors.</li>
 <li><strong>Real-time capable?</strong> Yes. The hierarchical slow-fast design enables genuine closed-loop reactivity: the fast network provides sub-millisecond tactile/force feedback control while the slow network handles complex trajectory modeling at lower frequency. This is one of the fastest reactive systems in the surveyed literature.</li>
 </ul>

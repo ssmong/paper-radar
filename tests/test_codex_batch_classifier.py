@@ -135,6 +135,28 @@ class FakeRunner:
 
 
 class CodexBatchClassifierTests(unittest.TestCase):
+    def test_numeric_insights_require_values_in_real_source_lines(self):
+        from scripts.paper_loop import validate_insight
+
+        item = insight_item(1)
+        valid = insight_result(item["paper_id"])
+        insight = validate_insight(valid, source_kind="arxiv_html",
+                                   source_url=item["source_url"], source_text=item["source_text"])
+        self.assertEqual(insight["comparisons"][0]["absolute_delta"], 20)
+        for field, value in (("proposed_value", 999), ("baseline_value", float("nan")),
+                             ("proposed_evidence", "[L9999] 80 percent")):
+            row = insight_result(item["paper_id"])
+            row["comparisons"][0][field] = value
+            with self.subTest(field=field):
+                with self.assertRaises(CodexOutputError):
+                    validate_insight_batch_output({"results": [row]}, items=[item])
+                with self.assertRaises(ValueError):
+                    validate_insight(row, source_kind="arxiv_html",
+                                     source_url=item["source_url"], source_text=item["source_text"])
+        with self.assertRaises(ValueError):
+            validate_insight(valid, source_kind="abstract",
+                             source_url=item["source_url"], source_text=item["source_text"])
+
     def client(self, runner: FakeRunner, **kwargs: Any) -> CodexBatchClient:
         return CodexBatchClient(
             repo_root=ROOT,

@@ -18,7 +18,7 @@
 <p class="dp-p"><strong>Limitations/Gaps:</strong> D'Claw is a 3-finger hand with limited dexterity compared to 5-finger hands; depth cameras have limitations with transparent/reflective objects; reorientation only (no translation control); requires wrist-mounted camera with clear view of the object</p>
 <h2 class="dp-h2">Inference / Deployment</h2>
 <ul class="dp-list">
-<li><strong>Inference latency:</strong> Not explicitly reported. The MLP policy with depth image input runs in <5ms per forward pass (depth image encoding + MLP).</li>
+<li><strong>Inference latency:</strong> Not explicitly reported. The MLP policy with depth image input runs in &lt;5ms per forward pass (depth image encoding + MLP).</li>
 <li><strong>Deployment hardware:</strong> D'Claw hand (9-12 DoF) + wrist-mounted Intel RealSense depth camera. Policy trained in IsaacGym; deployed via zero-shot sim-to-real transfer with domain randomization.</li>
 <li><strong>Real-time capable?</strong> Yes. Lightweight policy supports real-time control. Demonstrated on real D'Claw hand with 100+ novel objects.</li>
 </ul>

@@ -26,7 +26,7 @@
 <p class="dp-p"><strong>结果：</strong> 自改进RAG在所有评估任务中均优于纯零样本VLM阻抗生成。经过多次迭代后，系统收敛到与专家调参值相当的阻抗参数。力/力矩传感器反馈确认，相比固定阻抗基线，峰值力降低且任务成功率提高。</p>
 <h2 class="dp-h2">推理 / 部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 未明确进行基准测试。通过GPT-4o-mini API的VLM推理每次阻抗参数查询增加约100ms-1s，加上RAG检索开销（FAISS最近邻搜索，通常<10ms）。阻抗参数按任务阶段生成，而非按控制步生成。</li>
+<li><strong>推理延迟：</strong> 未明确进行基准测试。通过GPT-4o-mini API的VLM推理每次阻抗参数查询增加约100ms-1s，加上RAG检索开销（FAISS最近邻搜索，通常&lt;10ms）。阻抗参数按任务阶段生成，而非按控制步生成。</li>
 <li><strong>部署硬件：</strong> Franka Emika Panda配备6轴力/力矩传感器。VLM推理通过云API（GPT-4o-mini）运行；FAISS检索在本地机器上运行（硬件未指定）。</li>
 <li><strong>是否支持实时？</strong> 阻抗自适应不支持实时。底层阻抗控制器以实时速率运行在Franka上，但VLM阻抗更新因API调用延迟限制在约1-10 Hz。不支持快速接触转换过程中的连续阻抗调制。</li>
 </ul>

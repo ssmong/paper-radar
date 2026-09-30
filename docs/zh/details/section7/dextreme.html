@@ -18,7 +18,7 @@
 <p class="dp-p"><strong>局限性/差距：</strong> 仅限简单物体（主要是立方体）；仅Allegro Hand；无触觉传感；ADR训练计算成本高；仅限重定向任务，无平移或功能性操作目标</p>
 <h2 class="dp-h2">推理 / 部署</h2>
 <ul class="dp-list">
-<li><strong>推理延迟：</strong> 未明确报告。MLP策略每次前向传播 <1ms，支持高频控制。</li>
+<li><strong>推理延迟：</strong> 未明确报告。MLP策略每次前向传播 &lt;1ms，支持高频控制。</li>
 <li><strong>部署硬件：</strong> Allegro Hand（16自由度）。策略在IsaacGym中大规模训练；通过ADR零样本仿真到真实迁移部署。</li>
 <li><strong>支持实时？</strong> 是。基于MLP的RL策略可轻松实现实时灵巧控制。已在真实Allegro Hand上验证。</li>
 </ul>

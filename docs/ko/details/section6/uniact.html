@@ -38,7 +38,7 @@
 <p class="dp-p"><strong>공개 가중치/코드:</strong> ✅ Code: <a href="https://github.com/2toinf/UniAct" target="_blank" rel="noopener">GitHub</a>. ✗ Pre-trained weights not publicly available.</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
-<li><strong>추론 지연 시간:</strong> Not explicitly benchmarked. The VQ-VAE codebook lookup is fast (<1ms), but the VLA backbone that predicts codebook indices determines the overall speed. With a VLM backbone, inference speed depends on the VLM size and whether decoding is autoregressive or parallel.</li>
+<li><strong>추론 지연 시간:</strong> Not explicitly benchmarked. The VQ-VAE codebook lookup is fast (&lt;1ms), but the VLA backbone that predicts codebook indices determines the overall speed. With a VLM backbone, inference speed depends on the VLM size and whether decoding is autoregressive or parallel.</li>
 <li><strong>배포 하드웨어:</strong> Not reported. Depends on the VLM backbone size.</li>
 <li><strong>실시간 가능 여부:</strong> Depends on the VLA backbone. The codebook decoding step (index to continuous action) is trivially fast. The bottleneck is the VLA's inference speed for predicting codebook indices.</li>
 </ul>
