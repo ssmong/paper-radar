@@ -2,6 +2,8 @@
 
 This setup keeps discovery, Codex, Slack interaction, and Git publishing on one trusted Mac mini.
 
+For the complete first-time checklist, start with the [README quick start](../README.md#quick-start-daily-automation-on-a-mac). Run the commands below from that checkout's root directory. Pushing code to GitHub does not install these Mac services.
+
 GitHub Pages only serves the generated static site and never receives Slack callbacks or secrets.
 
 The daily process is `Mac mini discovery → AI acceptance → isolated survey edit → build and tests → git push → Slack notification`. The owner can later reject a paper in Slack to remove it from GitHub Pages.
@@ -20,6 +22,8 @@ Official references:
 
 Install a recent Codex CLI, Python 3.10 or newer, and git.
 
+The current runner uses Codex. Claude Code subscription support and scheduled GitHub Actions discovery are not implemented.
+
 Sign in to Codex as the same macOS user that will own the LaunchAgents.
 
 ```zsh
@@ -36,9 +40,12 @@ Configure the repository's normal git credential helper and verify that this com
 
 ```zsh
 git fetch origin main
+git var GIT_AUTHOR_IDENT
 ```
 
-The automatic publisher pushes directly to `main`, so the account must have push permission and branch rules must allow that push.
+The automatic publisher pushes directly to `main`, so the account must have push permission and branch rules must allow that push. Fetching a public repository alone does not verify push access. If Git reports a missing author identity, configure your own `user.name` and `user.email` before the first run.
+
+If you use the GitHub CLI for HTTPS authentication, run `gh auth login` and `gh auth setup-git` as this same macOS user. Do not put a token in the remote URL.
 
 ## 2. Create the Slack App
 
@@ -100,17 +107,20 @@ It also records the absolute `codex` path from the interactive shell, so standal
 
 `com.ssmong.paper-radar-slack` keeps the Socket Mode listener running so button clicks reach the Mac without a public callback URL.
 
-Trigger one discovery run and inspect both services.
+Trigger one real discovery run and inspect both services. This can use Codex allowance, publish papers, and send Slack messages. It is not a dry run; do not start another copy while a run is active.
 
 ```zsh
-launchctl kickstart -k "gui/$(id -u)/com.ssmong.paper-radar"
+launchctl kickstart "gui/$(id -u)/com.ssmong.paper-radar"
 launchctl print "gui/$(id -u)/com.ssmong.paper-radar"
 launchctl print "gui/$(id -u)/com.ssmong.paper-radar-slack"
 tail -n 100 ~/Library/Logs/paper-radar/paper-radar.err.log
+tail -n 100 ~/Library/Logs/paper-radar/paper-radar.out.log
 tail -n 100 ~/Library/Logs/paper-radar/paper-radar-slack.err.log
 ```
 
 The Login Keychain must be unlocked and the Mac must be running for discovery and Slack removal clicks to work. A locked screen is different from system sleep; keep the login session active and check that keychain reads work unattended.
+
+The installer does not prevent system sleep or set a wake schedule. After a restart, log in before relying on the per-user LaunchAgents. For an existing installation, use the [update steps](../README.md#updating-an-existing-mac) to pull changes and restart the listener.
 
 ## 5. Automatic publication and later rejection
 
@@ -132,7 +142,7 @@ GitHub Pages cannot receive a Slack button callback because it is static hosting
 
 Socket Mode removes the need for a public server, tunnel, or callback URL while still requiring the Mac mini to stay online.
 
-Daily AI work no longer consumes GitHub Actions minutes because it runs through the local Codex CLI.
+Daily AI work runs through the local Codex CLI. GitHub Pages deployment is a separate build after site changes are pushed; deploying the website does not run the discovery job.
 
 If Codex authentication expires, run `codex login` interactively and restart the Slack listener.
 

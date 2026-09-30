@@ -1,175 +1,195 @@
-# Survey: Contact-Rich Dexterous Manipulation
+# Paper Radar
 
-An interactive survey of 150+ papers on contact-rich dexterous manipulation, covering RL-based methods, vision-language-action models, force-aware control, teleoperation, tactile sensing, and dexterous hand hardware.
+An interactive survey of contact-rich dexterous manipulation, with arXiv discovery, automatic publication, and owner-controlled removal through Slack.
 
-**Live site:** https://ssmong.github.io/paper-radar/
+**Browse:** [English](https://ssmong.github.io/paper-radar/) · [한국어](https://ssmong.github.io/paper-radar/ko/) · [中文](https://ssmong.github.io/paper-radar/zh/)
 
-Available in English, [Korean](https://ssmong.github.io/paper-radar/ko/), and [Chinese](https://ssmong.github.io/paper-radar/zh/).
+The site has searchable tables, hand-type and year filters, paper detail pages, and OpenReview data where available. Browsing requires no installation.
 
-## Features
+## What runs where
 
-- Filterable and sortable tables with global search
-- Per-paper detail pages with method summaries
-- OpenReview peer review data (where available)
-- Hand type filters (Dexterous, Gripper, Bimanual, Full Body)
-- Dark / light theme toggle
-- Responsive layout
+| Component | Current setup |
+| --- | --- |
+| Public website | GitHub Pages serves `main:/docs` |
+| Daily discovery and AI processing | Your Mac mini, at **08:30 in the Mac's local time zone** |
+| Default AI backend | Codex CLI with the operating user's saved ChatGPT login |
+| Publication | AI-accepted candidates are checked, built, tested, and pushed automatically |
+| Later removal | The owner clicks **거부 · 사이트에서 삭제** in Slack |
+| Slack button receiver | A separate Mac background service using Socket Mode |
+| GitHub Actions paper discovery | Manual, deterministic recovery only; no daily schedule or Slack notification |
+| Claude Code subscription backend | **Not implemented yet**; the optional `anthropic` backend uses an API key |
 
-## Structure
+**Deploying this repository to GitHub does not install or start the Mac services.** Complete the setup below on the Mac that will run them.
 
-```
-build.py            # Markdown → HTML build script
-content/            # Survey source files (EN/KO/ZH)
-  survey.md
-  detailed/         # Per-paper detail pages
-reviews/            # OpenReview data
-scripts/            # Dev utilities (serve, fetch_reviews)
-automation/         # Paper discovery configuration, state, reports, and drafts
-docs/               # Generated site (GitHub Pages)
-```
+## Quick start: daily automation on a Mac
 
-## Building
+### 1. Prepare the machine and repository
 
-```bash
-python build.py
-```
+You need Python **3.10+**, Git, a recent Codex CLI, a Slack workspace where you can install the app, and Git credentials that can push to this repository's `main` branch. Use one macOS account for setup and scheduled execution.
 
-## Local dev server
+For a new checkout:
 
-```bash
-pip install livereload
-python scripts/serve.py
+```zsh
+git clone https://github.com/ssmong/paper-radar.git
+cd paper-radar
 ```
 
-## Automated paper discovery loop
+For an existing installation, use [Updating an existing Mac](#updating-an-existing-mac) below. If using your own fork, clone that fork and enable GitHub Pages from `main`, `/docs` in its repository settings. The publisher uses the checkout's `origin` remote.
 
-The repository includes a conservative discovery and classification loop for
-new arXiv papers. It is designed as a review assistant, not an unattended
-publisher:
+Verify Python, your Git commit identity, and Codex login:
 
-1. query arXiv for recent papers in the configured topic families;
-2. deduplicate by arXiv ID and normalized title against `content/`, prior runs,
-   and recorded human decisions;
-3. apply a cheap keyword prefilter;
-4. classify title and abstract, then run a skeptical second LLM review;
-5. run a third adjudication pass when the first two disagree;
-6. inspect arXiv HTML for the highest-priority papers and extract a grounded
-   problem, method, contribution, limitation, and gap candidate;
-7. calculate numeric deltas in Python only when the paper reports proposed and
-   baseline values under matching task, dataset, metric, and evaluation
-   conditions;
-8. write a review report and candidate drafts without editing the survey.
-
-Classification is abstract-grounded. High-confidence candidates still arrive
-in a draft pull request and require a human to verify the full paper before any
-survey content is changed.
-
-### Run locally
-
-The default backend is the locally installed Codex CLI with saved ChatGPT
-authentication. Sign in once as the operating user and verify the saved session:
-
-```bash
+```zsh
+python3 --version
+git var GIT_AUTHOR_IDENT
 codex login
-python scripts/codex_batch_classifier.py --preflight-only
-python -m scripts.paper_loop run --llm-provider codex --dry-run
-python -m scripts.paper_loop run --llm-provider codex --notify-slack
+codex login status
+python3 scripts/codex_batch_classifier.py --preflight-only
 ```
 
-Codex receives bounded paper batches in an isolated temporary directory with an
-ephemeral session, a read-only sandbox, and strict output schemas. Missing IDs,
-invalid sections, unsupported evidence, authentication failures, and timeouts
-fail closed; affected papers remain queued for retry instead of being recorded
-as completed.
+If Git reports a missing identity, set your own `user.name` and `user.email` with `git config`. Configure Git authentication before scheduling; fetching a public repository alone does not prove that you have push access. Branch rules must permit the publisher's direct pushes. See the [operator guide](docs/mac-mini-codex-operator-guide.md#1-prepare-codex-and-git-on-the-mac-mini).
 
-Use the deterministic fallback for a zero-cost check. It never auto-accepts a
-paper and labels every matching item `needs_review`:
+### 2. Check the project without network or AI usage
 
-```bash
-python -m scripts.paper_loop run --no-llm --dry-run
-```
-
-An offline fixture is available for repeatable development without network or
-API access:
-
-```bash
-python -m scripts.paper_loop run \
+```zsh
+python3 -m unittest discover -s tests -q
+python3 build.py
+python3 -m scripts.paper_loop run \
   --fixture tests/fixtures/arxiv_sample.xml \
   --now 2026-08-25T00:00:00Z \
   --no-llm --dry-run
-python -m unittest discover -s tests -v
 ```
 
-Configuration lives in `automation/paper-loop.json`. The generated artifacts
-are:
+This checks the local pipeline without sending Slack messages or publishing papers. `--dry-run` alone still permits arXiv requests and AI usage; the fixture and `--no-llm` make this particular command offline.
 
-- `automation/inbox/latest.md`: the current human-review queue;
-- `automation/runs/<timestamp>.json`: an auditable machine-readable run;
-- `automation/drafts/section*/`: drafts only for candidates accepted by the
-  LLM review loop;
-- `automation/state.json`: processed, seen, and persistent pending paper IDs;
-- `automation/outbox/slack/`: durable Slack payloads retained after delivery
-  failures and replayed without consuming the paper queue.
+### 3. Connect Slack
 
-The default configuration collects multiple pages from broad control and
-robotics queries, ranks and batch-classifies up to 60 abstracts, then performs
-full-text analysis only for the top eight reviewable papers. It first tries
-arXiv HTML and falls back to the abstract when full text is unavailable. Source text is
-numbered before LLM analysis, and every insight or numeric comparison must cite
-its `[L####]` evidence locator. The model returns the reported proposed and
-baseline values; Python recomputes the absolute difference and relative
-improvement. A mismatch in task, dataset, metric, or evaluation condition is
-shown as `comparison deferred` rather than converted into a misleading delta.
+Create or update the Slack app using [slack-app-manifest.yml](slack-app-manifest.yml). Install it in the workspace, keep **Socket Mode** and **Interactivity** enabled, and invite `@Paper Radar` to the destination channel.
 
-Each Slack message contains the daily counts and up to six papers. Additional messages include the remaining papers so every candidate has a rejection button.
-When full-text insight is available, each item shows the research problem,
-method, contribution over prior work, tentative gap, and up to two numeric
-comparisons. It links to the analyzed source and explicitly retains the
-full-paper verification requirement.
+Collect these four values. The [Slack setup instructions](docs/mac-mini-codex-operator-guide.md#2-create-the-slack-app) explain where to get them.
 
-The Mac daily runner uses `--auto-publish --notify-slack`. AI-accepted papers are published automatically after full-text retrieval, isolated editing, three-language insertion checks, site build, and unit tests. Uncertain or failed classifications stay unpublished. Failed publications are retried from saved run reports on the next automatic run. Manual and deterministic recovery runs do not publish unless explicitly requested; deterministic publication is refused.
+| Value | Purpose |
+| --- | --- |
+| Bot token (`xoxb-…`) | Send messages |
+| App-level token (`xapp-…`, `connections:write`) | Receive button clicks |
+| Destination conversation ID | Where the digest is sent |
+| Your Slack member ID | Who may delete papers; this is not the destination ID |
 
-Each candidate has an owner-only `거부 · 사이트에서 삭제` button. It removes the recorded survey rows and newly created detail pages, rebuilds the site, and pushes a rejection record that prevents republication. If the recorded content has since been edited, removal stops rather than deleting someone else's work. Papers predating automatic publication have no removal record and require manual removal.
+Store them in Login Keychain. Each command prompts for its value:
 
-Rejection clicks still use the Mac's Slack Socket Mode listener. The Mac must be awake when clicking; removing publication approval does not remove this callback requirement. GitHub Pages remains static hosting. No Claude Code backend or scheduled GitHub Actions migration is included in this setup.
-
-Keep `automation/runs/` on the Mac: it supplies the paper identity for later deletion and publication retries. `automation/publications/` is committed alongside each site's content change. Rejection removes the paper from the current site, not from Git history.
-
-`max_candidates_per_run` and `screening.max_abstracts_per_run` bound batch
-classification; `analysis.max_papers_per_run` separately bounds expensive
-full-text analysis. Reports expose collected, prefiltered, classified,
-deep-analyzed, deferred, backlog, and retryable-failure counts. Unprocessed
-candidates remain in the pending queue even after they age past the arXiv
-lookback window. Prefiltered-out and out-of-lookback IDs are also recorded so
-the same papers are not counted as new every day.
-
-After checking a paper, record the decision so later LLM passes can use it as a
-calibration example:
-
-```bash
-python -m scripts.paper_loop review \
-  --paper-id 2608.00001 \
-  --decision accept \
-  --section-id 5 \
-  --note "Verified from full text"
+```zsh
+security add-generic-password -U -a "$USER" -s paper-radar-slack-bot-token -w
+security add-generic-password -U -a "$USER" -s paper-radar-slack-app-token -w
+security add-generic-password -U -a "$USER" -s paper-radar-slack-channel-id -w
+security add-generic-password -U -a "$USER" -s paper-radar-slack-approver-user-id -w
 ```
 
-For a rejection, use `--decision reject`; the section is stored as `0`.
+The last service retains its historical name, but now identifies the owner allowed to **reject and delete**. Do not put tokens in committed files. Installing the Slack app alone does not start daily delivery.
 
-### Mac mini scheduling and manual recovery
+### 4. Install the daily job and button receiver
 
-The supported daily scheduler is a single-user Mac mini LaunchAgent. It runs at
-08:30 local time, retrieves Slack credentials from Login Keychain, checks Codex
-authentication, prevents overlapping runs, and rotates bounded logs. Follow
-[`docs/mac-mini-codex-operator-guide.md`](docs/mac-mini-codex-operator-guide.md)
-for the one-time install, security model, preflight, inspection, and removal
-commands.
+From the repository root:
 
-`.github/workflows/paper-loop.yml` has no cron. It is a manually triggered,
-deterministic recovery path only, so GitHub Actions cannot race the Mac, consume
-its retry queue, or silently substitute heuristic results before Codex sees a
-paper. Its outputs remain human-review artifacts and never edit published survey
-content directly.
+```zsh
+/bin/zsh scripts/macos/install_launch_agent.sh "$PWD"
+```
+
+The installer creates `.venv`, installs the Slack dependency, captures the Codex executable path, and loads two LaunchAgents:
+
+- `com.ssmong.paper-radar`: discovery, automatic publication, and Slack delivery at 08:30.
+- `com.ssmong.paper-radar-slack`: stays connected to Slack for removal clicks.
+
+If the installer selects the wrong Python, rerun it with `PAPER_RADAR_PYTHON` set to the absolute path of Python 3.10+. `PAPER_RADAR_CODEX` can likewise select an absolute Codex executable path.
+
+**To run the real daily job now**, use:
+
+```zsh
+launchctl kickstart "gui/$(id -u)/com.ssmong.paper-radar"
+```
+
+This uses your Codex allowance, can push papers to `main`, and sends Slack messages. It is not a preview. Do not start another copy while a run is active.
+
+### 5. Check delivery and use the deletion button
+
+```zsh
+launchctl print "gui/$(id -u)/com.ssmong.paper-radar"
+launchctl print "gui/$(id -u)/com.ssmong.paper-radar-slack"
+tail -n 100 ~/Library/Logs/paper-radar/paper-radar.out.log
+tail -n 100 ~/Library/Logs/paper-radar/paper-radar.err.log
+tail -n 100 ~/Library/Logs/paper-radar/paper-radar-slack.err.log
+```
+
+The normal flow is:
+
+**arXiv discovery → AI review → validated site update → Slack digest → optional owner rejection**
+
+No approval click is needed to receive a message or publish an accepted paper. Uncertain candidates remain unpublished. Missing full text or failed publication checks are reported as failures and retried on the next automatic run.
+
+Each Slack message contains up to six candidates; additional messages include the rest. **거부 · 사이트에서 삭제** removes the recorded rows and new detail pages for that paper, rebuilds the site, and blocks automatic republication. Only the configured owner can use it. Removal appears after GitHub Pages finishes deployment.
+
+Papers added before publication records existed require manual removal. If someone has since edited a recorded row or detail file, automatic deletion stops instead of deleting that edited content. Removal changes the current site; earlier versions remain in Git history.
+
+## Mac sleep and common problems
+
+Keep the Mac awake, its user session logged in, and required keychain entries accessible during a daily run or deletion click. Screen locking is compatible with background execution when credentials remain accessible. System sleep stops the work; this installer does not configure wake schedules or prevent sleep. After a restart, log in before relying on these per-user services.
+
+| Symptom | Check |
+| --- | --- |
+| Slack app installed, but no daily messages | Install the Mac services, then inspect the daily job log. The GitHub recovery workflow does not send Slack messages. |
+| A successful run sends no digest | With `slack.notify_when_empty: false`, a run with no analyzed papers is silent. Check the output log and state. |
+| Slack delivery fails | Check bot token, destination conversation ID, and channel invitation. Failed messages remain in the outbox. |
+| Delete button does not respond | Check that the Mac is awake and the Slack listener is running; verify Socket Mode, Interactivity, and app token. |
+| Delete button says you lack permission | Check the configured Slack member ID. |
+| Publication or deletion fails | Inspect logs and run reports. Check Git push access, full text, unchanged recorded content, and whether another publication is in progress. |
+| Codex authentication fails | Run `codex login` as the operating user, then repeat the preflight. |
+
+See the [operator guide](docs/mac-mini-codex-operator-guide.md) for detailed setup and recovery.
+
+## Updating an existing Mac
+
+Wait for any active discovery or deletion job to finish. From the existing repository root, stop both services, pull, and reinstall them:
+
+```zsh
+launchctl bootout "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.ssmong.paper-radar.plist"
+launchctl bootout "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.ssmong.paper-radar-slack.plist"
+git pull --ff-only
+/bin/zsh scripts/macos/install_launch_agent.sh "$PWD"
+```
+
+A service that is not installed can report an error during `bootout`. If the pull fails, resolve that first before reinstalling. Preserve local run reports, feedback, state, and the outbox; do not discard them to force an update. Reinstalling restarts the listener so it loads the new code.
+
+To stop automation without uninstalling files, run only the two `bootout` commands above.
+
+## Configuration and stored data
+
+Edit [automation/paper-loop.json](automation/paper-loop.json) to change queries, classification thresholds, analysis limits, and Slack behavior. The default pipeline classifies up to 60 abstracts and performs detailed insight analysis for up to eight candidates. Automatic publication also fetches full text for each accepted paper, so it can use additional AI time.
+
+| Path | Contents |
+| --- | --- |
+| `content/` | English, Korean, and Chinese survey sources and paper details |
+| `reviews/` | OpenReview data |
+| `docs/` | Generated public site and operator guide |
+| `automation/inbox/latest.md` | Latest discovery report |
+| `automation/runs/` | Run records needed for publication retries and later deletion |
+| `automation/drafts/` | Drafts for AI-accepted candidates |
+| `automation/state.json` | Processed, seen, and pending paper IDs |
+| `automation/review_decisions.jsonl` | Local human feedback |
+| `automation/outbox/slack/` | Messages retained until successful delivery |
+| `automation/publications/` | Committed addition records and rejection records |
+
+Manual CLI runs publish only when `--auto-publish --notify-slack` is supplied with an LLM backend and Slack enabled. The Mac runner supplies these flags and loads Slack values from Keychain. Deterministic runs cannot auto-publish.
+
+The [paper discovery workflow](.github/workflows/paper-loop.yml) is a manual recovery tool. It uses deterministic classification and can create a draft review PR. It does not run daily, use your Codex login, send Slack digests, or publish papers. GitHub Pages deployment runs separately after a push to the site source.
+
+## Build or edit the website locally
+
+A static preview needs only Python:
+
+```zsh
+python3 build.py
+python3 -m http.server 5500 --directory docs
+```
+
+Open [localhost:5500](http://localhost:5500). For automatic rebuild and browser refresh, install the optional `livereload` dependency in a virtual environment and run `python3 scripts/serve.py`.
 
 ## Author
 
