@@ -1,0 +1,56 @@
+<p class="dp-p"># 9.10 BiGym 2.0</p>
+<ul class="dp-list">
+<li><strong>全称：</strong> BiGym 2.0: Benchmarking Learned and Agent-Developed Policies for Humanoid Household Manipulation</li>
+<li><strong>作者：</strong> Zexi Zhang, Zecheng Zhu, Zidong Chen, Zulkhuu Tuya, Stephen James</li>
+<li><strong>发表venue/年份：</strong> — / 2026（<a href="https://arxiv.org/abs/2610.07594v2" target="_blank" rel="noopener">arXiv 2610.07594v2</a>）</li>
+<li><strong>仿真平台：</strong> MuJoCo</li>
+<li><strong>灵巧手支持：</strong> 配备两个Dex1平行夹爪的Unitree G1</li>
+<li><strong>任务：</strong> 到达目标、桌面、洗碗机和厨房台面场景中的20个家务任务</li>
+<li><strong>演示：</strong> 每任务60个成功的人类VR演示；共1,200个回合</li>
+<li><strong>评估：</strong> 在9个代表任务上比较VLA微调、模仿学习、演示驱动RL和编码智能体程序的成功率</li>
+</ul>
+<h2 class="dp-h2">核心方法/设计</h2>
+<p class="dp-p">BiGym 2.0将BiGym改造为面向Unitree G1的家务操作基准。人类VR演示与策略评估使用同一个固定的GR00T-WBC行走和平衡控制器。策略接收三个机载RGB相机的图像与机器人本体感觉信息。它们通过统一接口发送手臂、夹爪和身体指令。评估重置时恢复仿真器与控制器状态。</p>
+<h2 class="dp-h2">主要贡献</h2>
+<ul class="dp-list">
+<li>为G1工作空间和行走动力学适配20个家务任务</li>
+<li>提供包含同步相机图像和全身执行记录的人类VR演示</li>
+<li>为学习策略和编码智能体开发的程序提供统一执行接口</li>
+<li>通过恢复控制器状态支持可重复评估</li>
+</ul>
+<h2 class="dp-h2">局限性/不足</h2>
+<ul class="dp-list">
+<li>所有评估均在仿真中进行，每个机器人使用一个固定全身控制器。未评估真实机器人部署及其他控制器。</li>
+<li>编码智能体每任务接收一个演示；学习策略使用60个演示训练。</li>
+<li>VLA微调每任务仅进行一次训练。其他学习方法进行三次训练。</li>
+<li>未评估已验证程序和技能的跨任务复用。</li>
+<li>跨工作空间的积木堆叠仍是开放难题。多物体搬运对模仿学习、演示驱动RL和编码智能体程序仍然困难。</li>
+</ul>
+<h2 class="dp-h2">覆盖缺口</h2>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>标准</th>
+<th>是否覆盖？</th>
+</tr></thead><tbody>
+<tr>
+<td>力/力矩评估指标</td>
+<td>—（未报告）</td>
+</tr>
+<tr>
+<td>可变形物体任务</td>
+<td>—（未报告）</td>
+</tr>
+<tr>
+<td>触觉传感</td>
+<td>—（未报告）</td>
+</tr>
+<tr>
+<td>多阶段/长时程任务</td>
+<td>是（跨工作空间的积木堆叠；仍是开放难题）</td>
+</tr>
+<tr>
+<td>多手协调</td>
+<td>是（双手到达目标和双手操作）</td>
+</tr>
+</tbody></table></div>
+<h2 class="dp-h2">开源状态</h2>
+<p class="dp-p">来源报告环境、人类演示和评估记录已开源。GitHub：<a href="https://github.com/swirl-uk/BiGym2" target="_blank" rel="noopener">swirl-uk/BiGym2</a>。安装命令和策略权重可用性：—（未报告）。</p>

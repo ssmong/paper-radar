@@ -316,6 +316,7 @@
 | **TeleOpBench** | 2025 | 2025 | 3种humanoid | Isaac Sim | 30个任务，4种teleoperation模态 | [GitHub](https://github.com/cyjdlhy/TeleOpBench) |
 | [**Isaac Lab**](https://isaac-sim.github.io/IsaacLab/) | RA-L / 2024 | 2024 | Allegro, Shadow, 任意URDF | Isaac Sim (PhysX 5) | IsaacGym继任者，GPU并行，RTX渲染 | `pip install isaaclab` |
 | [**TACTO**](https://github.com/facebookresearch/tacto) | RA-L | 2022 | Gripper（DIGIT/GelSight仿真） | PyBullet + PyRender | 基于视觉的tactile传感器仿真器 | `pip install tacto` |
+| [**BiGym 2.0**](https://arxiv.org/abs/2610.07594v2) | — | 2026 | Unitree G1，2个Dex1平行夹爪 | MuJoCo | 20个家务任务，每任务60个VR演示，共用全身控制器 | [GitHub](https://github.com/swirl-uk/BiGym2) |
 
 ---
 

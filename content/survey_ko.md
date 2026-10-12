@@ -316,6 +316,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 | **TeleOpBench** | 2025 | 2025 | 3종 humanoid | Isaac Sim | 30가지 Tasks, 4가지 teleoperation Modality | [GitHub](https://github.com/cyjdlhy/TeleOpBench) |
 | [**Isaac Lab**](https://isaac-sim.github.io/IsaacLab/) | RA-L / 2024 | 2024 | Allegro, Shadow, 모든 URDF | Isaac Sim (PhysX 5) | IsaacGym 후속, GPU 병렬, RTX 렌더링 | `pip install isaaclab` |
 | [**TACTO**](https://github.com/facebookresearch/tacto) | RA-L | 2022 | gripper (DIGIT/GelSight sim) | PyBullet + PyRender | 비전 기반 tactile 센서 시뮬레이터 | `pip install tacto` |
+| [**BiGym 2.0**](https://arxiv.org/abs/2610.07594v2) | — | 2026 | Unitree G1, Dex1 평행 그리퍼 2개 | MuJoCo | 가정용 작업 20개, 작업당 VR 시연 60개, 공통 전신 제어기 | [GitHub](https://github.com/swirl-uk/BiGym2) |
 
 ---
 

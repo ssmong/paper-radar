@@ -1,0 +1,56 @@
+<p class="dp-p"># 9.10 BiGym 2.0</p>
+<ul class="dp-list">
+<li><strong>전체 제목:</strong> BiGym 2.0: Benchmarking Learned and Agent-Developed Policies for Humanoid Household Manipulation</li>
+<li><strong>저자:</strong> Zexi Zhang, Zecheng Zhu, Zidong Chen, Zulkhuu Tuya, Stephen James</li>
+<li><strong>학회/연도:</strong> — / 2026 (<a href="https://arxiv.org/abs/2610.07594v2" target="_blank" rel="noopener">arXiv 2610.07594v2</a>)</li>
+<li><strong>시뮬레이션 플랫폼:</strong> MuJoCo</li>
+<li><strong>Dexterous 지원:</strong> Dex1 평행 그리퍼 2개를 갖춘 Unitree G1</li>
+<li><strong>작업:</strong> reaching, 탁상, 식기세척기, 주방 조리대 장면의 가정용 작업 20개</li>
+<li><strong>시연:</strong> 작업당 성공한 인간 VR 시연 60개; 총 1,200개 에피소드</li>
+<li><strong>평가:</strong> 대표 작업 9개에서 VLA 미세조정, 모방학습, 시연 기반 RL, 코딩 에이전트 프로그램의 성공률 비교</li>
+</ul>
+<h2 class="dp-h2">핵심 방법론/설계</h2>
+<p class="dp-p">BiGym 2.0은 BiGym을 Unitree G1의 가정용 조작에 맞게 수정한다. 인간 VR 시연과 정책 평가는 동일한 고정 GR00T-WBC 보행·균형 제어기를 사용한다. 정책은 로봇에 장착된 RGB 카메라 3개의 영상과 로봇 고유감각 정보를 받는다. 공통 인터페이스로 팔, 그리퍼, 몸체 명령을 전송한다. 평가 초기화 시 시뮬레이터와 제어기 상태를 복원한다.</p>
+<h2 class="dp-h2">주요 기여</h2>
+<ul class="dp-list">
+<li>G1 작업 공간과 보행 동역학에 맞게 수정한 가정용 작업 20개</li>
+<li>동기화된 카메라 영상과 전신 실행 기록을 포함한 인간 VR 시연</li>
+<li>학습 정책과 코딩 에이전트가 개발한 프로그램을 위한 공통 실행 인터페이스</li>
+<li>반복 가능한 평가를 위한 제어기 상태 복원</li>
+</ul>
+<h2 class="dp-h2">한계점</h2>
+<ul class="dp-list">
+<li>모든 평가는 시뮬레이션에서 로봇당 하나의 고정 전신 제어기를 사용한다. 실제 로봇 실행과 다른 제어기는 평가하지 않았다.</li>
+<li>코딩 에이전트는 작업당 시연 1개를 받으며, 학습 정책은 60개로 학습한다.</li>
+<li>VLA 미세조정은 작업당 학습 실행 1회를 사용한다. 다른 학습 방법은 3회를 사용한다.</li>
+<li>검증된 프로그램과 기술의 작업 간 재사용은 평가하지 않았다.</li>
+<li>작업 공간을 이동하는 블록 쌓기는 미해결 과제로 남아 있다. 여러 객체 운반은 모방학습, 시연 기반 RL, 코딩 에이전트 프로그램에 여전히 어렵다.</li>
+</ul>
+<h2 class="dp-h2">커버리지 격차</h2>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>기준</th>
+<th>충족 여부</th>
+</tr></thead><tbody>
+<tr>
+<td>Force/torque 평가 지표</td>
+<td>— (보고되지 않음)</td>
+</tr>
+<tr>
+<td>Deformable 객체 작업</td>
+<td>— (보고되지 않음)</td>
+</tr>
+<tr>
+<td>Tactile 센싱</td>
+<td>— (보고되지 않음)</td>
+</tr>
+<tr>
+<td>Multi-stage / long-horizon 작업</td>
+<td>예 (작업 공간을 이동하는 블록 쌓기; 미해결 과제)</td>
+</tr>
+<tr>
+<td>Multi-hand 협동</td>
+<td>예 (양손 reaching 및 양손 조작)</td>
+</tr>
+</tbody></table></div>
+<h2 class="dp-h2">오픈소스 현황</h2>
+<p class="dp-p">출처는 환경, 인간 시연, 평가 기록을 오픈소스로 공개했다고 보고한다. GitHub: <a href="https://github.com/swirl-uk/BiGym2" target="_blank" rel="noopener">swirl-uk/BiGym2</a>. 설치 명령과 정책 가중치 제공 여부: — (보고되지 않음).</p>

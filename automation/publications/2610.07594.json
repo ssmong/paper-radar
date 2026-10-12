@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section9/bigym2.md": "833ba3ed90272cb3ac88c374fa0858c6e0f16aa088c210694571fa7f2a3e457a",
+    "detailed_ko/section9/bigym2.md": "10aee25c0d8b16c562d5e6a4daeba36fc0667105b69a5c9c2e5c2b11bc9896cc",
+    "detailed_zh/section9/bigym2.md": "6cf46c7594d355d24c7ebdfc4e0bcdbd58a1b68ac755f488121435d673c583a5"
+  },
+  "paper_id": "2610.07594",
+  "rows": {
+    "survey.md": "| [**BiGym 2.0**](https://arxiv.org/abs/2610.07594v2) | — | 2026 | Unitree G1, 2 Dex1 parallel grippers | MuJoCo | 20 household tasks, 60 VR demos/task, shared whole-body controller | [GitHub](https://github.com/swirl-uk/BiGym2) |",
+    "survey_ko.md": "| [**BiGym 2.0**](https://arxiv.org/abs/2610.07594v2) | — | 2026 | Unitree G1, Dex1 평행 그리퍼 2개 | MuJoCo | 가정용 작업 20개, 작업당 VR 시연 60개, 공통 전신 제어기 | [GitHub](https://github.com/swirl-uk/BiGym2) |",
+    "survey_zh.md": "| [**BiGym 2.0**](https://arxiv.org/abs/2610.07594v2) | — | 2026 | Unitree G1，2个Dex1平行夹爪 | MuJoCo | 20个家务任务，每任务60个VR演示，共用全身控制器 | [GitHub](https://github.com/swirl-uk/BiGym2) |"
+  },
+  "run_id": "2026-10-12T155035Z",
+  "status": "published"
+}

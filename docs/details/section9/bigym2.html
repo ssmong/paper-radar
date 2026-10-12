@@ -1,0 +1,56 @@
+<p class="dp-p"># 9.10 BiGym 2.0</p>
+<ul class="dp-list">
+<li><strong>Full title:</strong> BiGym 2.0: Benchmarking Learned and Agent-Developed Policies for Humanoid Household Manipulation</li>
+<li><strong>Authors:</strong> Zexi Zhang, Zecheng Zhu, Zidong Chen, Zulkhuu Tuya, Stephen James</li>
+<li><strong>Venue/Year:</strong> — / 2026 (<a href="https://arxiv.org/abs/2610.07594v2" target="_blank" rel="noopener">arXiv 2610.07594v2</a>)</li>
+<li><strong>Sim platform:</strong> MuJoCo</li>
+<li><strong>Dexterous support:</strong> Unitree G1 with two Dex1 parallel grippers</li>
+<li><strong>Tasks:</strong> 20 household tasks in reaching, tabletop, dishwasher, and kitchen-counter scenes</li>
+<li><strong>Demonstrations:</strong> 60 successful human VR demonstrations per task; 1,200 episodes in total</li>
+<li><strong>Evaluation:</strong> Success rates on nine representative tasks for VLA fine-tuning, imitation learning, demonstration-driven RL, and coding-agent programs</li>
+</ul>
+<h2 class="dp-h2">Key methodology/design</h2>
+<p class="dp-p">BiGym 2.0 adapts BiGym to household manipulation with the Unitree G1. Human VR demonstrations and policy evaluation use the same frozen GR00T-WBC walking and balance controller. Policies receive three onboard RGB camera views and robot proprioception. They send arm, gripper, and body commands through a common interface. Evaluation resets restore simulator and controller state.</p>
+<h2 class="dp-h2">Main contributions</h2>
+<ul class="dp-list">
+<li>20 household tasks adapted to the G1 workspace and walking dynamics</li>
+<li>Human VR demonstrations with synchronized camera views and full-body execution records</li>
+<li>A common execution interface for learned policies and programs developed by coding agents</li>
+<li>Controller-state restoration for repeatable evaluation</li>
+</ul>
+<h2 class="dp-h2">Limitations/Gaps</h2>
+<ul class="dp-list">
+<li>All evaluations use simulation with one frozen whole-body controller per robot. Physical deployment and other controllers are not evaluated.</li>
+<li>Coding agents receive one demonstration per task; learned policies train on 60.</li>
+<li>VLA fine-tuning uses one training run per task. The other learned methods use three runs.</li>
+<li>Cross-task reuse of verified programs and skills is not evaluated.</li>
+<li>Cross-workspace stacking remains an open challenge. Multi-object transport remains difficult for imitation learning, demonstration-driven RL, and coding-agent programs.</li>
+</ul>
+<h2 class="dp-h2">Coverage gaps</h2>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Criterion</th>
+<th>Covered?</th>
+</tr></thead><tbody>
+<tr>
+<td>Force/torque evaluation metrics</td>
+<td>— (not reported)</td>
+</tr>
+<tr>
+<td>Deformable object tasks</td>
+<td>— (not reported)</td>
+</tr>
+<tr>
+<td>Tactile sensing</td>
+<td>— (not reported)</td>
+</tr>
+<tr>
+<td>Multi-stage / long-horizon tasks</td>
+<td>Yes (cross-workspace block stacking; remains an open challenge)</td>
+</tr>
+<tr>
+<td>Multi-hand coordination</td>
+<td>Yes (dual reaching and bimanual manipulation)</td>
+</tr>
+</tbody></table></div>
+<h2 class="dp-h2">Open-source status</h2>
+<p class="dp-p">The source reports that environments, human demonstrations, and evaluation traces are open-source. GitHub: <a href="https://github.com/swirl-uk/BiGym2" target="_blank" rel="noopener">swirl-uk/BiGym2</a>. Installation command and policy-weight availability: — (not reported).</p>

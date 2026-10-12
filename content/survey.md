@@ -316,6 +316,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 | **TeleOpBench** | 2025 | 2025 | 3 humanoids | Isaac Sim | 30 tasks, 4 teleop modalities | [GitHub](https://github.com/cyjdlhy/TeleOpBench) |
 | [**Isaac Lab**](https://isaac-sim.github.io/IsaacLab/) | RA-L / 2024 | 2024 | Allegro, Shadow, any URDF | Isaac Sim (PhysX 5) | IsaacGym successor, GPU-parallel, RTX rendering | `pip install isaaclab` |
 | [**TACTO**](https://github.com/facebookresearch/tacto) | RA-L | 2022 | Gripper (DIGIT/GelSight sim) | PyBullet + PyRender | Vision-based tactile sensor simulator | `pip install tacto` |
+| [**BiGym 2.0**](https://arxiv.org/abs/2610.07594v2) | — | 2026 | Unitree G1, 2 Dex1 parallel grippers | MuJoCo | 20 household tasks, 60 VR demos/task, shared whole-body controller | [GitHub](https://github.com/swirl-uk/BiGym2) |
 
 ---
 
