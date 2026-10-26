@@ -1,0 +1,46 @@
+<h3 class="dp-h3">7.4 DONIC</h3>
+<p class="dp-p"><strong>Full title:</strong> DONIC: Generalist Dexterous Bimanual Tracking Control from Human Demonstrations</p>
+<p class="dp-p"><strong>Authors:</strong> Mingze Sun, Ziang Cao, Yuan Fei, Qiankuan Tao, Zihan Wang, Tianqi Liu, Junhao Chen, Haiwen Diao, Fangzhou Hong, Zhaoxi Chen, Ziwei Liu (Ropedia)</p>
+<p class="dp-p"><strong>Venue/Year:</strong> arXiv 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> https://arxiv.org/abs/2610.29997v1</p>
+<p class="dp-p"><strong>Project page:</strong> https://ropedia.github.io/DONIC</p>
+<p class="dp-p"><strong>RL algorithm:</strong> Proximal policy optimization (PPO) with behavioral cloning (BC). Verified successful executions become training demonstrations. Clip-Centered Advantages (CCA) subtract the mean advantage for each reference clip before PPO updates.</p>
+<p class="dp-p"><strong>Hand hardware:</strong> Two Wuji Hand V1 robot models in simulation; DoF not reported.</p>
+<p class="dp-p"><strong>Sim platform:</strong> Isaac Gym</p>
+<p class="dp-p"><strong>Sim2Real?</strong> No. Quantitative evaluation uses simulation. Transfer to physical bimanual systems is future work.</p>
+<p class="dp-p"><strong>Tasks:</strong> Bimanual reference tracking across operation categories and human-motion sources. One policy controls both hands to reproduce reference object motion.</p>
+<p class="dp-p"><strong>Key methodology:</strong> Human hand–object motions are reconstructed, retargeted, and screened by replay. One policy predicts corrections to the next reference for both hands. An object-centered reward tracks object motion and supervises each hand according to its reference contact role. PPO and BC training reuses verified successes. CCA removes clip-specific advantage offsets while preserving differences within each clip.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>One bimanual tracker learns across operation categories and human-motion sources. It tracks unseen trajectories and objects without fine-tuning.</li>
+<li>BiHOI adds 1,575 multi-view interaction sequences covering 229 objects.</li>
+<li>Per-hand contact rewards and CCA support shared training across different contact roles and clip difficulty.</li>
+</ul>
+<p class="dp-p"><strong>Results:</strong> On 53 unseen trajectories of training objects, DONIC achieves 86.79% success and 67.62% completion. On 164 clips with held-out objects, it achieves 57.32% success and 54.69% completion. With BiHOI added to training, success reaches 88.68% and 59.76%, respectively. All results use simulation and no fine-tuning. Success uses trajectory-averaged error thresholds for both hands; completion measures the fraction of frames that meet all thresholds for both hands.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong> Quantitative evaluation covers simulated single-object interactions with reconstructed, retargeted references. Longer tasks, multiple objects, an independent benchmark, and physical transfer remain future work. Net contact force cannot identify the collision partner. Success based on average errors does not establish stable tracking at every frame.</p>
+<p class="dp-p"><strong>Code:</strong> —</p>
+<p class="dp-p"><strong>Weights:</strong> —</p>
+<h2 class="dp-h2">AI Research Assessments</h2>
+<p class="dp-p">Mean AI research assessments from three reviewers, on a 10-point scale. Overall: <strong>7.3/10</strong>.</p>
+<ul class="dp-list">
+<li><strong>Importance: 8.0/10.</strong> Shared learning of support and manipulation roles addresses useful coordination for household, assembly, and assistive robots. Physical transfer remains untested.</li>
+<li><strong>Contribution beyond prior work: 7.0/10.</strong> Per-hand contact rewards, CCA, and BiHOI extend DexTrack's PPO + BC approach to one bimanual policy. The training framework builds on prior work.</li>
+<li><strong>Method quality: 7.7/10.</strong> Separate object-motion and per-hand contact feedback fits asynchronous coordination. Net contact force cannot identify the collision partner, and the proposed explanation for CCA's effect has indirect support.</li>
+<li><strong>Effectiveness: 7.3/10.</strong> Shared-data comparisons and ablations support better tracking. Held-out-object success remains partial, and trajectory-average success does not establish continuous stability.</li>
+<li><strong>Evidence for closing the research gap: 7.0/10.</strong> One policy tracks unseen references without fine-tuning, and added BiHOI data helps. Evidence remains limited to selected single-object simulations.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Dataset used:</strong> GRAB, GigaHands, OakInk2, TACO, and H2O provide public references. The additional-data variant also uses BiHOI.</li>
+<li><strong>Collection method:</strong> BiHOI records human hand–object interactions with 32 calibrated RGB cameras. Reconstructed hand and object motion becomes robot references through retargeting. Public references are also retargeted and screened by replay.</li>
+<li><strong>Data scale:</strong> 1,845 public-data training clips; 3,420 with BiHOI. BiHOI contains 1,575 sequences, 229 objects, and 14.77 hours of interaction.</li>
+<li><strong>Teleop equipment:</strong> —</li>
+<li><strong>Data format:</strong> Reconstructed hand parameters, object meshes and poses, and retargeted wrist and finger references.</li>
+<li><strong>Publicly available?</strong> —</li>
+</ul>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —</li>
+<li><strong>Deployment hardware:</strong> Evaluated with two Wuji Hand V1 models in Isaac Gym. Physical deployment remains future work.</li>
+<li><strong>Real-time capable?</strong> —</li>
+</ul>

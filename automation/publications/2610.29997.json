@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section7/donic.md": "3e4e2820234d10b74123bbe385f574ec235eb218649d3278bedc5f5f351e1164",
+    "detailed_ko/section7/donic.md": "24e3722a141b386550260e1afdf780a93fb5c7e049b9aa3a0ec1297f413c7be4",
+    "detailed_zh/section7/donic.md": "28da17ff21e0b7326aa21be9994fa8eb42b134b47a2b44c7ca7af8e6eff8e72b"
+  },
+  "paper_id": "2610.29997",
+  "rows": {
+    "survey.md": "| [**DONIC**](https://arxiv.org/abs/2610.29997v1) | Ropedia | arXiv | 2026 | 2x Wuji Hand V1 (DoF —) | Bimanual reference tracking (PPO + BC) | ✗ | — |",
+    "survey_ko.md": "| [**DONIC**](https://arxiv.org/abs/2610.29997v1) | Ropedia | arXiv | 2026 | 2x Wuji Hand V1 (자유도 —) | 양손 참조 궤적 추적 (PPO + BC) | ✗ | — |",
+    "survey_zh.md": "| [**DONIC**](https://arxiv.org/abs/2610.29997v1) | Ropedia | arXiv | 2026 | 2x Wuji Hand V1（自由度 —） | 双手参考轨迹跟踪（PPO + BC） | ✗ | — |"
+  },
+  "run_id": "2026-10-26T233643Z",
+  "status": "published"
+}

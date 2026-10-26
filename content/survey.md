@@ -230,6 +230,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 | [**DQ-RISE**](https://arxiv.org/abs/2503.01766) | SJTU | ICRA | 2026 | OyMotion RoHand + Flexiv Rizon 4 | 6 real tasks, 85.83% | ✅ | [GitHub](https://github.com/rise-policy/DQ-RISE) ✅ |
 | [**DexTrack**](https://arxiv.org/abs/2501.15760) | PKU/Shanghai AI | ICLR | 2025 | Shadow (24), Allegro (16) | MoCap tracking | ✗ | [GitHub](https://github.com/Meowuu7/DexTrack) partial |
 | [**BiDexHD**](https://arxiv.org/abs/2501.09821) | PKU | arXiv | 2025 | 2x Shadow (48) | 141 bimanual tasks (TACO) | ✗ | ✗ |
+| [**DONIC**](https://arxiv.org/abs/2610.29997v1) | Ropedia | arXiv | 2026 | 2x Wuji Hand V1 (DoF —) | Bimanual reference tracking (PPO + BC) | ✗ | — |
 | [**HandelBot**](https://arxiv.org/abs/2603.12243) | Stanford | arXiv | 2026 | LEAP (16) bimanual | Real piano playing | ✅ | [GitHub](https://github.com/amberxie88/handelbot) ✅ |
 | [**DexDrummer**](https://arxiv.org/abs/2603.22263) | Stanford | arXiv | 2026 | Bimanual dexterous | Drumming (contact-rich) | ✗ | [GitHub](https://github.com/hc-fang/dexdrummer) ✅ |
 | [**RoboPianist**](https://arxiv.org/abs/2304.04150) | Google/Berkeley | CoRL | 2023 | Anthropomorphic bimanual | Piano (150 pieces) | ✗ | [GitHub](https://github.com/google-research/robopianist) ✅ |

@@ -230,6 +230,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 | [**DQ-RISE**](https://arxiv.org/abs/2503.01766) | SJTU | ICRA | 2026 | OyMotion RoHand + Flexiv Rizon 4 | 6가지 실제 Tasks, 85.83% | ✅ | [GitHub](https://github.com/rise-policy/DQ-RISE) ✅ |
 | [**DexTrack**](https://arxiv.org/abs/2501.15760) | PKU/Shanghai AI | ICLR | 2025 | Shadow (24), Allegro (16) | MoCap 추적 | ✗ | [GitHub](https://github.com/Meowuu7/DexTrack) partial |
 | [**BiDexHD**](https://arxiv.org/abs/2501.09821) | PKU | arXiv | 2025 | 2x Shadow (48) | 141가지 bimanual Tasks (TACO) | ✗ | ✗ |
+| [**DONIC**](https://arxiv.org/abs/2610.29997v1) | Ropedia | arXiv | 2026 | 2x Wuji Hand V1 (자유도 —) | 양손 참조 궤적 추적 (PPO + BC) | ✗ | — |
 | [**HandelBot**](https://arxiv.org/abs/2603.12243) | Stanford | arXiv | 2026 | LEAP (16) bimanual | 실제 피아노 연주 | ✅ | [GitHub](https://github.com/amberxie88/handelbot) ✅ |
 | [**DexDrummer**](https://arxiv.org/abs/2603.22263) | Stanford | arXiv | 2026 | bimanual dexterous | 드럼 연주 (contact-rich) | ✗ | [GitHub](https://github.com/hc-fang/dexdrummer) ✅ |
 | [**RoboPianist**](https://arxiv.org/abs/2304.04150) | Google/Berkeley | CoRL | 2023 | 의인화 bimanual | 피아노 (150곡) | ✗ | [GitHub](https://github.com/google-research/robopianist) ✅ |

@@ -1,0 +1,46 @@
+<h3 class="dp-h3">7.4 DONIC</h3>
+<p class="dp-p"><strong>전체 제목:</strong> DONIC: Generalist Dexterous Bimanual Tracking Control from Human Demonstrations</p>
+<p class="dp-p"><strong>저자:</strong> Mingze Sun, Ziang Cao, Yuan Fei, Qiankuan Tao, Zihan Wang, Tianqi Liu, Junhao Chen, Haiwen Diao, Fangzhou Hong, Zhaoxi Chen, Ziwei Liu (Ropedia)</p>
+<p class="dp-p"><strong>학회/연도:</strong> arXiv 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> https://arxiv.org/abs/2610.29997v1</p>
+<p class="dp-p"><strong>프로젝트 페이지:</strong> https://ropedia.github.io/DONIC</p>
+<p class="dp-p"><strong>RL 알고리즘:</strong> PPO와 행동 복제(BC)를 결합한다. 검증된 성공 실행을 학습 시연으로 재사용한다. Clip-Centered Advantages(CCA)는 PPO 갱신 전에 참조 클립별 평균 어드밴티지를 뺀다.</p>
+<p class="dp-p"><strong>핸드 하드웨어:</strong> 시뮬레이션의 Wuji Hand V1 모델 2개. 자유도는 보고되지 않았다.</p>
+<p class="dp-p"><strong>시뮬레이션 플랫폼:</strong> Isaac Gym</p>
+<p class="dp-p"><strong>Sim2Real 여부:</strong> 아니오. 정량 평가는 시뮬레이션에서 수행했다. 실제 양손 시스템으로의 전이는 향후 과제다.</p>
+<p class="dp-p"><strong>작업:</strong> 여러 작업 범주와 인간 동작 데이터 출처에 걸친 양손 참조 궤적 추적. 하나의 정책이 양손을 제어하여 참조 물체 동작을 재현한다.</p>
+<p class="dp-p"><strong>핵심 방법론:</strong> 인간 손–물체 동작을 재구성하고 로봇에 리타기팅한 후 재생으로 선별한다. 하나의 정책이 양손의 다음 참조에 대한 보정값을 예측한다. 물체 중심 보상은 물체 동작을 추적하고 각 손의 참조 접촉 역할을 감독한다. PPO와 BC 학습은 검증된 성공 실행을 재사용한다. CCA는 클립 내부의 차이를 유지하면서 클립별 어드밴티지 오프셋을 제거한다.</p>
+<p class="dp-p"><strong>주요 기여:</strong></p>
+<ul class="dp-list">
+<li>여러 작업 범주와 인간 동작 출처를 하나의 양손 추적기로 학습한다. 미세조정 없이 미관측 궤적과 물체를 추적한다.</li>
+<li>BiHOI는 229개 물체를 포함한 다중 시점 상호작용 시퀀스 1,575개를 추가한다.</li>
+<li>손별 접촉 보상과 CCA로 접촉 역할과 클립 난이도가 다른 참조를 함께 학습한다.</li>
+</ul>
+<p class="dp-p"><strong>결과:</strong> 학습 물체의 미관측 궤적 53개에서 성공률 86.79%, 완료율 67.62%를 기록했다. 학습에서 제외한 물체의 클립 164개에서는 성공률 57.32%, 완료율 54.69%를 기록했다. BiHOI를 학습에 추가하면 성공률은 각각 88.68%, 59.76%다. 모든 결과는 미세조정 없는 시뮬레이션 평가다. 성공률은 양손의 궤적 평균 오차 기준으로 판정한다. 완료율은 양손이 모든 오차 기준을 충족하는 프레임의 비율이다.</p>
+<p class="dp-p"><strong>한계점:</strong> 정량 평가는 재구성·리타기팅한 참조를 사용하는 시뮬레이션 단일 물체 상호작용에 한정된다. 장기 작업, 다중 물체, 독립 벤치마크, 실제 시스템 전이는 향후 과제다. 순접촉력은 충돌 상대를 식별하지 못한다. 평균 오차에 따른 성공은 모든 프레임의 안정적인 추적을 입증하지 않는다.</p>
+<p class="dp-p"><strong>코드:</strong> —</p>
+<p class="dp-p"><strong>가중치:</strong> —</p>
+<h2 class="dp-h2">AI 연구 평가</h2>
+<p class="dp-p">AI 검토자 3명의 연구 평가 평균이며, 10점 척도다. 종합 점수: <strong>7.3/10</strong>.</p>
+<ul class="dp-list">
+<li><strong>중요성: 8.0/10.</strong> 지지와 조작 역할을 함께 학습하는 문제는 가사·조립·보조 로봇에 유용하다. 실제 시스템 전이는 검증되지 않았다.</li>
+<li><strong>기존 연구 대비 기여: 7.0/10.</strong> 손별 접촉 보상, CCA, BiHOI로 DexTrack의 PPO + BC를 단일 양손 정책으로 확장했다. 학습 구조는 기존 연구를 기반으로 한다.</li>
+<li><strong>방법의 품질: 7.7/10.</strong> 물체 동작과 손별 접촉 피드백을 분리한 설계는 비동기 협응에 적합하다. 순접촉력은 충돌 상대를 식별하지 못하며, CCA의 효과에 대한 설명은 간접적으로 뒷받침된다.</li>
+<li><strong>효과성: 7.3/10.</strong> 동일 데이터 비교와 절제 실험이 추적 개선을 뒷받침한다. 미관측 물체의 성공은 부분적이며, 궤적 평균 성공이 지속적인 안정성을 입증하지는 않는다.</li>
+<li><strong>연구 공백 해소 근거: 7.0/10.</strong> 하나의 정책으로 미세조정 없이 미관측 참조를 추적하고 BiHOI 추가 효과를 보였다. 근거는 선별된 단일 물체 시뮬레이션에 한정된다.</li>
+</ul>
+<h2 class="dp-h2">데이터셋 / 데이터 수집</h2>
+<ul class="dp-list">
+<li><strong>사용 데이터셋:</strong> GRAB, GigaHands, OakInk2, TACO, H2O의 공개 참조를 사용한다. 추가 데이터 모델은 BiHOI도 사용한다.</li>
+<li><strong>수집 방법:</strong> BiHOI는 보정된 RGB 카메라 32대로 인간 손–물체 상호작용을 기록한다. 손과 물체의 동작을 재구성한 후 리타기팅으로 로봇 참조를 만든다. 공개 참조도 리타기팅하고 재생으로 선별한다.</li>
+<li><strong>데이터 규모:</strong> 공개 데이터 학습 클립 1,845개. BiHOI를 포함하면 3,420개다. BiHOI는 시퀀스 1,575개, 물체 229개, 상호작용 14.77시간을 포함한다.</li>
+<li><strong>원격 조작 장비:</strong> —</li>
+<li><strong>데이터 포맷:</strong> 재구성한 손 매개변수, 물체 메시와 자세, 리타기팅한 손목·손가락 참조.</li>
+<li><strong>공개 여부:</strong> —</li>
+</ul>
+<h2 class="dp-h2">추론 / 배포</h2>
+<ul class="dp-list">
+<li><strong>추론 지연 시간:</strong> —</li>
+<li><strong>배포 하드웨어:</strong> Isaac Gym의 Wuji Hand V1 모델 2개로 평가했다. 실제 배포는 향후 과제다.</li>
+<li><strong>실시간 가능 여부:</strong> —</li>
+</ul>

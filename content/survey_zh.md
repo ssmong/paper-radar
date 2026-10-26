@@ -230,6 +230,7 @@
 | [**DQ-RISE**](https://arxiv.org/abs/2503.01766) | SJTU | ICRA | 2026 | OyMotion RoHand + Flexiv Rizon 4 | 6个真实任务，85.83% | ✅ | [GitHub](https://github.com/rise-policy/DQ-RISE) ✅ |
 | [**DexTrack**](https://arxiv.org/abs/2501.15760) | PKU/Shanghai AI | ICLR | 2025 | Shadow (24), Allegro (16) | 动捕跟踪 | ✗ | [GitHub](https://github.com/Meowuu7/DexTrack) 部分 |
 | [**BiDexHD**](https://arxiv.org/abs/2501.09821) | PKU | arXiv | 2025 | 2x Shadow (48) | 141个bimanual任务 (TACO) | ✗ | ✗ |
+| [**DONIC**](https://arxiv.org/abs/2610.29997v1) | Ropedia | arXiv | 2026 | 2x Wuji Hand V1（自由度 —） | 双手参考轨迹跟踪（PPO + BC） | ✗ | — |
 | [**HandelBot**](https://arxiv.org/abs/2603.12243) | Stanford | arXiv | 2026 | LEAP (16) bimanual | 真实钢琴弹奏 | ✅ | [GitHub](https://github.com/amberxie88/handelbot) ✅ |
 | [**DexDrummer**](https://arxiv.org/abs/2603.22263) | Stanford | arXiv | 2026 | Bimanual dexterous | 打鼓（contact-rich） | ✗ | [GitHub](https://github.com/hc-fang/dexdrummer) ✅ |
 | [**RoboPianist**](https://arxiv.org/abs/2304.04150) | Google/Berkeley | CoRL | 2023 | Humanoid bimanual | 钢琴（150首曲目） | ✗ | [GitHub](https://github.com/google-research/robopianist) ✅ |

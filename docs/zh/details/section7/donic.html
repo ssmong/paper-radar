@@ -1,0 +1,46 @@
+<h3 class="dp-h3">7.4 DONIC</h3>
+<p class="dp-p"><strong>完整标题：</strong> DONIC: Generalist Dexterous Bimanual Tracking Control from Human Demonstrations</p>
+<p class="dp-p"><strong>作者：</strong> Mingze Sun, Ziang Cao, Yuan Fei, Qiankuan Tao, Zihan Wang, Tianqi Liu, Junhao Chen, Haiwen Diao, Fangzhou Hong, Zhaoxi Chen, Ziwei Liu（Ropedia）</p>
+<p class="dp-p"><strong>发表venue/年份：</strong> arXiv 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> https://arxiv.org/abs/2610.29997v1</p>
+<p class="dp-p"><strong>项目主页：</strong> https://ropedia.github.io/DONIC</p>
+<p class="dp-p"><strong>RL算法：</strong> PPO与行为克隆（BC）结合。经验证的成功执行被用作训练演示。Clip-Centered Advantages（CCA）在PPO更新前减去每个参考片段的平均优势值。</p>
+<p class="dp-p"><strong>手部硬件：</strong> 仿真中的两个Wuji Hand V1模型；自由度未报告。</p>
+<p class="dp-p"><strong>仿真平台：</strong> Isaac Gym</p>
+<p class="dp-p"><strong>仿真到真实？</strong> 否。定量评估在仿真中进行。向真实双手系统迁移属于未来工作。</p>
+<p class="dp-p"><strong>任务：</strong> 跨操作类别和人类动作数据来源的双手参考轨迹跟踪。单一策略控制双手，重现参考物体运动。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 重建人类手–物体运动，将其重定向到机器人，并通过回放筛选。单一策略预测双手下一步参考的修正量。以物体为中心的奖励跟踪物体运动，并按参考接触角色监督每只手。PPO与BC训练重复使用经验证的成功执行。CCA去除片段特定的优势偏移，同时保留片段内的优势差异。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>单一双手跟踪器跨操作类别和人类动作来源学习，无需微调即可跟踪未见轨迹和物体。</li>
+<li>BiHOI增加1,575个多视角交互序列，覆盖229个物体。</li>
+<li>每只手的接触奖励与CCA支持接触角色和难度不同的参考共同训练。</li>
+</ul>
+<p class="dp-p"><strong>结果：</strong> 在训练物体的53条未见轨迹上，DONIC的成功率为86.79%，完成率为67.62%。在包含留出物体的164个片段上，成功率为57.32%，完成率为54.69%。加入BiHOI训练后，成功率分别为88.68%和59.76%。所有结果均来自无需微调的仿真评估。成功率依据双手的轨迹平均误差阈值判定；完成率衡量双手同时满足全部误差阈值的帧比例。</p>
+<p class="dp-p"><strong>局限性/差距：</strong> 定量评估仅覆盖使用重建和重定向参考的仿真单物体交互。长时程操作、多物体、独立基准和真实系统迁移属于未来工作。净接触力不能识别碰撞对象。基于平均误差的成功不能证明每一帧都保持稳定跟踪。</p>
+<p class="dp-p"><strong>代码：</strong> —</p>
+<p class="dp-p"><strong>权重：</strong> —</p>
+<h2 class="dp-h2">AI研究评估</h2>
+<p class="dp-p">以下为三位AI评审者的研究评估均分，采用10分制。综合评分：<strong>7.3/10</strong>。</p>
+<ul class="dp-list">
+<li><strong>重要性：8.0/10。</strong> 共同学习支撑和操作角色，有助于解决家务、装配和辅助机器人的协作问题。真实系统迁移尚未验证。</li>
+<li><strong>相对已有工作的贡献：7.0/10。</strong> 每只手的接触奖励、CCA和BiHOI将DexTrack的PPO + BC方法扩展到单一双手策略。训练框架建立在已有工作之上。</li>
+<li><strong>方法质量：7.7/10。</strong> 分离物体运动与每只手的接触反馈，适合异步协作。净接触力不能识别碰撞对象，对CCA作用机制的解释仅有间接支持。</li>
+<li><strong>有效性：7.3/10。</strong> 相同数据条件下的比较和消融实验支持跟踪改进。留出物体上的成功仍不充分，轨迹平均成功不能证明连续稳定性。</li>
+<li><strong>填补研究空白的证据：7.0/10。</strong> 单一策略无需微调即可跟踪未见参考，加入BiHOI也有帮助。证据仅限于筛选后的单物体仿真。</li>
+</ul>
+<h2 class="dp-h2">数据集 / 数据收集</h2>
+<ul class="dp-list">
+<li><strong>使用的数据集：</strong> 公开参考来自GRAB、GigaHands、OakInk2、TACO和H2O。附加数据版本也使用BiHOI。</li>
+<li><strong>收集方法：</strong> BiHOI使用32台标定RGB相机记录人类手–物体交互。重建手和物体运动后，通过重定向生成机器人参考。公开参考也经过重定向和回放筛选。</li>
+<li><strong>数据规模：</strong> 公开数据训练片段为1,845个，加入BiHOI后为3,420个。BiHOI包含1,575个序列、229个物体和14.77小时交互。</li>
+<li><strong>遥操作设备：</strong> —</li>
+<li><strong>数据格式：</strong> 重建的手部参数、物体网格和姿态，以及重定向的手腕和手指参考。</li>
+<li><strong>是否公开？</strong> —</li>
+</ul>
+<h2 class="dp-h2">推理 / 部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —</li>
+<li><strong>部署硬件：</strong> 在Isaac Gym中使用两个Wuji Hand V1模型评估。真实部署属于未来工作。</li>
+<li><strong>支持实时？</strong> —</li>
+</ul>
