@@ -364,11 +364,53 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 
 ---
 
-## 13. Open Research Directions
+## 13. Legged & Humanoid Robot Learning
+
+| Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
+|---|---|---|---|---|---|
+
+---
+
+## 14. Learning-based, Optimal & Safe Control
+
+| Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
+|---|---|---|---|---|---|
+
+---
+
+## 15. General Robot Manipulation & Imitation Learning
+
+| Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
+|---|---|---|---|---|---|
+
+---
+
+## 16. Motion Planning & Decision Making
+
+| Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
+|---|---|---|---|---|---|
+
+---
+
+## 17. State Estimation & Sensor Fusion
+
+| Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
+|---|---|---|---|---|---|
+
+---
+
+## 18. Robot World Models & Embodied Foundation Models
+
+| Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
+|---|---|---|---|---|---|
+
+---
+
+## 19. Open Research Directions
 
 This section highlights under-explored intersections of capabilities that emerge from the surveyed literature. These are not exhaustive; concurrent or unpublished work may partially address some of these directions.
 
-### 13.1 Capability Matrix
+### 19.1 Capability Matrix
 
 The following table maps representative systems against properties relevant to contact-rich dexterous manipulation. "Simulation" refers to publicly available simulation environments for training or evaluation.
 
@@ -385,7 +427,7 @@ The following table maps representative systems against properties relevant to c
 | **TacDiffusion** | ✗ (gripper) | ✗ | ✅ 6D wrench | ✗ | ✗ |
 | **DexForce** | ✅ Allegro | ✗ | Fixed k_f (hand-tuned) | ✗ | ✗ |
 
-### 13.2 Observations
+### 19.2 Observations
 
 Contact-rich manipulation with multi-finger hands — such as tool use, assembly, or handling fragile objects — requires regulating interaction forces, not just tracking position targets. Inadequate force control leads to object slip, tool breakage, or damage to the environment. While grippers can often compensate via mechanical compliance, high-DoF dexterous hands distribute contact across many fingertips, making per-contact force regulation both more critical and more challenging. This motivates examining whether existing systems combine dexterous control with force/impedance awareness.
 
@@ -405,7 +447,7 @@ The capability matrix and the broader survey reveal several patterns:
 
 ---
 
-## 14. Reference Links
+## 20. Reference Links
 
 ### Key GitHub Organizations / Project Pages
 - [Google DeepMind](https://deepmind.google/models/gemini-robotics/) — Gemini Robotics, Gemini Robotics-ER, RT-2
