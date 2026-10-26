@@ -1,0 +1,92 @@
+<h3 class="dp-h3">Ropedia W0</h3>
+<p class="dp-p"><strong>Full title:</strong> Ropedia W0: Scaling Loco-Manipulation World Models across Embodiments with Human Experience</p>
+<p class="dp-p"><strong>Authors:</strong> Tianqi Liu et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.26855v1" target="_blank" rel="noopener">2610.26855v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A video diffusion transformer predicts future egocentric frames from an initial image, text, camera poses, and projected manipulator skeletons. Camera poses represent locomotion. Skeletons preserve the structure of each human or robot manipulator.</p>
+<p class="dp-p"><strong>Key methodology:</strong> Xp-Data supports human pretraining followed by mixed human–robot training with the same camera-and-skeleton interface. Robot skeletons use forward kinematics where available, with extensive manual keypoint annotation and correction. Distillation produces a causal generator for long video rollouts and live VR interaction.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Video prediction during locomotion and manipulation across humans, gripper robots, and dexterous humanoids. Evaluation uses DreamDojo, Ψ0, ω-HOME, Xp-Teleop, AgiBot, and held-out human videos. Xp-Teleop uses a Unitree G1 with two six-DoF dexterous hands.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Uses a common camera-and-skeleton interface to learn from human and robot motion.</li>
+<li>Builds Xp-Data with approximately 10,000 hours of human video and 3,000 hours of robot video with common multimodal annotations.</li>
+<li>Adds Xp-Teleop for long-horizon humanoid locomotion and dexterous manipulation. More human pretraining data improves human and robot prediction.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>EgoSuite + OpenAoE human video prediction</td>
+<td>Absolute trajectory error</td>
+<td>1.542 cm</td>
+<td>A14B human-pretrained model; 200 held-out clips; Cosmos3-Nano 16B: 1.931 cm</td>
+</tr>
+<tr>
+<td>DreamDojo In-lab video prediction</td>
+<td>PSNR</td>
+<td>20.854 dB</td>
+<td>Ropedia W0 5B; 1% post-training data; DreamDojo 14B: 18.983 dB</td>
+</tr>
+<tr>
+<td>Ψ0 dexterous humanoid video prediction</td>
+<td>PSNR</td>
+<td>19.07 dB</td>
+<td>A14B mixed-trained model; full-data post-training; Cosmos3-Nano 16B: 16.55 dB</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Reusing human experience can reduce costly robot data collection and adaptation. The size of the benefit for real decisions remains uncertain.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>8.0</td>
+<td>The common camera-and-skeleton interface and unified data extend transfer across embodiments. Earlier work also uses rendered conditions.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Separate camera and manipulator conditions connect different action spaces. Accurate robot skeletons require extensive manual correction.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.0</td>
+<td>Human motion following and low-data robot prediction support transfer. Detailed results mainly measure video quality rather than planning or control.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.0</td>
+<td>Prediction across embodiments partly supports joint locomotion and manipulation modeling. Zero-shot evaluation does not establish transfer to an unseen embodiment.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.6/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Robot skeleton annotation requires extensive manual work to correct inaccurate projections.</li>
+<li>Zero-shot means that the evaluation dataset was not used for training. The same embodiment can occur in other training datasets.</li>
+<li>Detailed numerical evidence centers on video quality and motion following. The size of planning and control benefits remains uncertain.</li>
+<li>Xp-Teleop covers 27 long takes, about one hour, on one humanoid platform.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —. The distilled model generates 21.3 frames per second at 640×480 for minute-long interactive rollouts.</li>
+<li><strong>Deployment hardware:</strong> —.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> Xp-Data combines approximately 10,000 human video hours and 3,000 robot video hours. Sources include 14 public human datasets, 13 public robot datasets, and in-house human recordings.</li>
+<li><strong>Evaluation data:</strong> Five robot benchmarks and 200 held-out human clips from EgoSuite and OpenAoE. Xp-Teleop includes 27 takes with 543 annotated atomic segments across 30 skill classes.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.26855v1" target="_blank" rel="noopener">Paper text</a>, sections 3–6.2; <a href="https://ropedia.github.io/ropedia-w0/" target="_blank" rel="noopener">Project</a>.</p>

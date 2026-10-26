@@ -1,0 +1,92 @@
+<h3 class="dp-h3">Ropedia W0</h3>
+<p class="dp-p"><strong>完整标题：</strong> Ropedia W0: Scaling Loco-Manipulation World Models across Embodiments with Human Experience</p>
+<p class="dp-p"><strong>作者：</strong> Tianqi Liu等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.26855v1" target="_blank" rel="noopener">2610.26855v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 视频扩散Transformer根据初始图像、文本、相机位姿和投影操作器骨架预测未来第一视角帧。相机位姿表示移动，骨架保留人类或机器人操作器的自身结构。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 使用Xp-Data先进行人类预训练，再进行人机混合训练，两个阶段使用相同的相机与骨架接口。机器人骨架结合可用的正运动学与大量人工关键点标注和修正。蒸馏生成因果模型，支持长时视频生成与实时VR交互。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> 预测人类、夹爪机器人和灵巧人形机器人在移动与操作中的视频。评估使用DreamDojo、Ψ0、ω-HOME、Xp-Teleop、AgiBot和未用于训练的人类视频。Xp-Teleop使用配备两只六自由度灵巧手的Unitree G1。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>通过统一的相机与骨架接口共同学习人类和机器人运动。</li>
+<li>构建Xp-Data，包含约10,000小时人类视频和3,000小时机器人视频，使用统一的多模态标注。</li>
+<li>新增Xp-Teleop，评估长时人形机器人移动与灵巧操作。增加人类预训练数据可以改善人类与机器人预测。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>EgoSuite + OpenAoE人类视频预测</td>
+<td>绝对轨迹误差</td>
+<td>1.542 cm</td>
+<td>A14B人类预训练模型；200段未用于训练的视频；Cosmos3-Nano 16B：1.931 cm</td>
+</tr>
+<tr>
+<td>DreamDojo In-lab视频预测</td>
+<td>PSNR</td>
+<td>20.854 dB</td>
+<td>Ropedia W0 5B；1%后训练数据；DreamDojo 14B：18.983 dB</td>
+</tr>
+<tr>
+<td>Ψ0灵巧人形机器人视频预测</td>
+<td>PSNR</td>
+<td>19.07 dB</td>
+<td>A14B混合训练模型；全量数据后训练；Cosmos3-Nano 16B：16.55 dB</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>复用人类经验有望减少昂贵的机器人数据采集与适配。对实际决策的收益大小仍不明确。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>8.0</td>
+<td>统一相机与骨架接口和数据扩展了跨形态迁移。渲染条件在先前研究中也有使用。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>分别表示相机与操作器运动，连接不同动作空间。准确的机器人骨架需要大量人工修正。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.0</td>
+<td>人类动作跟随和少量数据机器人预测支持迁移效果。详细结果主要衡量视频质量，而非规划或控制。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>7.0</td>
+<td>跨形态预测部分支持移动与操作的联合建模。零样本评估尚不能证明对未见形态的迁移。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.6/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>机器人骨架标注需要大量人工工作，以修正不准确的投影。</li>
+<li>零样本指评估数据集未用于训练。同一形态可能出现在其他训练数据中。</li>
+<li>详细数值证据集中于视频质量与动作跟随。规划和控制收益的大小仍不明确。</li>
+<li>Xp-Teleop仅覆盖一个人形机器人平台的27段长时演示，约一小时。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —。蒸馏模型在640×480分辨率下以每秒21.3帧生成视频，支持分钟级交互生成。</li>
+<li><strong>部署硬件：</strong> —。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> Xp-Data包含约10,000小时人类视频和3,000小时机器人视频。来源包括14个人类公开数据集、13个机器人公开数据集和自行采集的人类视频。</li>
+<li><strong>评估数据：</strong> 五个机器人基准，以及EgoSuite和OpenAoE中200段未用于训练的人类视频。Xp-Teleop包含27段演示，标注为543个原子动作片段，覆盖30类技能。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.26855v1" target="_blank" rel="noopener">论文正文</a>第3–6.2节；<a href="https://ropedia.github.io/ropedia-w0/" target="_blank" rel="noopener">项目</a>。</p>

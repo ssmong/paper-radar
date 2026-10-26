@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/ropedia_w0.md": "786a50bbf33d969a35cd19d98987defac027977e616efbdc284705c312cc712e",
+    "detailed_ko/section18/ropedia_w0.md": "0813afb287b0933d433a6aab0fd5f604097f8db4d3af71ae3ca654c65013b9d2",
+    "detailed_zh/section18/ropedia_w0.md": "6f4ba0d7beacfa5297c2f02ef0b7d0c7618fd7737237837cd4ba6934df2157d2"
+  },
+  "paper_id": "2610.26855",
+  "rows": {
+    "survey.md": "| [**Ropedia W0**](https://arxiv.org/abs/2610.26855v1) | 2026 | Humans, gripper robots, and dexterous humanoids; locomotion and manipulation video prediction; Unitree G1 in Xp-Teleop | Video diffusion model with camera-pose and projected-skeleton conditions; Xp-Data human pretraining + human–robot training; distillation | DreamDojo In-lab PSNR: 20.854 dB vs DreamDojo 14B at 18.983 dB (Ropedia W0 5B; 1% post-training data) | — |",
+    "survey_ko.md": "| [**Ropedia W0**](https://arxiv.org/abs/2610.26855v1) | 2026 | 인간, gripper 로봇, dexterous humanoid; 이동·조작 영상 예측; Xp-Teleop의 Unitree G1 | 카메라 자세·투영 skeleton 조건 영상 diffusion 모델; Xp-Data 인간 사전학습 + 인간·로봇 혼합 학습; 증류 | DreamDojo In-lab PSNR: 20.854 dB vs DreamDojo 14B 18.983 dB (Ropedia W0 5B; post-training 데이터 1%) | — |",
+    "survey_zh.md": "| [**Ropedia W0**](https://arxiv.org/abs/2610.26855v1) | 2026 | 人类、夹爪机器人及灵巧人形机器人；移动与操作视频预测；Xp-Teleop中的Unitree G1 | 相机位姿与投影骨架条件视频扩散模型；Xp-Data人类预训练 + 人机混合训练；蒸馏 | DreamDojo In-lab PSNR：20.854 dB，DreamDojo 14B为18.983 dB（Ropedia W0 5B；1%后训练数据） | — |"
+  },
+  "run_id": "2026-10-21T233254Z",
+  "status": "published"
+}
