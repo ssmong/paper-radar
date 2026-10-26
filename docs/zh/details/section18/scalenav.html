@@ -1,0 +1,92 @@
+<h3 class="dp-h3">ScaleNav</h3>
+<p class="dp-p"><strong>完整标题：</strong> ScaleNav: Scalable Internet Video Pretraining for Language-Conditioned Local Navigation</p>
+<p class="dp-p"><strong>作者：</strong> Yihui Yang等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.25690v1" target="_blank" rel="noopener">2610.25690v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 沿用DreamZero的统一世界-动作模型，通过共享DiT骨干预测未来视频与动作块。初始帧锚点和近期观测-动作历史保留导航指令的视觉参照。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 通过指令条件视频预训练、带动作标签的仿真数据对齐、联合微调三个阶段，将互联网视频经验连接到机器人动作。互联网视频无需伪动作标签，推理时无需外部规划器即可预测可执行动作块。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> 根据语言指令导航至初始观测中可见的目标，并在指定位置停止。评估使用单视角Short-Horizon OVON、HabitatGS-LN，以及三个室内环境中的Unitree Go2四足机器人。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>将互联网第一视角视频中的视觉导航动力学迁移为可执行动作。</li>
+<li>通过共享视频-动作模型和分阶段训练，连接无动作标签视频与仿真动作数据。</li>
+<li>在仿真和真实四足机器人上评估视频预训练的效果。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>单视角Short-Horizon OVON</td>
+<td>成功率</td>
+<td>86.5%</td>
+<td>单视角适配评估；不使用互联网视频的变体：81.1%</td>
+</tr>
+<tr>
+<td>HabitatGS-LN</td>
+<td>成功率</td>
+<td>94.9%</td>
+<td>不使用互联网视频的变体：90.4%</td>
+</tr>
+<tr>
+<td>Unitree Go2室内导航</td>
+<td>总体成功率</td>
+<td>83.3%</td>
+<td>三个环境共60次试验；人工判定成功</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>语言导航研究针对机器人动作数据成本高的问题。对长距离探索的效果仍未验证。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>7.0</td>
+<td>分阶段互联网视频训练无需伪动作标签即可迁移导航先验。联合视频-动作架构沿用DreamZero。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>共享视频-动作预测和初始帧锚点适合该任务。动作对齐和视频回放的独立收益较小。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>8.0</td>
+<td>消融实验和真实机器人比较支持迁移效果。机器人评估仅覆盖三个室内环境中的有限任务。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>8.0</td>
+<td>使用相同动作数据时的改进支持从无动作标签视频向可执行动作迁移。证据限于初始可见的室内物体目标。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.8/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>定量评估集中于初始视野内可见的室内物体目标。</li>
+<li>室外环境和区域级目标尚未评估。</li>
+<li>真实机器人评估包含三个环境，每个环境四项任务，每项任务五次试验。成功由人工判定。</li>
+<li>动作对齐和视频回放的独立收益较小。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / <a href="https://zju3dv.github.io/ScaleNav/" target="_blank" rel="noopener">项目</a>。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> 仿真评估中在RTX 4090 GPU上测得每个执行动作的摊销延迟为76 ms。</li>
+<li><strong>部署硬件：</strong> Unitree Go2；部署计算硬件：—。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> 18.2K段带指令的互联网第一视角导航视频；在Habitat-GS中使用650个InteriorGS场景生成约2.6K个带动作标签的仿真回合。</li>
+<li><strong>评估数据：</strong> 单视角Short-Horizon OVON：36个HM3D场景中的524个回合。HabitatGS-LN：45个未用于训练的InteriorGS场景中的157个回合。真实机器人：每种方法60次试验。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.25690v1" target="_blank" rel="noopener">论文正文</a>第3–5节。</p>

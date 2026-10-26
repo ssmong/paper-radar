@@ -1,0 +1,92 @@
+<h3 class="dp-h3">ScaleNav</h3>
+<p class="dp-p"><strong>Full title:</strong> ScaleNav: Scalable Internet Video Pretraining for Language-Conditioned Local Navigation</p>
+<p class="dp-p"><strong>Authors:</strong> Yihui Yang et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.25690v1" target="_blank" rel="noopener">2610.25690v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A unified world-action model follows DreamZero and uses a shared DiT backbone to predict future video and action chunks. An initial-frame anchor and recent observation-action history preserve the visual reference for navigation instructions.</p>
+<p class="dp-p"><strong>Key methodology:</strong> Three stages connect Internet video experience to robot actions: instruction-conditioned video pretraining, action alignment with action-labeled simulated data, and joint fine-tuning. Internet videos require no proxy action labels. The model predicts executable action chunks without an external planner at inference.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Language-conditioned local navigation to a target visible in the initial observation, followed by stopping at the described location. Evaluation uses single-view Short-Horizon OVON, HabitatGS-LN, and a Unitree Go2 quadruped in three indoor environments.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Transfers visual navigation dynamics from Internet egocentric videos to executable actions.</li>
+<li>Uses a shared video-action model and staged training to connect action-free videos with simulated action data.</li>
+<li>Evaluates the benefit of video pretraining in simulation and on a real quadruped.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>Single-view Short-Horizon OVON</td>
+<td>Success rate</td>
+<td>86.5%</td>
+<td>Single-view adaptation; variant without Internet videos: 81.1%</td>
+</tr>
+<tr>
+<td>HabitatGS-LN</td>
+<td>Success rate</td>
+<td>94.9%</td>
+<td>Variant without Internet videos: 90.4%</td>
+</tr>
+<tr>
+<td>Unitree Go2 indoor navigation</td>
+<td>Overall success rate</td>
+<td>83.3%</td>
+<td>60 trials across three environments; manually assessed success</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Language-guided navigation addresses costly robot action data. Effects on long-range exploration remain unverified.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.0</td>
+<td>Staged Internet video training transfers navigation priors without proxy action labels. The joint video-action architecture follows DreamZero.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Shared video-action prediction and the initial-frame anchor fit the task. Action alignment and video replay have modest individual benefits.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>8.0</td>
+<td>Ablations and real-robot comparisons support the transfer benefit. Robot evaluation covers limited tasks in three indoor environments.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>8.0</td>
+<td>Gains with the same action data support transfer from action-free videos to executable actions. Evidence is limited to initially visible indoor object targets.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.8/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Quantitative evaluation focuses on indoor object targets visible in the initial view.</li>
+<li>Outdoor environments and region-level goals remain unevaluated.</li>
+<li>Real-robot evaluation uses three environments, four tasks per environment, and five trials per task. Success is assessed manually.</li>
+<li>Action alignment and video replay show modest individual benefits.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / <a href="https://zju3dv.github.io/ScaleNav/" target="_blank" rel="noopener">Project</a>.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> 76 ms per executed action, amortized on RTX 4090 GPUs in simulation evaluation.</li>
+<li><strong>Deployment hardware:</strong> Unitree Go2; deployment compute hardware: —.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> 18.2K Internet egocentric navigation segments with instructions; approximately 2.6K action-labeled simulated episodes from 650 InteriorGS scenes in Habitat-GS.</li>
+<li><strong>Evaluation data:</strong> Single-view Short-Horizon OVON: 524 episodes in 36 HM3D scenes. HabitatGS-LN: 157 episodes in 45 held-out InteriorGS scenes. Real robot: 60 trials per method.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.25690v1" target="_blank" rel="noopener">Paper text</a>, sections 3–5.</p>

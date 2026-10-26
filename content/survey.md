@@ -404,6 +404,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 | Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
 |---|---|---|---|---|---|
 | [**GroundingPI**](https://arxiv.org/abs/2609.39601v1) | 2026 | Bimanual manipulation (RoboTwin 2.0), humanoid dexterous-hand manipulation (RoboCasa-GR1); driving (nuScenes) | 4B grounding model; shared point/box coordinate tokens; pretraining + SFT + GRPO; Action DiT for manipulation | First in all 4 OOD manipulation settings; RoboTwin2.0-Clean2Random success 17.60% vs Rex-Omni 14.10%; nuScenes open-loop L2 0.296 m | — |
+| [**ScaleNav**](https://arxiv.org/abs/2610.25690v1) | 2026 | Unitree Go2; language-conditioned local navigation to initially visible targets | Shared DiT predicts video and action chunks; Internet video pretraining + simulated action alignment + joint fine-tuning; initial-frame anchor | Success: 86.5% on single-view Short-Horizon OVON, 94.9% on HabitatGS-LN, 83.3% on Go2 (60 trials) | [Project](https://zju3dv.github.io/ScaleNav/) |
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/scalenav.md": "fb89861c52ed657f84bc105395a45fab7e943f70566b4f208c5bea6af0a1af9e",
+    "detailed_ko/section18/scalenav.md": "5e74bc04980d04427e59b0de56ad49363b554e0b15e3551aa2260b784d1eaeab",
+    "detailed_zh/section18/scalenav.md": "d1983a18a78c39a0cb274d726ee73f18294895701622e6602774736832fe1252"
+  },
+  "paper_id": "2610.25690",
+  "rows": {
+    "survey.md": "| [**ScaleNav**](https://arxiv.org/abs/2610.25690v1) | 2026 | Unitree Go2; language-conditioned local navigation to initially visible targets | Shared DiT predicts video and action chunks; Internet video pretraining + simulated action alignment + joint fine-tuning; initial-frame anchor | Success: 86.5% on single-view Short-Horizon OVON, 94.9% on HabitatGS-LN, 83.3% on Go2 (60 trials) | [Project](https://zju3dv.github.io/ScaleNav/) |",
+    "survey_ko.md": "| [**ScaleNav**](https://arxiv.org/abs/2610.25690v1) | 2026 | Unitree Go2; 초기 시야의 목표를 향한 언어 조건 지역 항법 | 공유 DiT로 영상·행동 청크 예측; 인터넷 영상 사전학습 + 시뮬레이션 행동 정렬 + 공동 미세조정; 초기 프레임 앵커 | 성공률: 단일 시점 Short-Horizon OVON 86.5%, HabitatGS-LN 94.9%, Go2 83.3% (60회 시행) | [프로젝트](https://zju3dv.github.io/ScaleNav/) |",
+    "survey_zh.md": "| [**ScaleNav**](https://arxiv.org/abs/2610.25690v1) | 2026 | Unitree Go2；面向初始视野内目标的语言条件局部导航 | 共享DiT预测视频与动作块；互联网视频预训练 + 仿真动作对齐 + 联合微调；初始帧锚点 | 成功率：单视角Short-Horizon OVON为86.5%，HabitatGS-LN为94.9%，Go2为83.3%（60次试验） | [项目](https://zju3dv.github.io/ScaleNav/) |"
+  },
+  "run_id": "2026-10-21T233254Z",
+  "status": "published"
+}
