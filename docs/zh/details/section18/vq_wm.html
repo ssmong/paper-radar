@@ -1,0 +1,104 @@
+<h3 class="dp-h3">VQ-WM</h3>
+<p class="dp-p"><strong>完整标题：</strong> Vector-Quantized World Model: Latent Feedback Motion Planning for Robot Manipulation</p>
+<p class="dp-p"><strong>作者：</strong> Xuezhou Xu、Chung-Pang Wang、Zhenzhen Li、Benjamin Riviere</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.25600v1" target="_blank" rel="noopener">2610.25600v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 冻结的V-JEPA 2编码器将观测映射为潜状态。连续潜状态预测器和目标条件控制器估计可达性。状态码本、动作码本与离散潜状态预测器支持图搜索。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 首次到达时间衡量到达目标所需的控制器调用次数。通过学习到的世界模型中的闭环rollout估计该代价，并用贪心集合覆盖选择状态码本。广度优先搜索（BFS）仅保留最可能的后继状态，寻找图转移次数最少的路径。连续控制器通过视觉反馈依次跟踪目标。实验每个回合只规划一次。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> WidowX AI机械臂操作四圆盘汉诺塔。H1需要一次圆盘移动，完整H15需要15次移动。仿真包括Stable-WorldModel的Cube与Scene操作、DeepMind Control Walker目标姿态，以及MuJoCo汉诺塔消融实验。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>用依赖控制器的首次到达时间定义离散规划状态。</li>
+<li>结合离散搜索与连续视觉反馈，从短时play数据生成并执行长时规划。</li>
+<li>评估操作与移动任务，并检验Walker控制器的本体感知输入。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>Stable-WorldModel Cube-Easy</td>
+<td>成功率</td>
+<td>84.7 ± 2.5%</td>
+<td>目标在25步后；执行预算50步</td>
+</tr>
+<tr>
+<td>Stable-WorldModel Cube-Hard</td>
+<td>成功率</td>
+<td>73.3 ± 0.9%</td>
+<td>未用于训练的抓取中心片段；执行预算30步</td>
+</tr>
+<tr>
+<td>Stable-WorldModel Scene</td>
+<td>成功率</td>
+<td>75.3 ± 5.0%</td>
+<td>目标在50步后；执行预算100步</td>
+</tr>
+<tr>
+<td>DeepMind Control Walker</td>
+<td>成功率</td>
+<td>97.3 ± 2.5%</td>
+<td>图像与本体感知；仅图像时为22.0 ± 5.9%</td>
+</tr>
+<tr>
+<td>WidowX AI汉诺塔H15</td>
+<td>任务进度</td>
+<td>100%</td>
+<td>非专家短时play设置；6个案例，每例3次；该指标应与单独的完整任务成功率区分</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>从短行为构建长时规划可减少对完整任务演示的需求。多种真实任务中的效果尚未验证。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>7.0</td>
+<td>世界模型中的首次到达时间与集合覆盖扩展了可达性规划。可达性图和局部行为组合已有SoRB、L3P等先例。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>7.7</td>
+<td>依赖控制器的状态连接了规划与执行。可达性依赖模型估计，BFS仅保留最可能的转移。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>8.0</td>
+<td>仿真结果与真实H15任务进度支持长时执行。真实评估仅覆盖同一拼图的6个案例。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>7.7</td>
+<td>H15结果与消融实验支持规划目标和控制器可达性的更好匹配。消融实验也改变了目标切换规则。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.6/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>真实机器人评估仅涉及一种四圆盘拼图的6个案例。</li>
+<li>真实机器人100%的结果指任务进度。未报告单独的完整任务成功率。</li>
+<li>量化消融实验也改变了目标切换规则，限制了对距离度量独立作用的归因。</li>
+<li>通过重规划恢复、语言指令和多任务应用尚未评估。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> 在NVIDIA RTX 5080 GPU上，用不到1秒计算覆盖约5分钟机器人执行的完整规划。</li>
+<li><strong>部署硬件：</strong> WidowX AI机械臂；推理使用一张NVIDIA RTX 5080 GPU。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> 离线观测-动作轨迹。汉诺塔play数据以30 Hz自主采集，采用合法移动序列和预定义的笛卡尔抓放动作。非专家设置使用最多包含5次圆盘移动的短时play子任务。</li>
+<li><strong>评估数据：</strong> Cube与Scene操作基准、Walker目标姿态、真实汉诺塔6个案例且每例3次试验。MuJoCo消融实验每个点使用3个随机种子，每个种子50条轨迹。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.25600v1" target="_blank" rel="noopener">论文正文</a>第IV–VI节。</p>

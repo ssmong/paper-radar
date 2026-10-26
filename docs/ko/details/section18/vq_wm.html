@@ -1,0 +1,104 @@
+<h3 class="dp-h3">VQ-WM</h3>
+<p class="dp-p"><strong>전체 제목:</strong> Vector-Quantized World Model: Latent Feedback Motion Planning for Robot Manipulation</p>
+<p class="dp-p"><strong>저자:</strong> Xuezhou Xu, Chung-Pang Wang, Zhenzhen Li, Benjamin Riviere</p>
+<p class="dp-p"><strong>학회/연도:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.25600v1" target="_blank" rel="noopener">2610.25600v1</a></p>
+<p class="dp-p"><strong>아키텍처:</strong> 고정된 V-JEPA 2 인코더로 관측을 잠재 상태로 변환함. 연속 잠재 예측기와 목표 조건 제어기로 도달 가능성을 추정함. 상태·행동 코드북과 이산 잠재 예측기로 그래프 탐색을 수행함.</p>
+<p class="dp-p"><strong>핵심 방법론:</strong> 첫 도달시간은 목표 도달에 필요한 제어기 호출 수임. 학습한 월드 모델의 폐루프 rollout으로 이 비용을 추정하고, 탐욕적 집합 덮개로 상태 코드북을 선택함. 너비 우선 탐색(BFS)은 가장 가능성 높은 다음 상태만 사용해 그래프 전이 수가 가장 적은 경로를 찾음. 연속 제어기는 시각 피드백으로 목표들을 추종함. 실험에서는 에피소드당 한 번 계획함.</p>
+<p class="dp-p"><strong>로봇 / 과제:</strong> WidowX AI 팔로 네 원판 하노이 탑을 조작함. H1은 원판 이동 1회, 전체 H15는 15회가 필요함. 시뮬레이션은 Stable-WorldModel의 Cube·Scene 조작, DeepMind Control Walker 목표 자세, MuJoCo 하노이 탑 절제실험을 포함함.</p>
+<p class="dp-p"><strong>주요 기여:</strong></p>
+<ul class="dp-list">
+<li>제어기에 따른 첫 도달시간으로 이산 계획 상태를 정의함.</li>
+<li>이산 탐색과 연속 시각 피드백으로 짧은 play 데이터에서 장기 계획을 실행함.</li>
+<li>조작과 이동을 평가하고 Walker 제어기의 고유수용성 입력도 검증함.</li>
+</ul>
+<p class="dp-p"><strong>정량적 결과:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / 과제</th>
+<th>지표</th>
+<th>값</th>
+<th>조건</th>
+</tr></thead><tbody>
+<tr>
+<td>Stable-WorldModel Cube-Easy</td>
+<td>성공률</td>
+<td>84.7 ± 2.5%</td>
+<td>25단계 앞 목표; 실행 예산 50단계</td>
+</tr>
+<tr>
+<td>Stable-WorldModel Cube-Hard</td>
+<td>성공률</td>
+<td>73.3 ± 0.9%</td>
+<td>학습에 사용하지 않은 grasp 중심 구간; 실행 예산 30단계</td>
+</tr>
+<tr>
+<td>Stable-WorldModel Scene</td>
+<td>성공률</td>
+<td>75.3 ± 5.0%</td>
+<td>50단계 앞 목표; 실행 예산 100단계</td>
+</tr>
+<tr>
+<td>DeepMind Control Walker</td>
+<td>성공률</td>
+<td>97.3 ± 2.5%</td>
+<td>영상·고유수용성 입력; 영상만 사용하면 22.0 ± 5.9%</td>
+</tr>
+<tr>
+<td>WidowX AI 하노이 탑 H15</td>
+<td>과제 진행률</td>
+<td>100%</td>
+<td>비전문가 short-play 설정; 6개 사례, 사례별 3회; 별도 완주 성공률과 구별됨</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI 연구 평가:</strong> 세 검토자의 평균 점수, 10점 척도.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>항목</th>
+<th>점수 /10</th>
+<th>근거</th>
+</tr></thead><tbody>
+<tr>
+<td>중요도</td>
+<td>8.0</td>
+<td>짧은 행동으로 장기 계획을 구성하면 전체 작업 시연의 필요성을 줄일 수 있음. 여러 실제 과제에서의 효과는 미검증임.</td>
+</tr>
+<tr>
+<td>추가 기여</td>
+<td>7.0</td>
+<td>월드 모델의 첫 도달시간과 집합 덮개로 도달 가능성 기반 계획을 확장함. 도달 가능성 그래프와 지역 행동 조합은 SoRB·L3P의 선행 원리임.</td>
+</tr>
+<tr>
+<td>방법 품질</td>
+<td>7.7</td>
+<td>제어기에 따른 상태로 계획과 실행을 연결함. 도달 가능성은 모델 추정에 의존하며 BFS는 최빈 전이만 사용함.</td>
+</tr>
+<tr>
+<td>효과성</td>
+<td>8.0</td>
+<td>시뮬레이션 결과와 실제 H15 진행률이 장기 실행을 지지함. 실제 평가는 한 퍼즐의 6개 사례에 한정됨.</td>
+</tr>
+<tr>
+<td>공백 해소 근거</td>
+<td>7.7</td>
+<td>H15 결과와 절제실험이 계획 목표와 제어기 도달 능력의 정합성을 지지함. 절제실험은 목표 전환 규칙도 변경함.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>종합 점수:</strong> 7.6/10.</p>
+<p class="dp-p"><strong>한계점:</strong></p>
+<ul class="dp-list">
+<li>실제 로봇 평가는 네 원판 퍼즐 하나의 6개 사례에 한정됨.</li>
+<li>실제 로봇의 100% 결과는 과제 진행률임. 별도 완주 성공률은 보고하지 않음.</li>
+<li>양자화 절제실험은 목표 전환 규칙도 바꾸므로 거리 척도만의 효과를 분리하기 어려움.</li>
+<li>재계획을 통한 복구, 언어 지시, 다중 과제 적용은 평가하지 않음.</li>
+</ul>
+<p class="dp-p"><strong>공개 가중치/코드:</strong> — / —.</p>
+<h2 class="dp-h2">추론 / 배포</h2>
+<ul class="dp-list">
+<li><strong>추론 지연 시간:</strong> NVIDIA RTX 5080 GPU에서 약 5분의 로봇 실행에 해당하는 전체 계획을 1초 미만에 계산함.</li>
+<li><strong>배포 하드웨어:</strong> WidowX AI 팔; 추론에 NVIDIA RTX 5080 GPU 1개 사용.</li>
+</ul>
+<h2 class="dp-h2">데이터셋 / 데이터 수집</h2>
+<ul class="dp-list">
+<li><strong>훈련 데이터:</strong> 오프라인 관측·행동 궤적. 하노이 탑 play 데이터는 합법적 이동 순서와 사전 정의한 Cartesian pick-and-place 동작으로 30 Hz에서 자율 수집함. 비전문가 설정은 원판 이동 최대 5회의 짧은 play 하위 과제를 사용함.</li>
+<li><strong>평가 데이터:</strong> Cube·Scene 조작 벤치마크, Walker 목표 자세, 실제 하노이 탑 6개 사례의 사례별 3회 시행. MuJoCo 절제실험은 각 지점에서 시드 3개, 시드별 궤적 50개를 사용함.</li>
+</ul>
+<p class="dp-p"><strong>출처:</strong> <a href="https://arxiv.org/html/2610.25600v1" target="_blank" rel="noopener">논문 본문</a>의 IV–VI절.</p>

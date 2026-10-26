@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/vq_wm.md": "2b4894e3487c1c21a53e7d7d545f06bebfb494949edcc830590836ea331bf7b9",
+    "detailed_ko/section18/vq_wm.md": "da4f8e1d11279356cb7749dff343f7b4d4d3db0f1b99e216c8989e63127189ec",
+    "detailed_zh/section18/vq_wm.md": "fbd14b3b5042bb7dfc9eac89e6cbad838e9ed545bfa8ab086faff46d419701df"
+  },
+  "paper_id": "2610.25600",
+  "rows": {
+    "survey.md": "| [**VQ-WM**](https://arxiv.org/abs/2610.25600v1) | 2026 | WidowX AI; four-disk Tower of Hanoi (H15); simulated manipulation and Walker locomotion | First-passage-time state quantization; discrete latent BFS + continuous visual feedback control | Real H15: 100% task progress from short-play data (six cases, three trials each); Cube-Hard success: 73.3 ± 0.9% | — |",
+    "survey_ko.md": "| [**VQ-WM**](https://arxiv.org/abs/2610.25600v1) | 2026 | WidowX AI; 네 원판 하노이 탑 (H15); 시뮬레이션 조작·Walker 이동 | 첫 도달시간 기반 상태 양자화; 이산 잠재 BFS + 연속 시각 피드백 제어 | 실제 H15: 짧은 play 데이터로 과제 진행률 100% (6개 사례, 사례별 3회); Cube-Hard 성공률: 73.3 ± 0.9% | — |",
+    "survey_zh.md": "| [**VQ-WM**](https://arxiv.org/abs/2610.25600v1) | 2026 | WidowX AI；四圆盘汉诺塔（H15）；仿真操作与Walker移动 | 首次到达时间驱动的状态量化；离散潜空间BFS + 连续视觉反馈控制 | 真实H15：短时play数据训练后任务进度100%（6个案例，每例3次）；Cube-Hard成功率：73.3 ± 0.9% | — |"
+  },
+  "run_id": "2026-10-21T233254Z",
+  "status": "published"
+}

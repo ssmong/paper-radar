@@ -1,0 +1,104 @@
+<h3 class="dp-h3">VQ-WM</h3>
+<p class="dp-p"><strong>Full title:</strong> Vector-Quantized World Model: Latent Feedback Motion Planning for Robot Manipulation</p>
+<p class="dp-p"><strong>Authors:</strong> Xuezhou Xu, Chung-Pang Wang, Zhenzhen Li, Benjamin Riviere</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.25600v1" target="_blank" rel="noopener">2610.25600v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A frozen V-JEPA 2 encoder maps observations to latent states. A continuous latent predictor and a goal-conditioned controller estimate reachability. State and action codebooks and a discrete latent predictor support graph search.</p>
+<p class="dp-p"><strong>Key methodology:</strong> First-passage time measures the number of controller calls needed to reach a target. Closed-loop rollouts in the learned world model estimate this cost. Greedy set cover selects a state codebook. Breadth-first search (BFS) uses the most likely next states to find a path with the fewest graph transitions. A continuous controller follows the targets with visual feedback. Experiments use one plan per episode.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> A WidowX AI arm transfers four disks in Tower of Hanoi. H1 requires one puzzle move; the full H15 task requires 15 moves. Simulation covers Stable-WorldModel Cube and Scene manipulation, DeepMind Control Walker goal poses, and a MuJoCo Tower of Hanoi ablation.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Uses controller-dependent first-passage time to define discrete planning states.</li>
+<li>Combines discrete search with continuous visual feedback to execute long plans from short-play data.</li>
+<li>Evaluates manipulation and locomotion, including proprioceptive inputs to the Walker controller.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>Stable-WorldModel Cube-Easy</td>
+<td>Success rate</td>
+<td>84.7 ± 2.5%</td>
+<td>Goal 25 steps ahead; execution budget: 50 steps</td>
+</tr>
+<tr>
+<td>Stable-WorldModel Cube-Hard</td>
+<td>Success rate</td>
+<td>73.3 ± 0.9%</td>
+<td>Held-out grasp-centered windows; execution budget: 30 steps</td>
+</tr>
+<tr>
+<td>Stable-WorldModel Scene</td>
+<td>Success rate</td>
+<td>75.3 ± 5.0%</td>
+<td>Goal 50 steps ahead; execution budget: 100 steps</td>
+</tr>
+<tr>
+<td>DeepMind Control Walker</td>
+<td>Success rate</td>
+<td>97.3 ± 2.5%</td>
+<td>Images and proprioception; images only: 22.0 ± 5.9%</td>
+</tr>
+<tr>
+<td>WidowX AI Tower of Hanoi H15</td>
+<td>Task progress</td>
+<td>100%</td>
+<td>Non-expert short-play setting; six cases, three trials per case; this metric is not a separate completion success rate</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Long plans from short behaviors can reduce the need for full-task demonstrations. Use across multiple real tasks remains unverified.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.0</td>
+<td>World-model first-passage time and set cover extend reachability-based planning. Reachability graphs and local behavior composition have precedents in SoRB and L3P.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>7.7</td>
+<td>Controller-dependent states connect planning and execution. Reachability depends on model estimates, and BFS retains only the most likely transitions.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>8.0</td>
+<td>Simulation results and real H15 task progress support long-plan execution. Real evaluation covers six cases of one puzzle.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.7</td>
+<td>H15 results and ablations support a closer match between planned targets and controller reachability. The ablation also changes target-switching rules.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.6/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Real-robot evaluation covers one four-disk puzzle and six test cases.</li>
+<li>The real-robot 100% result measures task progress. A separate completion success rate is not reported.</li>
+<li>The quantization ablation also changes target-switching rules, which limits attribution to the distance measure alone.</li>
+<li>Recovery through replanning, language instructions, and multi-task use remain unevaluated.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> A complete plan for approximately five minutes of robot execution takes under one second on an NVIDIA RTX 5080 GPU.</li>
+<li><strong>Deployment hardware:</strong> WidowX AI arm; one NVIDIA RTX 5080 GPU for inference.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> Offline observation-action trajectories. Tower of Hanoi play data is collected autonomously at 30 Hz with legal move sequences and predefined Cartesian pick-and-place motions. The non-expert setting uses short-play subtasks of at most five puzzle moves.</li>
+<li><strong>Evaluation data:</strong> Cube and Scene manipulation benchmarks; Walker goal poses; six real Tower of Hanoi cases with three trials per case. The MuJoCo ablation uses three seeds and 50 trajectories per seed for each point.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.25600v1" target="_blank" rel="noopener">Paper text</a>, sections IV–VI.</p>
