@@ -28,7 +28,7 @@
 | RoboCasa-GR1 Full | Task success rate | 37.75% | RynnBrain: 39.00%; in-distribution evaluation |
 | nuScenes | Average open-loop L2 error | 0.296 m | Trajectory prediction; closed-loop performance is not established |
 
-**Research scores:** Supplied `verification.mean_scores`. Reasons summarize the supplied assessment.
+**AI research assessment:** Mean scores from three reviewers, on a 10-point scale.
 
 | Dimension | Score | Reason |
 |---|---|---|
@@ -38,7 +38,7 @@
 | Effectiveness | 7.0 | Leads all four OOD manipulation settings. Clean2Random success remains low, and driving gains are small. |
 | Gap support | 7.3 | Grounding and controlled action transfer support the perception bottleneck claim. Open-loop driving does not establish closed-loop performance. |
 
-**Overall score:** 7.4, from supplied `verification.overall`.
+**Overall score:** 7.4/10.
 
 **Limitations/Gaps:**
 - RoboCasa-GR1 Full success is below RynnBrain, and Clean2Random success remains low.
@@ -46,7 +46,7 @@
 - Different backbone architectures and pretraining prevent full isolation of the contribution from grounding training.
 - VisDrone remains difficult; some spatial and GUI benchmarks favor GPT-6 Astra.
 
-**Open weights/code:** — / — (not reported in the supplied source).
+**Open weights/code:** — / — (not reported in the paper).
 
 ## Inference / Deployment
 
@@ -58,4 +58,4 @@
 - **Training data:** Public datasets and a dedicated data engine with multiple teachers and task-specific validation.
 - **Evaluation data:** RoboTwin 2.0, RoboCasa-GR1, and nuScenes; 34 grounding benchmarks across 11 perceptual capabilities.
 
-**Source:** [Supplied paper text](https://arxiv.org/html/2609.39601v1), sections 3–5.2.2; research scores from the supplied verification.
+**Source:** [Paper text](https://arxiv.org/html/2609.39601v1), sections 3–5.2.2.

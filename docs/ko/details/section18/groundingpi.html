@@ -44,39 +44,39 @@
 <td>궤적 예측; 폐루프 성능은 입증하지 않음</td>
 </tr>
 </tbody></table></div>
-<p class="dp-p"><strong>연구 점수:</strong> 제공된 <code>verification.mean_scores</code>를 사용함. 근거는 제공된 평가를 요약함.</p>
+<p class="dp-p"><strong>AI 연구 평가:</strong> 동일한 세 검토자의 평균, 10점 척도.</p>
 <div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
 <th>항목</th>
-<th>점수</th>
+<th>점수 /10</th>
 <th>근거</th>
 </tr></thead><tbody>
 <tr>
-<td>중요도 (importance)</td>
+<td>중요도</td>
 <td>8.0</td>
 <td>정밀 지각은 희소한 행동 데이터의 부담을 줄일 수 있음. 보고된 평가를 넘어선 실제 효과는 불확실함.</td>
 </tr>
 <tr>
-<td>추가 기여 (delta_contribution)</td>
+<td>추가 기여</td>
 <td>7.0</td>
 <td>폭넓은 지각 사전학습과 행동 전이가 기존 grounding 모델을 확장함. 양자화 좌표 생성은 기존 방식임.</td>
 </tr>
 <tr>
-<td>방법 품질 (method_quality)</td>
+<td>방법 품질</td>
 <td>8.0</td>
 <td>GRPO가 위치·누락·중복을 다루며 Action DiT를 고정해 비교함. 백본 구조·사전학습 차이는 남음.</td>
 </tr>
 <tr>
-<td>효과성 (effectiveness)</td>
+<td>효과성</td>
 <td>7.0</td>
 <td>OOD 조작 4개 설정 모두 선두임. Clean2Random 성공률은 낮고 주행 개선은 작음.</td>
 </tr>
 <tr>
-<td>공백 해소 근거 (gap_support)</td>
+<td>공백 해소 근거</td>
 <td>7.3</td>
 <td>Grounding과 통제된 행동 전이가 지각 병목 주장을 지지함. Open-loop 주행으로 폐루프 성능을 입증하지는 않음.</td>
 </tr>
 </tbody></table></div>
-<p class="dp-p"><strong>종합 점수:</strong> 7.4. 제공된 <code>verification.overall</code>을 사용함.</p>
+<p class="dp-p"><strong>종합 점수:</strong> 7.4/10.</p>
 <p class="dp-p"><strong>한계점:</strong></p>
 <ul class="dp-list">
 <li>RoboCasa-GR1 Full 성공률은 RynnBrain보다 낮으며 Clean2Random 성공률도 낮음.</li>
@@ -84,7 +84,7 @@
 <li>백본 구조와 사전학습이 달라 grounding 학습 자체의 기여를 완전히 분리할 수 없음.</li>
 <li>VisDrone은 여전히 어려우며 일부 공간·GUI benchmark에서는 GPT-6 Astra가 우세함.</li>
 </ul>
-<p class="dp-p"><strong>공개 가중치/코드:</strong> — / — (제공된 출처에 보고되지 않음).</p>
+<p class="dp-p"><strong>공개 가중치/코드:</strong> — / — (논문에 보고되지 않음).</p>
 <h2 class="dp-h2">추론 / 배포</h2>
 <ul class="dp-list">
 <li><strong>추론 지연 시간:</strong> —</li>
@@ -95,4 +95,4 @@
 <li><strong>훈련 데이터:</strong> 공개 데이터셋과 다중 teacher·과제별 검증을 사용하는 전용 데이터 엔진.</li>
 <li><strong>평가 데이터:</strong> RoboTwin 2.0, RoboCasa-GR1, nuScenes 및 11개 지각 능력을 다루는 34개 grounding benchmark.</li>
 </ul>
-<p class="dp-p"><strong>출처:</strong> <a href="https://arxiv.org/html/2609.39601v1" target="_blank" rel="noopener">제공된 논문 본문</a>의 3–5.2.2절. 연구 점수는 제공된 verification을 사용함.</p>
+<p class="dp-p"><strong>출처:</strong> <a href="https://arxiv.org/html/2609.39601v1" target="_blank" rel="noopener">논문 본문</a>의 3–5.2.2절.</p>

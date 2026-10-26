@@ -44,39 +44,39 @@
 <td>轨迹预测；未证明闭环性能</td>
 </tr>
 </tbody></table></div>
-<p class="dp-p"><strong>研究评分：</strong> 使用所提供的<code>verification.mean_scores</code>。理由概括所提供的评估。</p>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
 <div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
 <th>维度</th>
 <th>分数</th>
 <th>理由</th>
 </tr></thead><tbody>
 <tr>
-<td>重要性（importance）</td>
+<td>重要性</td>
 <td>8.0</td>
 <td>精确感知可减轻稀缺动作数据的负担。超出已报告评估的实际效果仍不确定。</td>
 </tr>
 <tr>
-<td>增量贡献（delta_contribution）</td>
+<td>增量贡献</td>
 <td>7.0</td>
 <td>广泛感知预训练和动作迁移扩展了已有grounding模型。量化坐标生成采用已有方法。</td>
 </tr>
 <tr>
-<td>方法质量（method_quality）</td>
+<td>方法质量</td>
 <td>8.0</td>
 <td>GRPO处理定位、遗漏和重复，比较时固定Action DiT。骨干架构和预训练差异仍存在。</td>
 </tr>
 <tr>
-<td>有效性（effectiveness）</td>
+<td>有效性</td>
 <td>7.0</td>
 <td>全部4个OOD操作设置领先。Clean2Random成功率仍低，驾驶改进较小。</td>
 </tr>
 <tr>
-<td>空白弥补证据（gap_support）</td>
+<td>空白弥补证据</td>
 <td>7.3</td>
 <td>Grounding与受控动作迁移支持感知瓶颈的论点。开环驾驶未证明闭环性能。</td>
 </tr>
 </tbody></table></div>
-<p class="dp-p"><strong>综合评分：</strong> 7.4，使用所提供的<code>verification.overall</code>。</p>
+<p class="dp-p"><strong>综合评分：</strong> 7.4/10。</p>
 <p class="dp-p"><strong>局限性/差距：</strong></p>
 <ul class="dp-list">
 <li>RoboCasa-GR1 Full成功率低于RynnBrain，Clean2Random成功率仍低。</li>
@@ -84,7 +84,7 @@
 <li>骨干架构和预训练不同，无法完全分离grounding训练本身的贡献。</li>
 <li>VisDrone仍有挑战；部分空间和GUI基准中GPT-6 Astra更强。</li>
 </ul>
-<p class="dp-p"><strong>开放权重/代码：</strong> — / —（所提供的来源未报告）。</p>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —（论文未报告）。</p>
 <h2 class="dp-h2">推理/部署</h2>
 <ul class="dp-list">
 <li><strong>推理延迟：</strong> —</li>
@@ -95,4 +95,4 @@
 <li><strong>训练数据：</strong> 公开数据集及使用多教师和任务专用验证的数据引擎。</li>
 <li><strong>评估数据：</strong> RoboTwin 2.0、RoboCasa-GR1、nuScenes，以及涵盖11种感知能力的34个grounding基准。</li>
 </ul>
-<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2609.39601v1" target="_blank" rel="noopener">所提供的论文正文</a>第3–5.2.2节；研究评分来自所提供的verification。</p>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2609.39601v1" target="_blank" rel="noopener">论文正文</a>第3–5.2.2节。</p>
