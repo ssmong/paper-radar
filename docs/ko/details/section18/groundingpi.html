@@ -1,0 +1,98 @@
+<h3 class="dp-h3">GroundingPI</h3>
+<p class="dp-p"><strong>전체 제목:</strong> GroundingPI: A Grounding Foundation Model towards Physical Intelligence with Visual Primitives</p>
+<p class="dp-p"><strong>저자:</strong> Qize Yu 외</p>
+<p class="dp-p"><strong>학회/연도:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2609.39601v1" target="_blank" rel="noopener">2609.39601v1</a></p>
+<p class="dp-p"><strong>아키텍처:</strong> MoonViT-V2 시각 인코더와 Qwen3-4B 언어 디코더를 결합한 4B grounding 파운데이션 모델. 점과 bounding box를 공유 어휘의 양자화 좌표 토큰으로 생성함.</p>
+<p class="dp-p"><strong>핵심 방법론:</strong> 다중 모달·공간 사전학습, 지도 미세조정(SFT), GRPO로 정밀 지각을 학습함. 조작에서는 중간 특징을 Action DiT의 각 층 cross-attention에 주입함. 각 benchmark의 백본 비교에서 행동 expert, 행동 데이터, 학습 예산, 행동 표현, 추론 절차를 고정함.</p>
+<p class="dp-p"><strong>로봇 / 과제:</strong> RoboTwin 2.0은 고정 베이스 양손 테이블탑 조작을 평가함. RoboCasa-GR1은 humanoid dexterous-hand 조작을 평가함. nuScenes는 open-loop 주행 궤적 예측을 평가함.</p>
+<p class="dp-p"><strong>주요 기여:</strong></p>
+<ul class="dp-list">
+<li>생성형 좌표 grounding을 폭넓은 지각 사전학습과 행동 학습 전이로 확장함.</li>
+<li>장면·개체 변화에 대한 OOD 조작 4개 설정 모두에서 1위를 기록함.</li>
+<li>RoboCasa-GR1에서 시연의 50%로 학습하여 75%로 학습한 비교 백본들을 능가함.</li>
+</ul>
+<p class="dp-p"><strong>정량적 결과:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / 과제</th>
+<th>지표</th>
+<th>값</th>
+<th>조건</th>
+</tr></thead><tbody>
+<tr>
+<td>RoboTwin2.0 Full</td>
+<td>과제 성공률</td>
+<td>66.20%</td>
+<td>동일 downstream 구조·학습 조건</td>
+</tr>
+<tr>
+<td>RoboTwin2.0-Clean2Random</td>
+<td>과제 성공률</td>
+<td>17.60%</td>
+<td>Rex-Omni: 14.10%; Clean 학습 후 Randomized 장면 평가</td>
+</tr>
+<tr>
+<td>RoboCasa-GR1 Full</td>
+<td>과제 성공률</td>
+<td>37.75%</td>
+<td>RynnBrain: 39.00%; ID 평가</td>
+</tr>
+<tr>
+<td>nuScenes</td>
+<td>평균 open-loop L2 오차</td>
+<td>0.296 m</td>
+<td>궤적 예측; 폐루프 성능은 입증하지 않음</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>연구 점수:</strong> 제공된 <code>verification.mean_scores</code>를 사용함. 근거는 제공된 평가를 요약함.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>항목</th>
+<th>점수</th>
+<th>근거</th>
+</tr></thead><tbody>
+<tr>
+<td>중요도 (importance)</td>
+<td>8.0</td>
+<td>정밀 지각은 희소한 행동 데이터의 부담을 줄일 수 있음. 보고된 평가를 넘어선 실제 효과는 불확실함.</td>
+</tr>
+<tr>
+<td>추가 기여 (delta_contribution)</td>
+<td>7.0</td>
+<td>폭넓은 지각 사전학습과 행동 전이가 기존 grounding 모델을 확장함. 양자화 좌표 생성은 기존 방식임.</td>
+</tr>
+<tr>
+<td>방법 품질 (method_quality)</td>
+<td>8.0</td>
+<td>GRPO가 위치·누락·중복을 다루며 Action DiT를 고정해 비교함. 백본 구조·사전학습 차이는 남음.</td>
+</tr>
+<tr>
+<td>효과성 (effectiveness)</td>
+<td>7.0</td>
+<td>OOD 조작 4개 설정 모두 선두임. Clean2Random 성공률은 낮고 주행 개선은 작음.</td>
+</tr>
+<tr>
+<td>공백 해소 근거 (gap_support)</td>
+<td>7.3</td>
+<td>Grounding과 통제된 행동 전이가 지각 병목 주장을 지지함. Open-loop 주행으로 폐루프 성능을 입증하지는 않음.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>종합 점수:</strong> 7.4. 제공된 <code>verification.overall</code>을 사용함.</p>
+<p class="dp-p"><strong>한계점:</strong></p>
+<ul class="dp-list">
+<li>RoboCasa-GR1 Full 성공률은 RynnBrain보다 낮으며 Clean2Random 성공률도 낮음.</li>
+<li>nuScenes 결과는 폐루프 성능, 지연시간, 표지판 읽기의 개별 효과를 입증하지 않음.</li>
+<li>백본 구조와 사전학습이 달라 grounding 학습 자체의 기여를 완전히 분리할 수 없음.</li>
+<li>VisDrone은 여전히 어려우며 일부 공간·GUI benchmark에서는 GPT-6 Astra가 우세함.</li>
+</ul>
+<p class="dp-p"><strong>공개 가중치/코드:</strong> — / — (제공된 출처에 보고되지 않음).</p>
+<h2 class="dp-h2">추론 / 배포</h2>
+<ul class="dp-list">
+<li><strong>추론 지연 시간:</strong> —</li>
+<li><strong>배포 하드웨어:</strong> —</li>
+</ul>
+<h2 class="dp-h2">데이터셋 / 데이터 수집</h2>
+<ul class="dp-list">
+<li><strong>훈련 데이터:</strong> 공개 데이터셋과 다중 teacher·과제별 검증을 사용하는 전용 데이터 엔진.</li>
+<li><strong>평가 데이터:</strong> RoboTwin 2.0, RoboCasa-GR1, nuScenes 및 11개 지각 능력을 다루는 34개 grounding benchmark.</li>
+</ul>
+<p class="dp-p"><strong>출처:</strong> <a href="https://arxiv.org/html/2609.39601v1" target="_blank" rel="noopener">제공된 논문 본문</a>의 3–5.2.2절. 연구 점수는 제공된 verification을 사용함.</p>

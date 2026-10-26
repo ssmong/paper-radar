@@ -1,0 +1,98 @@
+<h3 class="dp-h3">GroundingPI</h3>
+<p class="dp-p"><strong>Full title:</strong> GroundingPI: A Grounding Foundation Model towards Physical Intelligence with Visual Primitives</p>
+<p class="dp-p"><strong>Authors:</strong> Qize Yu et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2609.39601v1" target="_blank" rel="noopener">2609.39601v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A 4B grounding foundation model combines a MoonViT-V2 visual encoder and a Qwen3-4B language decoder. Points and bounding boxes use a shared vocabulary with quantized coordinate tokens.</p>
+<p class="dp-p"><strong>Key methodology:</strong> Multimodal and spatial pretraining, supervised fine-tuning (SFT), and GRPO train precise perception. For manipulation, intermediate features condition an Action DiT through layer-wise cross-attention. Backbone comparisons keep the action expert, action data, training budget, action representation, and inference procedure fixed within each benchmark.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> RoboTwin 2.0 evaluates fixed-base bimanual tabletop manipulation. RoboCasa-GR1 evaluates humanoid dexterous-hand manipulation. nuScenes evaluates open-loop driving trajectory prediction.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Extends generative coordinate grounding to broad perceptual pretraining and transfer to action learning.</li>
+<li>Ranks first in all four reported OOD manipulation settings across scene and entity changes.</li>
+<li>On RoboCasa-GR1, uses 50% of demonstrations to exceed compared baselines trained with 75%.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>RoboTwin2.0 Full</td>
+<td>Task success rate</td>
+<td>66.20%</td>
+<td>Matched downstream architecture and training protocol</td>
+</tr>
+<tr>
+<td>RoboTwin2.0-Clean2Random</td>
+<td>Task success rate</td>
+<td>17.60%</td>
+<td>Rex-Omni: 14.10%; train on Clean, evaluate on Randomized scenes</td>
+</tr>
+<tr>
+<td>RoboCasa-GR1 Full</td>
+<td>Task success rate</td>
+<td>37.75%</td>
+<td>RynnBrain: 39.00%; in-distribution evaluation</td>
+</tr>
+<tr>
+<td>nuScenes</td>
+<td>Average open-loop L2 error</td>
+<td>0.296 m</td>
+<td>Trajectory prediction; closed-loop performance is not established</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Research scores:</strong> Supplied <code>verification.mean_scores</code>. Reasons summarize the supplied assessment.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Precise perception can reduce the burden on scarce action data. Practical effects beyond the reported evaluations remain uncertain.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.0</td>
+<td>Broad perceptual pretraining and action transfer extend prior grounding models. Quantized coordinate generation uses an existing approach.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>GRPO targets localization, omissions, and duplicates. Fixed Action DiT comparisons help, but backbone and pretraining differences remain.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.0</td>
+<td>Leads all four OOD manipulation settings. Clean2Random success remains low, and driving gains are small.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.3</td>
+<td>Grounding and controlled action transfer support the perception bottleneck claim. Open-loop driving does not establish closed-loop performance.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.4, from supplied <code>verification.overall</code>.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>RoboCasa-GR1 Full success is below RynnBrain, and Clean2Random success remains low.</li>
+<li>nuScenes results do not establish closed-loop performance, latency, or the separate effect of sign reading.</li>
+<li>Different backbone architectures and pretraining prevent full isolation of the contribution from grounding training.</li>
+<li>VisDrone remains difficult; some spatial and GUI benchmarks favor GPT-6 Astra.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / — (not reported in the supplied source).</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —</li>
+<li><strong>Deployment hardware:</strong> —</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> Public datasets and a dedicated data engine with multiple teachers and task-specific validation.</li>
+<li><strong>Evaluation data:</strong> RoboTwin 2.0, RoboCasa-GR1, and nuScenes; 34 grounding benchmarks across 11 perceptual capabilities.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2609.39601v1" target="_blank" rel="noopener">Supplied paper text</a>, sections 3–5.2.2; research scores from the supplied verification.</p>

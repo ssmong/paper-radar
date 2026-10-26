@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/groundingpi.md": "c9e9988070ac05d73f052462dc07a3358ed068cc6624d36eaf75ed5a9fb40ea5",
+    "detailed_ko/section18/groundingpi.md": "d0dc885da5787ba64a152ac554309654f36faa2eaf255815db816ec1b8f16f4b",
+    "detailed_zh/section18/groundingpi.md": "e4a61581c8c4b3e1e67dc5971de6b7f888b65bdbe4d32984b04ae614489cedc2"
+  },
+  "paper_id": "2609.39601",
+  "rows": {
+    "survey.md": "| [**GroundingPI**](https://arxiv.org/abs/2609.39601v1) | 2026 | Bimanual manipulation (RoboTwin 2.0), humanoid dexterous-hand manipulation (RoboCasa-GR1); driving (nuScenes) | 4B grounding model; shared point/box coordinate tokens; pretraining + SFT + GRPO; Action DiT for manipulation | First in all 4 OOD manipulation settings; RoboTwin2.0-Clean2Random success 17.60% vs Rex-Omni 14.10%; nuScenes open-loop L2 0.296 m | — |",
+    "survey_ko.md": "| [**GroundingPI**](https://arxiv.org/abs/2609.39601v1) | 2026 | 양손 조작 (RoboTwin 2.0), humanoid dexterous-hand 조작 (RoboCasa-GR1); 주행 (nuScenes) | 4B grounding 모델; 점·상자 공유 좌표 토큰; 사전학습 + SFT + GRPO; 조작용 Action DiT | OOD 조작 4개 설정 모두 1위; RoboTwin2.0-Clean2Random 성공률 17.60% vs Rex-Omni 14.10%; nuScenes open-loop L2 0.296 m | — |",
+    "survey_zh.md": "| [**GroundingPI**](https://arxiv.org/abs/2609.39601v1) | 2026 | 双臂操作（RoboTwin 2.0）、人形灵巧手操作（RoboCasa-GR1）；驾驶（nuScenes） | 4B grounding模型；点与框共享坐标token；预训练 + SFT + GRPO；操作使用Action DiT | 全部4个OOD操作设置排名第一；RoboTwin2.0-Clean2Random成功率17.60%，Rex-Omni为14.10%；nuScenes开环L2误差0.296 m | — |"
+  },
+  "run_id": "2026-10-14T233111Z",
+  "status": "published"
+}

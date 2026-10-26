@@ -403,6 +403,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 
 | 논문 | 연도 | 로봇 / 과제 | 핵심 방법 | 주요 결과 | 코드 |
 |---|---|---|---|---|---|
+| [**GroundingPI**](https://arxiv.org/abs/2609.39601v1) | 2026 | 양손 조작 (RoboTwin 2.0), humanoid dexterous-hand 조작 (RoboCasa-GR1); 주행 (nuScenes) | 4B grounding 모델; 점·상자 공유 좌표 토큰; 사전학습 + SFT + GRPO; 조작용 Action DiT | OOD 조작 4개 설정 모두 1위; RoboTwin2.0-Clean2Random 성공률 17.60% vs Rex-Omni 14.10%; nuScenes open-loop L2 0.296 m | — |
 
 ---
 
