@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/rynnunify.md": "8e102f4635c42c8bf82726ae05f7ce603bb2081bbe77cef1f6b6058225e26909",
+    "detailed_ko/section18/rynnunify.md": "620b6dee6b868558a606083b5219318e4e429be4c6589b7420747c7759a4a196",
+    "detailed_zh/section18/rynnunify.md": "1521b91df2c277390ac3d49dd8405b8f7b2e5d0d9a088d87d0384463ed2335e1"
+  },
+  "paper_id": "2610.32965",
+  "rows": {
+    "survey.md": "| [**RynnUnify**](https://arxiv.org/abs/2610.32965v1) | 2026 | Astribot S1; multi-step manipulation; 20 selected composite RoboCasa365 tasks; visual planning and future-state reasoning | 16B Cosmos3-based MoT; interleaved video–language planning with scene memory; RL agent and joint video–action extension | Rynn-VP: +9.75 points over Cosmos 3 Nano; control success: 51.5% on selected RoboCasa365 tasks, 46.7% average across three real-robot tasks | [Code](https://github.com/alibaba-damo-academy/RynnUnify) |",
+    "survey_ko.md": "| [**RynnUnify**](https://arxiv.org/abs/2610.32965v1) | 2026 | Astribot S1; 다단계 조작; 선택된 RoboCasa365 복합 과제 20개; 시각 계획·미래 상태 추론 | Cosmos3 기반 16B MoT; 장면 기억을 이용한 영상·언어 교차 계획; RL agent 및 공동 영상·행동 확장 | Rynn-VP: Cosmos 3 Nano 대비 +9.75점; 제어 성공률: 선택된 RoboCasa365 과제 51.5%, 실제 로봇 과제 3개 평균 46.7% | [코드](https://github.com/alibaba-damo-academy/RynnUnify) |",
+    "survey_zh.md": "| [**RynnUnify**](https://arxiv.org/abs/2610.32965v1) | 2026 | Astribot S1；多步操作；20个选定的RoboCasa365复合任务；视觉规划与未来状态推理 | 基于Cosmos3的16B MoT；结合场景记忆的交错视频–语言规划；RL智能体与视频–动作联合扩展 | Rynn-VP：比Cosmos 3 Nano高9.75分；控制成功率：选定RoboCasa365任务51.5%，三个真实机器人任务平均46.7% | [代码](https://github.com/alibaba-damo-academy/RynnUnify) |"
+  },
+  "run_id": "2026-10-26T233643Z",
+  "status": "published"
+}

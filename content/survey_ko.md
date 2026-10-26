@@ -408,6 +408,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 | [**ScaleNav**](https://arxiv.org/abs/2610.25690v1) | 2026 | Unitree Go2; 초기 시야의 목표를 향한 언어 조건 지역 항법 | 공유 DiT로 영상·행동 청크 예측; 인터넷 영상 사전학습 + 시뮬레이션 행동 정렬 + 공동 미세조정; 초기 프레임 앵커 | 성공률: 단일 시점 Short-Horizon OVON 86.5%, HabitatGS-LN 94.9%, Go2 83.3% (60회 시행) | [프로젝트](https://zju3dv.github.io/ScaleNav/) |
 | [**Ropedia W0**](https://arxiv.org/abs/2610.26855v1) | 2026 | 인간, gripper 로봇, dexterous humanoid; 이동·조작 영상 예측; Xp-Teleop의 Unitree G1 | 카메라 자세·투영 skeleton 조건 영상 diffusion 모델; Xp-Data 인간 사전학습 + 인간·로봇 혼합 학습; 증류 | DreamDojo In-lab PSNR: 20.854 dB vs DreamDojo 14B 18.983 dB (Ropedia W0 5B; post-training 데이터 1%) | — |
 | [**VQ-WM**](https://arxiv.org/abs/2610.25600v1) | 2026 | WidowX AI; 네 원판 하노이 탑 (H15); 시뮬레이션 조작·Walker 이동 | 첫 도달시간 기반 상태 양자화; 이산 잠재 BFS + 연속 시각 피드백 제어 | 실제 H15: 짧은 play 데이터로 과제 진행률 100% (6개 사례, 사례별 3회); Cube-Hard 성공률: 73.3 ± 0.9% | — |
+| [**RynnUnify**](https://arxiv.org/abs/2610.32965v1) | 2026 | Astribot S1; 다단계 조작; 선택된 RoboCasa365 복합 과제 20개; 시각 계획·미래 상태 추론 | Cosmos3 기반 16B MoT; 장면 기억을 이용한 영상·언어 교차 계획; RL agent 및 공동 영상·행동 확장 | Rynn-VP: Cosmos 3 Nano 대비 +9.75점; 제어 성공률: 선택된 RoboCasa365 과제 51.5%, 실제 로봇 과제 3개 평균 46.7% | [코드](https://github.com/alibaba-damo-academy/RynnUnify) |
 
 ---
 

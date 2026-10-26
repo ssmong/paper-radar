@@ -1,0 +1,97 @@
+<h3 class="dp-h3">RynnUnify</h3>
+<p class="dp-p"><strong>Full title:</strong> RynnUnify: Towards Unified Embodied Brain</p>
+<p class="dp-p"><strong>Authors:</strong> Minghao Zhu et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.32965v1" target="_blank" rel="noopener">2610.32965v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A 16B model uses the Cosmos3 Mixture-of-Transformers (MoT) architecture. An 8B autoregressive reasoner and an 8B diffusion generator interact through joint attention. The reasoner architecture stays unchanged. The generator adds scene memory across video chunks and first-and-last-frame conditioning.</p>
+<p class="dp-p"><strong>Key methodology:</strong> The reasoner selects the next subtask, describes its expected visual changes, and estimates its duration. The generator predicts a video. Its final frame becomes the observation for the next planning step. Four scene reference frames and a video prefix from the previous chunk retain scene and motion context. A separate 8B agent, trained with reinforcement learning, chooses when to use the frozen model for video predictions. A World-Action Model (WAM) extension uses latent planning and joint video–action training for robot control.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Astribot S1 performs multi-step manipulation with body reorientation, precise object handling, and execution that depends on task history. Simulation evaluates 20 selected composite RoboCasa365 tasks. Rynn-VP evaluates long-horizon visual planning. Rynn-GEU evaluates reasoning about unobserved future states and interaction outcomes.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Connects embodied understanding with successive video predictions for long-horizon visual planning.</li>
+<li>Adds selective video generation for reasoning and extends the full model to robot control.</li>
+<li>Introduces Rynn-VP and Rynn-GEU to evaluate sustained visual planning and the value of video prediction for reasoning.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>Rynn-VP</td>
+<td>Overall score improvement</td>
+<td>9.75 points</td>
+<td>Compared with Cosmos 3 Nano</td>
+</tr>
+<tr>
+<td>Rynn-GEU</td>
+<td>Average score improvement</td>
+<td>6.0 points</td>
+<td>Agentic extension compared with direct reasoning</td>
+</tr>
+<tr>
+<td>RoboCasa365</td>
+<td>Success rate</td>
+<td>51.5%</td>
+<td>WAM extension; 20 selected composite tasks</td>
+</tr>
+<tr>
+<td>Real-robot manipulation</td>
+<td>Average success rate</td>
+<td>46.7%</td>
+<td>Three tasks; Astribot S1</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Connecting understanding, prediction, and action addresses multi-step robot work. Use beyond the selected tasks remains uncertain.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>6.3</td>
+<td>Scene memory and boundary-frame conditions extend Cosmos3 to sequential visual planning. The separate effects of these changes and added training data remain uncertain.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>7.0</td>
+<td>Scene references and recent video context address scene loss and motion discontinuity. Evidence that separates their effects and measures error accumulation is limited.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>6.0</td>
+<td>Planning gains and robot success rates support possible use. Real evaluation covers three tasks, and a separate RL agent limits attribution of reasoning gains to video generation alone.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>6.0</td>
+<td>Two benchmarks and reported gains partly support sustained planning and prediction-assisted reasoning. Detailed controlled comparisons are limited.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 6.5/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Robot-control results cover selected simulation tasks and three real tasks on one platform.</li>
+<li>The available text does not establish the separate effects of scene memory, boundary-frame conditions, and added training data.</li>
+<li>Detailed evaluation conditions, trial counts, and failure analysis are unavailable in the source excerpt.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / <a href="https://github.com/alibaba-damo-academy/RynnUnify" target="_blank" rel="noopener">Code</a>. The paper also links a <a href="https://huggingface.co/collections/Alibaba-DAMO-Academy/RynnUnify" target="_blank" rel="noopener">model collection</a>; its contents are not reported in the excerpt.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —</li>
+<li><strong>Deployment hardware:</strong> —</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> A 10% subset of the RynnBrain pretraining corpus supports general understanding. Other training covers spatial reasoning, physical prediction, affordance grounding, subtask planning, egocentric activities, robot manipulation, and embodied reasoning videos.</li>
+<li><strong>Evaluation data:</strong> Rynn-VP, Rynn-GEU, 20 selected composite RoboCasa365 tasks, and three real-robot tasks.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.32965v1" target="_blank" rel="noopener">Paper text</a>, abstract and sections 1–3.1.</p>

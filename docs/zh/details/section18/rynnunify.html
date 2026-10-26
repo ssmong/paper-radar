@@ -1,0 +1,97 @@
+<h3 class="dp-h3">RynnUnify</h3>
+<p class="dp-p"><strong>完整标题：</strong> RynnUnify: Towards Unified Embodied Brain</p>
+<p class="dp-p"><strong>作者：</strong> Minghao Zhu等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.32965v1" target="_blank" rel="noopener">2610.32965v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 采用Cosmos3的Mixture-of-Transformers（MoT）架构的16B模型。8B自回归推理器与8B扩散生成器通过联合注意力交互。推理器架构保持不变，生成器增加跨视频片段的场景记忆及首尾帧条件。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 推理器决定下一子任务、预期视觉变化及持续时间。生成器预测视频，最后一帧作为下一规划步骤的观测。四个场景参考帧和前一片段的视频前缀保留场景与运动上下文。另一个通过强化学习训练的8B智能体选择何时调用冻结模型进行视频预测。World-Action Model（WAM）扩展通过潜空间规划和视频–动作联合训练实现机器人控制。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> Astribot S1执行涉及身体转向、精确物体处理及依赖任务历史的多步操作。仿真评估20个选定的RoboCasa365复合任务。Rynn-VP评估长时程视觉规划，Rynn-GEU评估对未观测未来状态及交互结果的推理。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>将具身理解与连续视频预测连接，用于长时程视觉规划。</li>
+<li>按需生成视频辅助推理，并将完整模型扩展到机器人控制。</li>
+<li>提出Rynn-VP与Rynn-GEU，评估持续视觉规划及视频预测的推理价值。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>Rynn-VP</td>
+<td>综合分数提升</td>
+<td>9.75分</td>
+<td>相比Cosmos 3 Nano</td>
+</tr>
+<tr>
+<td>Rynn-GEU</td>
+<td>平均分数提升</td>
+<td>6.0分</td>
+<td>智能体扩展相比直接推理</td>
+</tr>
+<tr>
+<td>RoboCasa365</td>
+<td>成功率</td>
+<td>51.5%</td>
+<td>WAM扩展；20个选定复合任务</td>
+</tr>
+<tr>
+<td>真实机器人操作</td>
+<td>平均成功率</td>
+<td>46.7%</td>
+<td>三个任务；Astribot S1</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>连接理解、预测与动作对多步机器人任务重要。超出选定任务的应用仍不确定。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>6.3</td>
+<td>场景记忆和边界帧条件将Cosmos3扩展到顺序视觉规划。各项修改与新增训练数据的独立作用仍不确定。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>7.0</td>
+<td>场景参考和近期视频上下文应对场景遗忘及运动中断。分离各项效果及衡量误差累积的证据有限。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>6.0</td>
+<td>规划提升与机器人成功率支持应用潜力。真实评估仅含三个任务，且独立RL智能体使推理增益难以仅归因于视频生成。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>6.0</td>
+<td>两个基准及已报告增益部分支持持续规划和预测辅助推理。详细受控比较有限。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 6.5/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>机器人控制结果覆盖选定仿真任务及单一平台上的三个真实任务。</li>
+<li>现有文本未确立场景记忆、边界帧条件与新增训练数据的独立作用。</li>
+<li>来源节选未给出详细评估条件、试验次数及失败分析。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / <a href="https://github.com/alibaba-damo-academy/RynnUnify" target="_blank" rel="noopener">代码</a>。论文还链接了<a href="https://huggingface.co/collections/Alibaba-DAMO-Academy/RynnUnify" target="_blank" rel="noopener">模型合集</a>，但节选未报告其内容。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —</li>
+<li><strong>部署硬件：</strong> —</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> RynnBrain预训练语料的10%子集用于通用理解。其他训练涵盖空间推理、物理预测、可供性定位、子任务规划、第一人称活动、机器人操作及具身推理视频。</li>
+<li><strong>评估数据：</strong> Rynn-VP、Rynn-GEU、20个选定的RoboCasa365复合任务及三个真实机器人任务。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.32965v1" target="_blank" rel="noopener">论文正文</a>摘要及第1–3.1节。</p>
