@@ -405,6 +405,7 @@
 
 | 论文 | Year | Robot / 任务 | 核心方法 | 主要结果 | Code |
 |---|---|---|---|---|---|
+| [**Towards Agentic Robots: Model, Data, Environment, and Harness**](https://arxiv.org/abs/2610.20442v1) | 2026 | 综述实体与仿真机器人系统的任务执行和能力开发 | 回顾策略、VLA、世界模型和世界动作模型的发展；比较智能体决策、工具和反馈 | 以Model、Data、Environment、Harness四个领域及17个可重叠功能类别连接执行与能力开发 | [综述资料](https://github.com/chonghanqin/Awesome-Agentic-Robots) |
 | [**GroundingPI**](https://arxiv.org/abs/2609.39601v1) | 2026 | 双臂操作（RoboTwin 2.0）、人形灵巧手操作（RoboCasa-GR1）；驾驶（nuScenes） | 4B grounding模型；点与框共享坐标token；预训练 + SFT + GRPO；操作使用Action DiT | 全部4个OOD操作设置排名第一；RoboTwin2.0-Clean2Random成功率17.60%，Rex-Omni为14.10%；nuScenes开环L2误差0.296 m | — |
 | [**ScaleNav**](https://arxiv.org/abs/2610.25690v1) | 2026 | Unitree Go2；面向初始视野内目标的语言条件局部导航 | 共享DiT预测视频与动作块；互联网视频预训练 + 仿真动作对齐 + 联合微调；初始帧锚点 | 成功率：单视角Short-Horizon OVON为86.5%，HabitatGS-LN为94.9%，Go2为83.3%（60次试验） | [项目](https://zju3dv.github.io/ScaleNav/) |
 | [**Ropedia W0**](https://arxiv.org/abs/2610.26855v1) | 2026 | 人类、夹爪机器人及灵巧人形机器人；移动与操作视频预测；Xp-Teleop中的Unitree G1 | 相机位姿与投影骨架条件视频扩散模型；Xp-Data人类预训练 + 人机混合训练；蒸馏 | DreamDojo In-lab PSNR：20.854 dB，DreamDojo 14B为18.983 dB（Ropedia W0 5B；1%后训练数据） | — |

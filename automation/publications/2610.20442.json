@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/towards_agentic_robots.md": "6d815827e007bc4cc857c8212500212056d566afeb75f1f23d462886b46b93de",
+    "detailed_ko/section18/towards_agentic_robots.md": "fa789e9c7ec082bf0ddc520a2cea9648a4748c8b057c268da33ac5b286cf22d4",
+    "detailed_zh/section18/towards_agentic_robots.md": "2f9d501b2bd49fde9b94742ea961b787a03d8698d40adeeb14cba3836219e73a"
+  },
+  "paper_id": "2610.20442",
+  "rows": {
+    "survey.md": "| [**Towards Agentic Robots: Model, Data, Environment, and Harness**](https://arxiv.org/abs/2610.20442v1) | 2026 | Survey of physical and simulated robot systems; task execution and capability development | Reviews policies, VLA, world models, and world-action models; compares agent decisions, tools, and feedback | Four domains (Model, Data, Environment, Harness) and 17 overlapping functional categories connect execution and capability development | [Survey resources](https://github.com/chonghanqin/Awesome-Agentic-Robots) |",
+    "survey_ko.md": "| [**Towards Agentic Robots: Model, Data, Environment, and Harness**](https://arxiv.org/abs/2610.20442v1) | 2026 | 실제·시뮬레이션 로봇 시스템의 과제 실행과 역량 개발을 다룬 서베이 | policy·VLA·world model·world-action model의 발전을 검토하고 에이전트 결정·도구·피드백을 비교한다 | Model·Data·Environment·Harness의 4개 영역과 중복 가능한 기능 범주 17개로 실행과 역량 개발을 연결한다 | [서베이 자료](https://github.com/chonghanqin/Awesome-Agentic-Robots) |",
+    "survey_zh.md": "| [**Towards Agentic Robots: Model, Data, Environment, and Harness**](https://arxiv.org/abs/2610.20442v1) | 2026 | 综述实体与仿真机器人系统的任务执行和能力开发 | 回顾策略、VLA、世界模型和世界动作模型的发展；比较智能体决策、工具和反馈 | 以Model、Data、Environment、Harness四个领域及17个可重叠功能类别连接执行与能力开发 | [综述资料](https://github.com/chonghanqin/Awesome-Agentic-Robots) |"
+  },
+  "run_id": "2026-10-19T233147Z",
+  "status": "published"
+}
