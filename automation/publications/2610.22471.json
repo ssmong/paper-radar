@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/gpt6_astra.md": "6ff1d90f2d3936143ef3e8145999c422c16bf5cbc61c447549d3a9494f51cbf4",
+    "detailed_ko/section18/gpt6_astra.md": "131957f32db60e2c1472e275973322675b791f880365a8ece5cf3e0c70f3441d",
+    "detailed_zh/section18/gpt6_astra.md": "c90aa5a6a7a18551e985e98a80cd4956f1fd0299aa21ccd8f6111f2977ec32c9"
+  },
+  "paper_id": "2610.22471",
+  "rows": {
+    "survey.md": "| [**Has GPT-6-Astra Achieved Embodied Intelligence?**](https://arxiv.org/abs/2610.22471v1) | 2026 | Manipulation and navigation; 12 benchmarks; 8 real robot configurations with arms, dexterous hands, mobile platforms, and humanoids | Fixed model weights; frozen demonstration-based ICL packages; 1×/10× action budgets; closed-loop review of π0.5 actions | SIMPLE success: 90.8% with ICL vs 70.8% zero-shot (4 common tasks, standard budget); RoboDojo: 54.17% with ICL + closed-loop VLA vs 29.67% with ICL direct control | — |",
+    "survey_ko.md": "| [**Has GPT-6-Astra Achieved Embodied Intelligence?**](https://arxiv.org/abs/2610.22471v1) | 2026 | 조작·이동; benchmark 12개; 로봇 팔, dexterous hand, 이동형 로봇, humanoid를 포함한 실제 로봇 구성 8개 | 모델 가중치 고정; 시연으로 만든 ICL 지식 패키지 동결; 행동 예산 1×/10×; π0.5 행동의 폐루프 검토 | SIMPLE 성공률: ICL 90.8% vs zero-shot 70.8% (공통 과제 4개, 표준 예산); RoboDojo: ICL + 폐루프 VLA 54.17% vs ICL 직접 제어 29.67% | — |",
+    "survey_zh.md": "| [**Has GPT-6-Astra Achieved Embodied Intelligence?**](https://arxiv.org/abs/2610.22471v1) | 2026 | 操作与导航；12个基准；8种真实机器人配置，涵盖机械臂、灵巧手、移动平台和人形机器人 | 固定模型权重；冻结基于演示的ICL知识包；1×/10×动作预算；闭环审查π0.5动作 | SIMPLE成功率：ICL为90.8%，zero-shot为70.8%（4个共同任务，标准预算）；RoboDojo：ICL + 闭环VLA为54.17%，ICL直接控制为29.67% | — |"
+  },
+  "run_id": "2026-10-19T233147Z",
+  "status": "published"
+}

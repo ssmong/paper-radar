@@ -409,6 +409,7 @@
 | [**Ropedia W0**](https://arxiv.org/abs/2610.26855v1) | 2026 | 人类、夹爪机器人及灵巧人形机器人；移动与操作视频预测；Xp-Teleop中的Unitree G1 | 相机位姿与投影骨架条件视频扩散模型；Xp-Data人类预训练 + 人机混合训练；蒸馏 | DreamDojo In-lab PSNR：20.854 dB，DreamDojo 14B为18.983 dB（Ropedia W0 5B；1%后训练数据） | — |
 | [**VQ-WM**](https://arxiv.org/abs/2610.25600v1) | 2026 | WidowX AI；四圆盘汉诺塔（H15）；仿真操作与Walker移动 | 首次到达时间驱动的状态量化；离散潜空间BFS + 连续视觉反馈控制 | 真实H15：短时play数据训练后任务进度100%（6个案例，每例3次）；Cube-Hard成功率：73.3 ± 0.9% | — |
 | [**RynnUnify**](https://arxiv.org/abs/2610.32965v1) | 2026 | Astribot S1；多步操作；20个选定的RoboCasa365复合任务；视觉规划与未来状态推理 | 基于Cosmos3的16B MoT；结合场景记忆的交错视频–语言规划；RL智能体与视频–动作联合扩展 | Rynn-VP：比Cosmos 3 Nano高9.75分；控制成功率：选定RoboCasa365任务51.5%，三个真实机器人任务平均46.7% | [代码](https://github.com/alibaba-damo-academy/RynnUnify) |
+| [**Has GPT-6-Astra Achieved Embodied Intelligence?**](https://arxiv.org/abs/2610.22471v1) | 2026 | 操作与导航；12个基准；8种真实机器人配置，涵盖机械臂、灵巧手、移动平台和人形机器人 | 固定模型权重；冻结基于演示的ICL知识包；1×/10×动作预算；闭环审查π0.5动作 | SIMPLE成功率：ICL为90.8%，zero-shot为70.8%（4个共同任务，标准预算）；RoboDojo：ICL + 闭环VLA为54.17%，ICL直接控制为29.67% | — |
 
 ---
 

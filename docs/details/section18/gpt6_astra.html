@@ -1,0 +1,99 @@
+<h3 class="dp-h3">Has GPT-6-Astra Achieved Embodied Intelligence?</h3>
+<p class="dp-p"><strong>Full title:</strong> Has GPT-6-Astra Achieved Embodied Intelligence?</p>
+<p class="dp-p"><strong>Authors:</strong> SenseNova Joint Research Team; Zhongang Cai et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.22471v1" target="_blank" rel="noopener">2610.22471v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> GPT-6-Astra acts as a high-level System 2 reasoner with fixed weights. In the collaboration study, π0.5, fine-tuned on RoboDojo, acts as a low-level System 1 VLA controller. Internal model architecture: —.</p>
+<p class="dp-p"><strong>Key methodology:</strong> Training demonstrations produce a task-specific ICL knowledge package with notes and reusable code. The package is frozen before testing. Test episodes use separate sessions, with no information transfer between episodes. Standard (1×) and extended (10×) action budgets retain the same control interface and success criteria. Extensions continue the same episode without resets. RoboDojo ablations compare controller collaboration, action representations, and action chunking. In closed-loop collaboration, GPT-6-Astra accepts, modifies, or rejects proposed end-effector actions. Real-robot trials use no demonstrations; they use human-written context and wall-clock budgets.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Twelve benchmarks cover tabletop manipulation, humanoid loco-manipulation, household activities, navigation, and dexterous hands. Eight real robot configurations cover single and dual arms, grippers, dexterous hands, wheeled mobile manipulators, and a humanoid.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Evaluates a fixed general model with demonstration-based ICL and separate standard and extended action budgets.</li>
+<li>Measures success and cost for direct control and closed-loop VLA collaboration.</li>
+<li>Examines deployment limits on real robots and proposes a benchmark prototype without in-domain demonstrations and with a running world clock.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>SIMPLE</td>
+<td>Success rate</td>
+<td>90.8%</td>
+<td>Task-level ICL; zero-shot: 70.8%; four common tasks, standard budget</td>
+</tr>
+<tr>
+<td>RoboDojo</td>
+<td>Unweighted mean of category success rates</td>
+<td>54.17%</td>
+<td>ICL + closed-loop VLA; ICL direct control: 29.67%; controlled harness ablation</td>
+</tr>
+<tr>
+<td>Real rigid pick-and-place</td>
+<td>Successful trials</td>
+<td>17/18</td>
+<td>Zero-shot real-robot evaluation with human-written context</td>
+</tr>
+<tr>
+<td>Real plug insertion</td>
+<td>Successful trials</td>
+<td>0/11</td>
+<td>Across three platforms</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Results across robot types identify limits in reliability and efficiency. Economical deployment remains uncertain.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.0</td>
+<td>ICL packages and closed-loop VLA review extend RoboRSI-based direct control. The main advance concerns evaluation and system integration.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Frozen packages separate preparation from testing. Extensions of the same episode assess recovery, but package components are not isolated.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.0</td>
+<td>Controlled ICL and collaboration comparisons show gains. Long inference times and real contact failures limit practical use.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.3</td>
+<td>Budget comparisons and real trials clarify capability and deployment limits. Changes in demonstrations, time limits, and human context prevent isolation of transfer effects.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.4/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Knowledge packages depend on source tasks, with weak transfer beyond the demonstration distribution.</li>
+<li>High token costs and long execution times limit real-time use.</li>
+<li>Physical completion checks, recovery from irreversible failures, and retention of progress in long tasks remain unreliable.</li>
+<li>Real trials use platform-specific human context and some different success criteria, which limit direct comparisons.</li>
+<li>Package components are not separately evaluated for their causal contribution.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —</li>
+<li><strong>Deployment hardware:</strong> —</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> Benchmark training demonstrations prepare frozen ICL knowledge packages; GPT-6-Astra weights remain fixed. The System 1 π0.5 controller is fine-tuned on RoboDojo.</li>
+<li><strong>Evaluation data:</strong> Twelve benchmarks, including SIMPLE and RoboDojo, plus trials on eight real robot configurations. Real trials use no demonstration-derived knowledge packages.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.22471v1" target="_blank" rel="noopener">Paper text</a>, abstract and sections 2–4.</p>

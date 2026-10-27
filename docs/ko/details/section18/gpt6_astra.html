@@ -1,0 +1,99 @@
+<h3 class="dp-h3">Has GPT-6-Astra Achieved Embodied Intelligence?</h3>
+<p class="dp-p"><strong>전체 제목:</strong> Has GPT-6-Astra Achieved Embodied Intelligence?</p>
+<p class="dp-p"><strong>저자:</strong> SenseNova Joint Research Team; Zhongang Cai 외</p>
+<p class="dp-p"><strong>학회/연도:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.22471v1" target="_blank" rel="noopener">2610.22471v1</a></p>
+<p class="dp-p"><strong>아키텍처:</strong> GPT-6-Astra는 가중치를 고정한 상위 System 2 추론기로 작동함. 협업 실험에서는 RoboDojo로 fine-tuning한 π0.5가 하위 System 1 VLA 제어기로 작동함. 모델 내부 구조: —.</p>
+<p class="dp-p"><strong>핵심 방법론:</strong> 학습 시연에서 과제별 메모와 재사용 코드를 포함한 ICL 지식 패키지를 만들고 테스트 전에 동결함. 테스트 에피소드는 별도 세션을 사용하며 에피소드 간 정보를 전달하지 않음. 표준(1×)·확장(10×) 행동 예산에서 제어 인터페이스와 성공 기준을 고정함. 확장 시에는 초기화 없이 같은 에피소드를 이어감. RoboDojo ablation에서 제어기 협업, 행동 표현, 행동 묶음을 비교함. 폐루프 협업에서는 GPT-6-Astra가 제안된 말단장치 행동을 수락·수정·거부함. 실제 로봇 실험에서는 시연 없이 사람이 작성한 문맥과 실제 경과 시간 예산을 사용함.</p>
+<p class="dp-p"><strong>로봇 / 과제:</strong> Benchmark 12개가 테이블탑 조작, humanoid 이동·조작, 가사 활동, 이동, dexterous hand를 다룸. 실제 로봇 구성 8개는 단일·양팔, gripper, dexterous hand, 바퀴형 이동 조작 로봇, humanoid를 포함함.</p>
+<p class="dp-p"><strong>주요 기여:</strong></p>
+<ul class="dp-list">
+<li>고정된 범용 모델을 시연 기반 ICL과 표준·확장 행동 예산으로 평가함.</li>
+<li>직접 제어와 폐루프 VLA 협업의 성공률·비용을 비교함.</li>
+<li>실제 로봇의 운용 제약을 확인하고, 동일 도메인 시연 없이 추론 중에도 시간이 흐르는 benchmark 시제품을 제안함.</li>
+</ul>
+<p class="dp-p"><strong>정량적 결과:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / 과제</th>
+<th>지표</th>
+<th>값</th>
+<th>조건</th>
+</tr></thead><tbody>
+<tr>
+<td>SIMPLE</td>
+<td>성공률</td>
+<td>90.8%</td>
+<td>과제별 ICL; zero-shot: 70.8%; 공통 과제 4개, 표준 예산</td>
+</tr>
+<tr>
+<td>RoboDojo</td>
+<td>범주별 성공률의 비가중 평균</td>
+<td>54.17%</td>
+<td>ICL + 폐루프 VLA; ICL 직접 제어: 29.67%; 통제된 제어 시스템 ablation</td>
+</tr>
+<tr>
+<td>실제 강체 집기·놓기</td>
+<td>성공 시행 수</td>
+<td>17/18</td>
+<td>사람이 작성한 문맥을 사용하는 zero-shot 실제 로봇 평가</td>
+</tr>
+<tr>
+<td>실제 플러그 삽입</td>
+<td>성공 시행 수</td>
+<td>0/11</td>
+<td>로봇 플랫폼 3개에서 평가</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI 연구 평가:</strong> 세 검토자의 평균 점수, 10점 척도.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>항목</th>
+<th>점수 /10</th>
+<th>근거</th>
+</tr></thead><tbody>
+<tr>
+<td>중요도</td>
+<td>8.0</td>
+<td>여러 로봇 유형의 결과로 신뢰성·효율의 병목을 확인함. 경제적인 실제 운용 가능성은 불확실함.</td>
+</tr>
+<tr>
+<td>추가 기여</td>
+<td>7.0</td>
+<td>ICL 지식 패키지와 폐루프 VLA 검토로 RoboRSI 기반 직접 제어를 확장함. 핵심 contribution은 평가와 시스템 통합에 있음.</td>
+</tr>
+<tr>
+<td>방법 품질</td>
+<td>8.0</td>
+<td>지식 패키지를 동결해 준비와 테스트를 분리함. 같은 에피소드의 확장으로 복구를 평가하지만 패키지 구성요소의 효과는 분리하지 못함.</td>
+</tr>
+<tr>
+<td>효과성</td>
+<td>7.0</td>
+<td>통제된 ICL·협업 비교에서 개선을 보임. 긴 추론 시간과 실제 접촉 실패로 실용 효과는 제한됨.</td>
+</tr>
+<tr>
+<td>Gap 해소 근거</td>
+<td>7.3</td>
+<td>예산별 비교와 실제 로봇 실험으로 역량·운용 제약을 구체화함. 시연·시간 제한·사람이 작성한 문맥이 함께 달라 전이 효과를 분리하지 못함.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>종합 점수:</strong> 7.4/10.</p>
+<p class="dp-p"><strong>한계점:</strong></p>
+<ul class="dp-list">
+<li>지식 패키지는 원래 과제에 의존하며 시연 분포 밖 전이가 약함.</li>
+<li>높은 토큰 비용과 긴 실행 시간이 실시간 운용을 제한함.</li>
+<li>물리적 완료 확인, 비가역 실패 복구, 장기 과제의 진행 상태 보존이 불안정함.</li>
+<li>실제 로봇 실험은 플랫폼별로 사람이 작성한 문맥을 사용하고 일부 성공 기준도 달라 직접 비교가 제한됨.</li>
+<li>지식 패키지 구성요소별 contribution을 분리하는 평가는 없음.</li>
+</ul>
+<p class="dp-p"><strong>공개 가중치/코드:</strong> — / —.</p>
+<h2 class="dp-h2">추론 / 배포</h2>
+<ul class="dp-list">
+<li><strong>추론 지연 시간:</strong> —</li>
+<li><strong>배포 하드웨어:</strong> —</li>
+</ul>
+<h2 class="dp-h2">데이터셋 / 데이터 수집</h2>
+<ul class="dp-list">
+<li><strong>훈련 데이터:</strong> Benchmark 학습 시연으로 동결 ICL 지식 패키지를 준비하며 GPT-6-Astra 가중치는 고정함. System 1 π0.5 제어기는 RoboDojo로 fine-tuning함.</li>
+<li><strong>평가 데이터:</strong> SIMPLE과 RoboDojo를 포함한 benchmark 12개 및 실제 로봇 구성 8개의 시행. 실제 로봇 실험에서는 시연에서 만든 지식 패키지를 사용하지 않음.</li>
+</ul>
+<p class="dp-p"><strong>출처:</strong> <a href="https://arxiv.org/html/2610.22471v1" target="_blank" rel="noopener">논문 본문</a>의 초록 및 2–4절.</p>

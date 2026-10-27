@@ -1,0 +1,99 @@
+<h3 class="dp-h3">Has GPT-6-Astra Achieved Embodied Intelligence?</h3>
+<p class="dp-p"><strong>完整标题：</strong> Has GPT-6-Astra Achieved Embodied Intelligence?</p>
+<p class="dp-p"><strong>作者：</strong> SenseNova Joint Research Team；Zhongang Cai等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.22471v1" target="_blank" rel="noopener">2610.22471v1</a></p>
+<p class="dp-p"><strong>架构：</strong> GPT-6-Astra作为高层System 2推理器，权重保持固定。协作实验中，在RoboDojo上微调的π0.5作为低层System 1 VLA控制器。模型内部架构：—。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 从训练演示中生成包含任务笔记和可复用代码的ICL知识包，并在测试前冻结。测试回合使用独立会话，回合间不传递信息。标准（1×）和扩展（10×）动作预算保持相同控制接口及成功标准。扩展时继续同一回合，不重置环境。RoboDojo消融比较控制器协作、动作表示和动作分块。闭环协作中，GPT-6-Astra接受、修改或拒绝候选末端执行器动作。真实机器人实验不使用演示，改用人工编写的上下文和实际时间预算。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> 12个基准覆盖桌面操作、人形移动操作、家务活动、导航和灵巧手。8种真实机器人配置涵盖单臂与双臂、夹爪、灵巧手、轮式移动操作机器人和人形机器人。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>通过基于演示的ICL及独立的标准、扩展动作预算评估固定的通用模型。</li>
+<li>测量直接控制和闭环VLA协作的成功率与成本。</li>
+<li>检查真实机器人部署限制，并提出无域内演示、推理期间世界时钟持续运行的基准原型。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>SIMPLE</td>
+<td>成功率</td>
+<td>90.8%</td>
+<td>任务级ICL；zero-shot：70.8%；4个共同任务，标准预算</td>
+</tr>
+<tr>
+<td>RoboDojo</td>
+<td>各类别成功率的非加权平均</td>
+<td>54.17%</td>
+<td>ICL + 闭环VLA；ICL直接控制：29.67%；受控控制系统消融</td>
+</tr>
+<tr>
+<td>真实刚性物体抓取放置</td>
+<td>成功试验数</td>
+<td>17/18</td>
+<td>使用人工编写上下文的zero-shot真实机器人评估</td>
+</tr>
+<tr>
+<td>真实插头插入</td>
+<td>成功试验数</td>
+<td>0/11</td>
+<td>涉及3个平台</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>多类机器人结果揭示可靠性与效率瓶颈。经济可行的实际部署仍不确定。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>7.0</td>
+<td>ICL知识包和闭环VLA审查扩展了基于RoboRSI的直接控制。主要贡献在于评估和系统集成。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>冻结知识包将准备与测试分离。延长同一回合可评估恢复能力，但未分离知识包各组成部分的作用。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.0</td>
+<td>受控ICL和协作比较显示性能改善。长推理时间和真实接触失败限制实际效果。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>7.3</td>
+<td>预算比较与真实试验明确了能力和部署限制。演示、时间限制及人工上下文同时变化，无法单独识别迁移效果。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.4/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>知识包依赖源任务，超出演示分布的迁移较弱。</li>
+<li>高token成本和长执行时间限制实时应用。</li>
+<li>物理完成状态验证、不可逆失败恢复及长任务进度保持仍不可靠。</li>
+<li>真实试验使用平台专属人工上下文，部分成功标准也不同，限制直接比较。</li>
+<li>未单独评估知识包各组成部分的因果贡献。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —</li>
+<li><strong>部署硬件：</strong> —</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> 使用基准训练演示准备冻结的ICL知识包，GPT-6-Astra权重保持固定。System 1 π0.5控制器在RoboDojo上微调。</li>
+<li><strong>评估数据：</strong> 包括SIMPLE和RoboDojo在内的12个基准，以及8种真实机器人配置的试验。真实试验不使用从演示中生成的知识包。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.22471v1" target="_blank" rel="noopener">论文正文</a>摘要及第2–4节。</p>
