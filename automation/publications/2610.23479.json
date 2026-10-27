@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section15/hexashell.md": "a539ad427f9c1f589a783c2a0bd9a4f26b63470f876e01b5c08b47ed4e98f023",
+    "detailed_ko/section15/hexashell.md": "477d52193b92ea3dd5ffb7c53d96ade2a89cd37d5821a21bed9b709ee110404e",
+    "detailed_zh/section15/hexashell.md": "13b3a71ade3c3cabe7b3cfb9c3c339cd88265aaea966df3f9567c295376901cb"
+  },
+  "paper_id": "2610.23479",
+  "rows": {
+    "survey.md": "| [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | Simulated dual-arm ARX X5; 42 RoboDojo manipulation tasks | GPT-6-Astra coding agents write and repair reusable tools; calibrated RGB triangulation and plane constraints | New layouts within seed 0: success 39.7%, progress score 48.0; tight insertion success 8.3% | [Code](https://github.com/HexaFuture/HexaShell) |",
+    "survey_ko.md": "| [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | 시뮬레이션 양팔 ARX X5; RoboDojo 조작 과제 42개 | GPT-6-Astra coding agent가 재사용 도구를 작성·수정; 보정된 RGB의 삼각측량과 평면 제약으로 위치 측정 | seed 0의 새 배치: 성공률 39.7%, progress score 48.0; 정밀 삽입 성공률 8.3% | [코드](https://github.com/HexaFuture/HexaShell) |",
+    "survey_zh.md": "| [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | 仿真双臂ARX X5；42个RoboDojo操作任务 | GPT-6-Astra编程智能体编写并修复可复用工具；通过标定RGB三角测量与平面约束测量位置 | seed 0内的新布局：成功率39.7%，progress score 48.0；精密插入成功率8.3% | [代码](https://github.com/HexaFuture/HexaShell) |"
+  },
+  "run_id": "2026-10-19T233147Z",
+  "status": "published"
+}

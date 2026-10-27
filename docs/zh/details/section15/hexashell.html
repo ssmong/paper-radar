@@ -1,0 +1,99 @@
+<h3 class="dp-h3">HexaShell</h3>
+<p class="dp-p"><strong>完整标题：</strong> HexaShell: A Thin Harness for Exploring the Limits of VLM Agents as Robot Coding Agents</p>
+<p class="dp-p"><strong>作者：</strong> Hongcheng Gao等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.23479v1" target="_blank" rel="noopener">2610.23479v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 两个编程智能体使用Codex与GPT-6-Astra，推理强度为medium。精简命令行harness将命令转换为关节运动。执行智能体接收三个标定RGB视图、机器人位姿及关节角度。工具仅使用机器人观测。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 执行智能体使用工具尝试一个布局。失败后，优化智能体读取日志与相机图像，编写或修复工具，再次运行同一布局。工具通过三角测量和平面约束测量位置。移动腕部相机可获取额外视图，并消耗动作步数。工具在十个布局上开发，冻结后在seed 0内的新布局上评估。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> RoboDojo包含Isaac Sim 5.1中双臂ARX X5的42个仿真操作任务。任务分组为Generalization、Memory、Long-Horizon、Precision和Open。计入Generalization的标准及杂乱布局后，共有54个变体。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>无需模型训练，跨回合保留可复用机器人工具，并依据失败日志修复工具。</li>
+<li>在相同harness、模型及开发布局上比较RGB几何测量与Depth Anything V2 Base。</li>
+<li>按接触类型分析性能与失败，展示工具的能力范围及局限。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>RoboDojo全部42个任务</td>
+<td>成功率 / progress score</td>
+<td>39.7% / 48.0</td>
+<td>冻结工具；seed 0内的新布局；排行榜聚合方式</td>
+</tr>
+<tr>
+<td>RoboDojo开发布局</td>
+<td>成功率提升</td>
+<td>8.7个百分点</td>
+<td>三角测量相比Depth Anything V2；相同布局、harness、修复循环及模型</td>
+</tr>
+<tr>
+<td>推动 / 记忆任务</td>
+<td>成功率</td>
+<td>92.5% / 65.0%</td>
+<td>新布局评估</td>
+</tr>
+<tr>
+<td>精密插入</td>
+<td>成功率</td>
+<td>8.3%</td>
+<td>新布局评估</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>7.3</td>
+<td>将机器人失败转化为可复用代码有助于机器人开发及能力分析。仿真与较长模型延迟限制了实际应用证据。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>6.3</td>
+<td>持续修复工具及完整基准分析扩展了固定harness。URAI等相关系统也区分工具编写与执行，结构新颖性有限。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>7.3</td>
+<td>标定RGB几何与冻结评估适合该问题。早期深度工具及额外任务笔记使修复循环的独立作用难以分离。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.0</td>
+<td>相同开发布局的比较支持三角测量的作用。较低插入成功率及模型延迟限制实际应用。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>6.7</td>
+<td>新布局结果及接触类型分析明确了工具的局限。单一seed和观察性失败标签无法确立接触是主要失败原因。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 6.9/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>新布局评估仍限于seed 0。排行榜基线使用不同回合数与seed条件。</li>
+<li>RGB工具开发从早期深度工具开始。25个任务的优化智能体还接收成功判定要求笔记。</li>
+<li>与固定harness的比较同时改变接口和工具使用，无法分离修复循环的作用。</li>
+<li>精密插入及铰接物体任务仍然困难。失败分类未分离感知、推理和控制原因。</li>
+<li>RoboDojo不将模型延迟计入动作预算。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / <a href="https://github.com/HexaFuture/HexaShell" target="_blank" rel="noopener">代码</a>。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> 复测回合耗时中位数为739 s，机器人运动时间为26 s。大部分耗时来自模型延迟。</li>
+<li><strong>部署硬件：</strong> 每次运行使用一张RTX 4090；评估在仿真中进行。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>工具开发：</strong> 使用seed 0内每个任务的十个布局，无需模型训练。Generalization使用五个标准布局和五个杂乱布局。</li>
+<li><strong>评估数据：</strong> 使用seed 0内每个任务的十个新布局。Generalization使用五个新标准布局和五个新杂乱布局。成功由基准自身的检查器判定。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.23479v1" target="_blank" rel="noopener">论文正文</a>摘要及第2–5节。</p>

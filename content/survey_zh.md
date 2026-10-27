@@ -383,6 +383,7 @@
 
 | 论文 | Year | Robot / 任务 | 核心方法 | 主要结果 | Code |
 |---|---|---|---|---|---|
+| [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | 仿真双臂ARX X5；42个RoboDojo操作任务 | GPT-6-Astra编程智能体编写并修复可复用工具；通过标定RGB三角测量与平面约束测量位置 | seed 0内的新布局：成功率39.7%，progress score 48.0；精密插入成功率8.3% | [代码](https://github.com/HexaFuture/HexaShell) |
 
 ---
 

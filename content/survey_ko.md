@@ -383,6 +383,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 
 | 논문 | 연도 | 로봇 / 과제 | 핵심 방법 | 주요 결과 | 코드 |
 |---|---|---|---|---|---|
+| [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | 시뮬레이션 양팔 ARX X5; RoboDojo 조작 과제 42개 | GPT-6-Astra coding agent가 재사용 도구를 작성·수정; 보정된 RGB의 삼각측량과 평면 제약으로 위치 측정 | seed 0의 새 배치: 성공률 39.7%, progress score 48.0; 정밀 삽입 성공률 8.3% | [코드](https://github.com/HexaFuture/HexaShell) |
 
 ---
 

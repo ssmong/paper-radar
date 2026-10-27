@@ -383,6 +383,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 
 | Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
 |---|---|---|---|---|---|
+| [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | Simulated dual-arm ARX X5; 42 RoboDojo manipulation tasks | GPT-6-Astra coding agents write and repair reusable tools; calibrated RGB triangulation and plane constraints | New layouts within seed 0: success 39.7%, progress score 48.0; tight insertion success 8.3% | [Code](https://github.com/HexaFuture/HexaShell) |
 
 ---
 
