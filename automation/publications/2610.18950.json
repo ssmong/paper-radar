@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section13/lambda0.md": "222c47e868e8a3c70915aae08bdb960fd783640d2aeb9b013483cc996b13dc46",
+    "detailed_ko/section13/lambda0.md": "ea22bc0517709c73536f9ec10b7b89887dcdbad33be7c0cf52397eddc5dde0ae",
+    "detailed_zh/section13/lambda0.md": "76659b1c6c7149032f496ecde55cdcb5ab4a0cf2ac89fbb185eed44a3dd40212"
+  },
+  "paper_id": "2610.18950",
+  "rows": {
+    "survey.md": "| [**λ_0**](https://arxiv.org/abs/2610.18950v1) | 2026 | Unitree G1; whole-body loco-manipulation | Aligns HumanVerse human demonstrations to G1; hand-motion pretraining, whole-body human mid-training, and robot post-training | Success: SIMPLE 90.0% (task-wise configuration selection); four real tasks 62.5%, Average weighted progress 80.4% (10 trials per task) | [GitHub](https://github.com/LambdaHumanoid/openlambda) |",
+    "survey_ko.md": "| [**λ_0**](https://arxiv.org/abs/2610.18950v1) | 2026 | Unitree G1; 전신 loco-manipulation | HumanVerse 인간 시연을 G1에 정렬한다. 손 동작 사전 학습, 인간 전신 동작 mid-training, 로봇 post-training을 거친다 | 성공률: SIMPLE 90.0% (과제별 설정 선택); 실제 과제 4개 62.5%, Average weighted progress 80.4% (과제당 10회) | [코드](https://github.com/LambdaHumanoid/openlambda) |",
+    "survey_zh.md": "| [**λ_0**](https://arxiv.org/abs/2610.18950v1) | 2026 | Unitree G1；全身移动操作 | 将HumanVerse人类演示对齐到G1；依次进行手部运动预训练、人类全身运动中期训练和机器人后训练 | 成功率：SIMPLE 90.0%（按任务选择配置）；四项真实任务62.5%，Average weighted progress 80.4%（每项任务10次试验） | [代码](https://github.com/LambdaHumanoid/openlambda) |"
+  },
+  "run_id": "2026-10-28T233702Z",
+  "status": "published"
+}

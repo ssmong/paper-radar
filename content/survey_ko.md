@@ -370,6 +370,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 | 논문 | 연도 | 로봇 / 과제 | 핵심 방법 | 주요 결과 | 코드 |
 |---|---|---|---|---|---|
 | [**Reflex**](https://arxiv.org/abs/2610.12772v1) | 2026 | Unitree G1; 사람이 던진 상자를 전신으로 받아 유지한다 | 상태 기반 PPO, 동역학 latent 학습, 고정 제어기를 위한 RGB-D 이력 회귀의 3단계로 학습한다 | 포획 성공률: 시뮬레이션 85.7%; 실제 G1은 2.5, 5, 7 m에서 각각 65%, 40%, 15% (조건당 20회) | — |
+| [**λ_0**](https://arxiv.org/abs/2610.18950v1) | 2026 | Unitree G1; 전신 loco-manipulation | HumanVerse 인간 시연을 G1에 정렬한다. 손 동작 사전 학습, 인간 전신 동작 mid-training, 로봇 post-training을 거친다 | 성공률: SIMPLE 90.0% (과제별 설정 선택); 실제 과제 4개 62.5%, Average weighted progress 80.4% (과제당 10회) | [코드](https://github.com/LambdaHumanoid/openlambda) |
 
 ---
 

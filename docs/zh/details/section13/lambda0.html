@@ -1,0 +1,106 @@
+<h3 class="dp-h3">λ_0</h3>
+<p class="dp-p"><strong>完整标题：</strong> $λ_0$: Scaling Open-World Egocentric Human Data for Humanoid Loco-Manipulation</p>
+<p class="dp-p"><strong>作者：</strong> Lambda-humanoid Team</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.18950v1" target="_blank" rel="noopener">2610.18950v1</a></p>
+<p class="dp-p"><strong>架构：</strong> Qwen3.5-2B视觉语言骨干为生成式动作专家提供条件信息。策略输入自我视角图像、语言指令和机器人状态，预测50步动作块。G1的每步动作包含64维SONIC运动潜变量和双手各6维Revo2命令。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 对齐相机视角和手臂外观，并离线修正人类运动参考、机器人运动参考及控制器输入。训练依次进行手部运动预训练、基于对齐HumanVerse数据的人类全身运动中期训练、机器人后训练。第二和第三阶段使用流匹配。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> 配备Revo2双手的Unitree G1执行全身移动操作。四项真实评估任务为Bottle Disposal、Toy Storage、Box Transport和Chair Placement。独立的迁移实验使用任务专属人类演示，无需目标任务的机器人演示。完整λ_0策略使用机器人后训练。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>提出HumanVerse，包含自我视角视频及同步身体与手部运动。500小时指转换与有效性过滤前的采集量。</li>
+<li>将人类观测与动作对齐到G1控制器接口。</li>
+<li>固定机器人演示，研究人类数据规模及训练阶段的作用。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>SIMPLE</td>
+<td>Success rate</td>
+<td>90.0%</td>
+<td>六项任务，Levels 0–2；每个任务与等级组合10次试验；按任务选择配置</td>
+</tr>
+<tr>
+<td>四项真实G1任务</td>
+<td>Average success rate</td>
+<td>62.5%</td>
+<td>每项任务与每个策略使用10个固定初始配置</td>
+</tr>
+<tr>
+<td>四项真实G1任务</td>
+<td>Average weighted progress</td>
+<td>80.4%</td>
+<td>各任务等权；相同初始配置与评分标准下StarVLA为54.6%</td>
+</tr>
+<tr>
+<td>四项真实G1任务，移除第二阶段</td>
+<td>Average success rate</td>
+<td>22.5%</td>
+<td>保持架构、动作表示、视觉语言初始化和第三阶段机器人后训练相同</td>
+</tr>
+<tr>
+<td>离线动作对齐</td>
+<td>平均末端执行器位置 / 朝向误差</td>
+<td>17.03 → 3.83 cm / 36.06° → 10.85°</td>
+<td>在50项任务、约1 h数据上验证机器人参考修正与动力学优化阶段</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>针对昂贵的人形机器人演示采集及移动与操作的联合学习。采集效率证据仅覆盖代表性任务。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>7.3</td>
+<td>结合HumanVerse、G1对齐及固定机器人数据的规模化验证。HALOMI与EMMA已有相关对齐与人类数据学习方法。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>区分几何误差与控制器误差，并使用共享动作接口。受控消融支持设计，但对齐验证范围有限。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>8.0</td>
+<td>真实G1结果与第二阶段消融支持人类全身数据的作用。真实评估仅有四项任务，每项10次试验。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>8.0</td>
+<td>对齐、采集劳动测量与规模化结果支持将人类经验转为人形机器人监督。跨机器人形态迁移及规模外推仍未得到证实。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.8/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>真实λ_0评估仅覆盖G1、四项任务及每项任务10个初始配置。</li>
+<li>SIMPLE结果按任务选择配置。公开基线保留其原始评估协议。</li>
+<li>规模化损失拟合基于单次运行，未确立跨随机种子的可重复性或测量范围之外的外推能力。</li>
+<li>HumanVerse的500小时是转换与有效性过滤之前的采集量。手部运动由RGB重建。</li>
+<li>完整策略需要机器人后训练。无需目标任务机器人演示的迁移属于独立实验。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / <a href="https://github.com/LambdaHumanoid/openlambda" target="_blank" rel="noopener">代码</a>。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —。</li>
+<li><strong>部署硬件：</strong> 配备Revo2双手和头戴GoPro HERO13的Unitree G1。SONIC执行运动潜变量。部署使用机器人图像与状态，无需人类运动流。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>HumanVerse：</strong> 采集500小时，包含32,993个片段、8,700万姿态帧及827种任务类型。可穿戴身体追踪与自我视角视频同步，手部运动由视频重建。</li>
+<li><strong>训练数据：</strong> 第一阶段使用公开自我视角手物交互数据集，第二阶段使用对齐HumanVerse，第三阶段使用机器人演示。</li>
+<li><strong>数据划分：</strong> 提取时间窗口前按采集会话划分。用于下游后训练的任务专属人类演示与HumanVerse分开。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.18950v1" target="_blank" rel="noopener">论文正文</a>摘要及第3–5节。</p>

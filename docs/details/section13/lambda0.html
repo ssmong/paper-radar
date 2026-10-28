@@ -1,0 +1,106 @@
+<h3 class="dp-h3">λ_0</h3>
+<p class="dp-p"><strong>Full title:</strong> $λ_0$: Scaling Open-World Egocentric Human Data for Humanoid Loco-Manipulation</p>
+<p class="dp-p"><strong>Authors:</strong> Lambda-humanoid Team</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.18950v1" target="_blank" rel="noopener">2610.18950v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A Qwen3.5-2B vision–language backbone conditions a generative action expert. The policy uses an egocentric image, language instruction, and robot state. It predicts 50-step action chunks. Each G1 action has a 64-dimensional SONIC motion latent and two 6-dimensional Revo2 hand commands.</p>
+<p class="dp-p"><strong>Key methodology:</strong> The pipeline aligns camera viewpoints and arm appearance. It corrects human motion references, robot motion references, and controller inputs offline. Training has three stages: hand-motion pretraining, whole-body human mid-training on aligned HumanVerse data, and robot post-training. Stages II and III use flow matching.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Unitree G1 with Revo2 hands performs whole-body loco-manipulation. The four real evaluation tasks are Bottle Disposal, Toy Storage, Box Transport, and Chair Placement. A separate transfer experiment uses task-specific human demonstrations without target-task robot demonstrations. The full λ_0 policy uses robot post-training.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Introduces HumanVerse: 500 hours of egocentric video with synchronized body and hand motion, before conversion and validity filtering.</li>
+<li>Aligns human observations and actions to the G1 controller interface.</li>
+<li>Studies human-data scale and training stages while keeping robot demonstrations fixed.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>SIMPLE</td>
+<td>Success rate</td>
+<td>90.0%</td>
+<td>Six tasks, Levels 0–2; ten trials per task–level pair; task-wise configuration selection</td>
+</tr>
+<tr>
+<td>Four real G1 tasks</td>
+<td>Average success rate</td>
+<td>62.5%</td>
+<td>Ten fixed initial configurations per task and policy</td>
+</tr>
+<tr>
+<td>Four real G1 tasks</td>
+<td>Average weighted progress</td>
+<td>80.4%</td>
+<td>Equal task weights; StarVLA reports 54.6% with the same initial configurations and scoring criteria</td>
+</tr>
+<tr>
+<td>Four real G1 tasks, without Stage II</td>
+<td>Average success rate</td>
+<td>22.5%</td>
+<td>Same architecture, action representation, vision–language initialization, and Stage-III robot post-training</td>
+</tr>
+<tr>
+<td>Offline action alignment</td>
+<td>Mean end-effector position / orientation error</td>
+<td>17.03 → 3.83 cm / 36.06° → 10.85°</td>
+<td>Robot-reference and dynamics-aware stages evaluated on 50 tasks, about 1 h of data</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Addresses costly humanoid demonstrations and joint learning of locomotion and manipulation. Collection-efficiency evidence covers representative tasks.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.3</td>
+<td>Combines HumanVerse, G1 alignment, and scaling with fixed robot data. HALOMI and EMMA have related alignment and human-data learning methods.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Separates geometry and controller errors and uses a shared action interface. Controlled ablations support the design; alignment validation is limited.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>8.0</td>
+<td>Real G1 results and the Stage-II ablation support the benefit of human whole-body data. Evaluation covers four real tasks with ten trials each.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>8.0</td>
+<td>Alignment, collection-effort measurements, and scaling support transfer of human experience to humanoid supervision. Broader embodiment transfer and scale extrapolation remain unproven.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.8/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Real λ_0 evaluation covers only G1, four tasks, and ten initial configurations per task.</li>
+<li>SIMPLE results use task-wise configuration selection. Public baseline entries retain their source evaluation protocols.</li>
+<li>Scaling-loss fits use single runs. They do not establish reproducibility across seeds or extrapolation beyond the measured range.</li>
+<li>HumanVerse's 500 hours are recorded data before conversion and validity filtering. Hand motion is reconstructed from RGB.</li>
+<li>The full policy requires robot post-training. Transfer without target-task robot demonstrations is a separate experiment.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / <a href="https://github.com/LambdaHumanoid/openlambda" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —.</li>
+<li><strong>Deployment hardware:</strong> Unitree G1 with Revo2 hands and a head-mounted GoPro HERO13. SONIC executes motion tokens. Deployment uses robot images and state without human motion streams.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>HumanVerse:</strong> 500 recorded hours, 32,993 episodes, 87 million pose frames, and 827 task types. Wearable body tracking is synchronized with egocentric video; hand motion is reconstructed from video.</li>
+<li><strong>Training data:</strong> Public egocentric hand–object datasets for Stage I, aligned HumanVerse for Stage II, and robot demonstrations for Stage III.</li>
+<li><strong>Data split:</strong> Recording sessions are split before temporal windows are extracted. Task-specific human demonstrations for downstream post-training are separate from HumanVerse.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.18950v1" target="_blank" rel="noopener">Paper text</a>, abstract and sections 3–5.</p>

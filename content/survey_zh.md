@@ -370,6 +370,7 @@
 | 论文 | Year | Robot / 任务 | 核心方法 | 主要结果 | Code |
 |---|---|---|---|---|---|
 | [**Reflex**](https://arxiv.org/abs/2610.12772v1) | 2026 | Unitree G1；全身接住并保持人类抛出的箱子 | 三阶段学习：状态PPO、动力学潜变量学习、固定控制器下的RGB-D历史回归 | 接箱成功率：仿真85.7%；真实G1在2.5、5、7 m处分别为65%、40%、15%（每个条件20次试验） | — |
+| [**λ_0**](https://arxiv.org/abs/2610.18950v1) | 2026 | Unitree G1；全身移动操作 | 将HumanVerse人类演示对齐到G1；依次进行手部运动预训练、人类全身运动中期训练和机器人后训练 | 成功率：SIMPLE 90.0%（按任务选择配置）；四项真实任务62.5%，Average weighted progress 80.4%（每项任务10次试验） | [代码](https://github.com/LambdaHumanoid/openlambda) |
 
 ---
 
