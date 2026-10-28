@@ -1,0 +1,98 @@
+<h3 class="dp-h3">UniWAM</h3>
+<p class="dp-p"><strong>전체 제목:</strong> UniWAM: Unified World-Action Model</p>
+<p class="dp-p"><strong>저자:</strong> Wenxuan Song 외</p>
+<p class="dp-p"><strong>학회/연도:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.02054v3" target="_blank" rel="noopener">2610.02054v3</a></p>
+<p class="dp-p"><strong>아키텍처:</strong> Mixture-of-Transformers(MoT)가 공동 attention으로 세 expert를 연결한다. 물리 추론 모듈은 Qwen3-VL-2B-Instruct를 사용한다. 영상 생성 모듈은 Wan2.2-TI2V-5B backbone을 사용한다. 행동 예측 모듈은 연속 행동 청크를 생성한다.</p>
+<p class="dp-p"><strong>핵심 방법론:</strong> LAP를 따라 end-effector 움직임을 자연어로 표현하여 물리 언어 감독을 적용한다. 사전학습에서는 VQA·인간 시점 영상·로봇 시연을 결합하고 데이터 종류에 따라 감독을 배분한다. 후학습에서는 미래 시각 잠재 표현에 잡음을 추가하고, 잡음을 더한 행동 이력에서 행동 flow matching을 시작한다. 두 설계는 정밀한 미래 예측에 대한 의존과 추론 단계 수를 줄이기 위한 것이다.</p>
+<p class="dp-p"><strong>로봇 / 과제:</strong> LIBERO·LIBERO-Plus의 시뮬레이션 조작과 RoboTwin 2.0 Clean2Clean(C2C)·Clean2Random(C2R)의 양손 조작 50개 과제를 평가한다. C2R은 clean 데이터로 학습하고 domain randomization 조건에서 평가한다. 실제 로봇 하드웨어와 과제별 결과는 발췌문에서 확인되지 않는다.</p>
+<p class="dp-p"><strong>주요 contribution:</strong></p>
+<ul class="dp-list">
+<li>의미 이해·미래 시각 예측·행동 생성을 하나의 모델로 연결한다.</li>
+<li>세 데이터원의 감독을 물리 언어 및 두 후학습 설계와 결합한다.</li>
+<li>OOD 조작에서 높은 성능을 보고한다. Decoder 구조는 Motus와 유사하며 각 설계의 독립적인 효과는 불확실하다.</li>
+</ul>
+<p class="dp-p"><strong>정량적 결과:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / 과제</th>
+<th>지표</th>
+<th>값</th>
+<th>조건</th>
+</tr></thead><tbody>
+<tr>
+<td>LIBERO</td>
+<td>평균 성공률</td>
+<td>99.2%</td>
+<td>표준 평가 묶음; Xiaomi-Robotics-0: 98.7%</td>
+</tr>
+<tr>
+<td>LIBERO-Plus</td>
+<td>전체 성공률</td>
+<td>92.6%</td>
+<td>비교된 방법 중 가장 높은 보고값</td>
+</tr>
+<tr>
+<td>RoboTwin 2.0 C2R</td>
+<td>평균 과제 성공률</td>
+<td>68.32%</td>
+<td>50개 과제; GigaBrain-0.7: 67.90%; 전체 사전학습 예산의 일치는 확인되지 않는다</td>
+</tr>
+<tr>
+<td>RoboTwin 2.0 C2C</td>
+<td>평균 과제 성공률</td>
+<td>75.14%</td>
+<td>50개 과제; OpenWAM-α: 89.4%; 전체 사전학습 예산의 일치는 확인되지 않는다</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI 연구 평가:</strong> 검토자 세 명의 평균 점수이며, 10점 척도를 사용한다.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>항목</th>
+<th>점수 /10</th>
+<th>근거</th>
+</tr></thead><tbody>
+<tr>
+<td>중요도</td>
+<td>8.0</td>
+<td>인간 데이터로 의미와 동역학을 함께 학습하는 방향은 로봇 일반화와 데이터 확장에 중요하다. 복잡한 실제 과제로의 전이는 불확실하다.</td>
+</tr>
+<tr>
+<td>추가 contribution</td>
+<td>7.0</td>
+<td>세 데이터원의 감독과 후학습 설계가 Motus와 유사한 구조 및 LAP의 물리 언어를 확장한다. 각 설계의 독립적인 효과는 불확실하다.</td>
+</tr>
+<tr>
+<td>방법 품질</td>
+<td>8.0</td>
+<td>공동 attention·미래 프레임 잡음·행동 이력 초기화가 제기한 문제에 부합한다. 인간 데이터의 행동 예측 모듈 감독 여부는 본문과 그림 설명이 다르다.</td>
+</tr>
+<tr>
+<td>효과성</td>
+<td>7.7</td>
+<td>LIBERO-Plus와 C2R 결과는 분포 변화에 대한 강점을 지지한다. C2C는 최고 baseline보다 낮으며 실제 로봇 결과와 추론 지연 시간은 확인되지 않는다.</td>
+</tr>
+<tr>
+<td>gap 해소 근거</td>
+<td>7.0</td>
+<td>OOD 성공률은 VLA의 동역학 grounding과 WAM의 의미 추론 사이의 gap 해소를 부분적으로 지지한다. 두 능력의 직접 측정은 제한적이다.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>종합 점수:</strong> 7.5/10.</p>
+<p class="dp-p"><strong>한계점:</strong></p>
+<ul class="dp-list">
+<li>발췌문에는 실제 로봇·장기 과제·scaling law의 정량 결과가 없다. 초록에서는 이에 관한 성과를 주장한다.</li>
+<li>본문은 인간 데이터가 VLM·VGM을 감독한다고 설명하지만, 그림 설명은 세 expert를 모두 학습한다고 서술한다.</li>
+<li>RoboTwin 2.0 C2C 성공률은 OpenWAM-α보다 낮다. 방법 간 전체 사전학습 데이터와 예산의 일치는 확인되지 않는다.</li>
+<li>물리 언어·영상 생성·후학습 설계의 독립적인 효과를 분리할 ablation 결과가 발췌문에 없다. 추론과 동역학 이해 개선의 직접 근거도 제한적이다.</li>
+</ul>
+<p class="dp-p"><strong>공개 가중치/코드:</strong> — / — (발췌문에서 URL을 확인할 수 없다).</p>
+<h2 class="dp-h2">추론 / 배포</h2>
+<ul class="dp-list">
+<li><strong>추론 지연 시간:</strong> —</li>
+<li><strong>배포 하드웨어:</strong> —</li>
+</ul>
+<h2 class="dp-h2">데이터셋 / 데이터 수집</h2>
+<ul class="dp-list">
+<li><strong>훈련 데이터:</strong> 로봇 시연에는 AgiBot World·Bridge·Droid·Fractal·Robocoin·Interdata-A1이 포함된다. 인간 시점 데이터는 EgoVerse·EgoDex·VITRA에서 가져온다. VQA 데이터는 언어 감독을 더한다. 데이터 처리 과정에서 궤적과 영상 품질을 검사하며, EgoANT로 EgoDex의 하위 과제를 분할하고 주석을 작성한다.</li>
+<li><strong>평가 데이터:</strong> LIBERO·LIBERO-Plus와 RoboTwin 2.0 C2C·C2R의 50개 과제 평가.</li>
+</ul>
+<p class="dp-p"><strong>출처:</strong> <a href="https://arxiv.org/html/2610.02054v3" target="_blank" rel="noopener">논문 본문</a>의 초록 및 1–5.1절.</p>

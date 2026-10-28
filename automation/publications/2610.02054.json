@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section18/uniwam.md": "9ca9097741a08d043e4a3cb8b322fc5fc27cda7819bcff5df3cf6d978c20f880",
+    "detailed_ko/section18/uniwam.md": "fc4a60700821f066a35dda73aac2182bd3275ef54d74bc25b2f2721a0dd0c610",
+    "detailed_zh/section18/uniwam.md": "23c3fab5d76ad795b4627c79c340ff5f4059aa8453efd65f73829daf9d358460"
+  },
+  "paper_id": "2610.02054",
+  "rows": {
+    "survey.md": "| [**UniWAM**](https://arxiv.org/abs/2610.02054v3) | 2026 | Simulated manipulation in LIBERO, LIBERO-Plus, and RoboTwin 2.0; bimanual tasks | MoT joint attention connects physical reasoning, video generation, and action prediction; VQA + human + robot pretraining; future-frame noise and history-conditioned flow matching | Success: LIBERO-Plus 92.6%; RoboTwin 2.0 C2R 68.32%, C2C 75.14% | — |",
+    "survey_ko.md": "| [**UniWAM**](https://arxiv.org/abs/2610.02054v3) | 2026 | LIBERO·LIBERO-Plus·RoboTwin 2.0의 시뮬레이션 조작; 양손 조작 과제 | MoT 공동 attention으로 물리 추론·영상 생성·행동 예측을 연결한다; VQA·인간·로봇 데이터 사전학습 후 미래 프레임 잡음과 행동 이력 기반 flow matching을 적용한다 | 성공률: LIBERO-Plus 92.6%; RoboTwin 2.0 C2R 68.32%, C2C 75.14% | — |",
+    "survey_zh.md": "| [**UniWAM**](https://arxiv.org/abs/2610.02054v3) | 2026 | LIBERO、LIBERO-Plus和RoboTwin 2.0中的仿真操作；双臂任务 | MoT联合注意力连接物理推理、视频生成与动作预测；VQA、人类和机器人数据预训练；未来帧噪声与历史条件流匹配 | 成功率：LIBERO-Plus为92.6%；RoboTwin 2.0 C2R为68.32%，C2C为75.14% | — |"
+  },
+  "run_id": "2026-10-13T233558Z",
+  "status": "published"
+}

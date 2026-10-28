@@ -412,6 +412,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 | [**VQ-WM**](https://arxiv.org/abs/2610.25600v1) | 2026 | WidowX AI; 네 원판 하노이 탑 (H15); 시뮬레이션 조작·Walker 이동 | 첫 도달시간 기반 상태 양자화; 이산 잠재 BFS + 연속 시각 피드백 제어 | 실제 H15: 짧은 play 데이터로 과제 진행률 100% (6개 사례, 사례별 3회); Cube-Hard 성공률: 73.3 ± 0.9% | — |
 | [**RynnUnify**](https://arxiv.org/abs/2610.32965v1) | 2026 | Astribot S1; 다단계 조작; 선택된 RoboCasa365 복합 과제 20개; 시각 계획·미래 상태 추론 | Cosmos3 기반 16B MoT; 장면 기억을 이용한 영상·언어 교차 계획; RL agent 및 공동 영상·행동 확장 | Rynn-VP: Cosmos 3 Nano 대비 +9.75점; 제어 성공률: 선택된 RoboCasa365 과제 51.5%, 실제 로봇 과제 3개 평균 46.7% | [코드](https://github.com/alibaba-damo-academy/RynnUnify) |
 | [**Has GPT-6-Astra Achieved Embodied Intelligence?**](https://arxiv.org/abs/2610.22471v1) | 2026 | 조작·이동; benchmark 12개; 로봇 팔, dexterous hand, 이동형 로봇, humanoid를 포함한 실제 로봇 구성 8개 | 모델 가중치 고정; 시연으로 만든 ICL 지식 패키지 동결; 행동 예산 1×/10×; π0.5 행동의 폐루프 검토 | SIMPLE 성공률: ICL 90.8% vs zero-shot 70.8% (공통 과제 4개, 표준 예산); RoboDojo: ICL + 폐루프 VLA 54.17% vs ICL 직접 제어 29.67% | — |
+| [**UniWAM**](https://arxiv.org/abs/2610.02054v3) | 2026 | LIBERO·LIBERO-Plus·RoboTwin 2.0의 시뮬레이션 조작; 양손 조작 과제 | MoT 공동 attention으로 물리 추론·영상 생성·행동 예측을 연결한다; VQA·인간·로봇 데이터 사전학습 후 미래 프레임 잡음과 행동 이력 기반 flow matching을 적용한다 | 성공률: LIBERO-Plus 92.6%; RoboTwin 2.0 C2R 68.32%, C2C 75.14% | — |
 
 ---
 

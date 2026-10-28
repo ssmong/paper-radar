@@ -1,0 +1,98 @@
+<h3 class="dp-h3">UniWAM</h3>
+<p class="dp-p"><strong>完整标题：</strong> UniWAM: Unified World-Action Model</p>
+<p class="dp-p"><strong>作者：</strong> Wenxuan Song等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.02054v3" target="_blank" rel="noopener">2610.02054v3</a></p>
+<p class="dp-p"><strong>架构：</strong> Mixture-of-Transformers（MoT）通过联合注意力连接三个专家。物理推理模块使用Qwen3-VL-2B-Instruct。世界生成模块使用Wan2.2-TI2V-5B骨干。动作预测模块生成连续动作块。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 遵循LAP，用自然语言描述末端执行器运动，提供物理语言监督。预训练结合VQA、人类第一视角视频和机器人演示，按数据来源分配监督。后训练向未来视觉潜变量添加噪声，并从带扰动的动作历史开始动作流匹配。两项设计旨在减少对精确未来预测的依赖及推理步数。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> LIBERO和LIBERO-Plus中的仿真操作，以及RoboTwin 2.0 Clean2Clean（C2C）和Clean2Random（C2R）的50个双臂操作任务。C2R使用clean数据训练，在域随机化条件下评估。正文摘录未列出真实机器人硬件及逐任务结果。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>在一个模型中连接语义理解、未来视觉预测和动作生成。</li>
+<li>将三类数据监督与物理语言及两项后训练设计结合。</li>
+<li>报告较强的OOD操作结果。解码器结构与Motus相似，各项设计的独立效果仍不确定。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>LIBERO</td>
+<td>平均成功率</td>
+<td>99.2%</td>
+<td>标准评估套件；Xiaomi-Robotics-0：98.7%</td>
+</tr>
+<tr>
+<td>LIBERO-Plus</td>
+<td>总体成功率</td>
+<td>92.6%</td>
+<td>所列方法中的最高报告值</td>
+</tr>
+<tr>
+<td>RoboTwin 2.0 C2R</td>
+<td>平均任务成功率</td>
+<td>68.32%</td>
+<td>50个任务；GigaBrain-0.7：67.90%；完整预训练预算是否一致未确认</td>
+</tr>
+<tr>
+<td>RoboTwin 2.0 C2C</td>
+<td>平均任务成功率</td>
+<td>75.14%</td>
+<td>50个任务；OpenWAM-α：89.4%；完整预训练预算是否一致未确认</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>用人类数据联合学习语义与动力学，有助于机器人泛化和数据扩展。能否迁移到复杂真实任务仍不确定。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>7.0</td>
+<td>三类数据监督及后训练设计扩展了与Motus相似的结构和LAP物理语言。各项设计的独立效果仍不确定。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>联合注意力、未来帧噪声和动作历史初始化针对所述问题。正文与图注对人类数据是否监督动作预测模块的说明不一致。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.7</td>
+<td>LIBERO-Plus和C2R结果支持分布变化下的鲁棒性。C2C低于最佳基线，真实机器人结果和推理延迟未列出。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>7.0</td>
+<td>OOD成功率部分支持弥补VLA动力学grounding与WAM语义推理之间的差距。对两种能力的直接测量有限。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.5/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>摘录未包含真实机器人、长时序任务或缩放定律的定量结果；摘要提出了相关主张。</li>
+<li>正文称人类数据监督VLM和VGM，图注则称其训练全部三个专家。</li>
+<li>RoboTwin 2.0 C2C成功率低于OpenWAM-α。各方法完整预训练数据和预算是否一致未确认。</li>
+<li>现有结果未分离物理语言、视觉生成和后训练设计的独立效果。推理与动力学理解改善的直接证据有限。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —（正文摘录未列出URL）。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —</li>
+<li><strong>部署硬件：</strong> —</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> 机器人演示包括AgiBot World、Bridge、Droid、Fractal、Robocoin和Interdata-A1。人类第一视角数据来自EgoVerse、EgoDex和VITRA。VQA数据提供语言监督。数据处理筛查轨迹与视觉质量，EgoANT对EgoDex子任务进行分割和标注。</li>
+<li><strong>评估数据：</strong> LIBERO、LIBERO-Plus，以及RoboTwin 2.0 C2C和C2R的50任务评估。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.02054v3" target="_blank" rel="noopener">论文正文</a>摘要及第1–5.1节。</p>

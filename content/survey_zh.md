@@ -412,6 +412,7 @@
 | [**VQ-WM**](https://arxiv.org/abs/2610.25600v1) | 2026 | WidowX AI；四圆盘汉诺塔（H15）；仿真操作与Walker移动 | 首次到达时间驱动的状态量化；离散潜空间BFS + 连续视觉反馈控制 | 真实H15：短时play数据训练后任务进度100%（6个案例，每例3次）；Cube-Hard成功率：73.3 ± 0.9% | — |
 | [**RynnUnify**](https://arxiv.org/abs/2610.32965v1) | 2026 | Astribot S1；多步操作；20个选定的RoboCasa365复合任务；视觉规划与未来状态推理 | 基于Cosmos3的16B MoT；结合场景记忆的交错视频–语言规划；RL智能体与视频–动作联合扩展 | Rynn-VP：比Cosmos 3 Nano高9.75分；控制成功率：选定RoboCasa365任务51.5%，三个真实机器人任务平均46.7% | [代码](https://github.com/alibaba-damo-academy/RynnUnify) |
 | [**Has GPT-6-Astra Achieved Embodied Intelligence?**](https://arxiv.org/abs/2610.22471v1) | 2026 | 操作与导航；12个基准；8种真实机器人配置，涵盖机械臂、灵巧手、移动平台和人形机器人 | 固定模型权重；冻结基于演示的ICL知识包；1×/10×动作预算；闭环审查π0.5动作 | SIMPLE成功率：ICL为90.8%，zero-shot为70.8%（4个共同任务，标准预算）；RoboDojo：ICL + 闭环VLA为54.17%，ICL直接控制为29.67% | — |
+| [**UniWAM**](https://arxiv.org/abs/2610.02054v3) | 2026 | LIBERO、LIBERO-Plus和RoboTwin 2.0中的仿真操作；双臂任务 | MoT联合注意力连接物理推理、视频生成与动作预测；VQA、人类和机器人数据预训练；未来帧噪声与历史条件流匹配 | 成功率：LIBERO-Plus为92.6%；RoboTwin 2.0 C2R为68.32%，C2C为75.14% | — |
 
 ---
 

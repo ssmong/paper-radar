@@ -1,0 +1,98 @@
+<h3 class="dp-h3">UniWAM</h3>
+<p class="dp-p"><strong>Full title:</strong> UniWAM: Unified World-Action Model</p>
+<p class="dp-p"><strong>Authors:</strong> Wenxuan Song et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.02054v3" target="_blank" rel="noopener">2610.02054v3</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A Mixture-of-Transformers (MoT) connects three experts through joint attention. The physical reasoner uses Qwen3-VL-2B-Instruct. The world generator uses the Wan2.2-TI2V-5B backbone. The action predictor generates continuous action chunks.</p>
+<p class="dp-p"><strong>Key methodology:</strong> Natural-language descriptions of end-effector motion provide physical language supervision, following LAP. Pretraining combines VQA, human egocentric videos, and robot demonstrations, with supervision assigned by data source. Post-training adds noise to future visual latents and starts action flow matching from perturbed action history. These changes target dependence on precise future predictions and the number of inference steps.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Simulated manipulation in LIBERO and LIBERO-Plus; 50-task bimanual manipulation in RoboTwin 2.0 Clean2Clean (C2C) and Clean2Random (C2R). C2R uses clean training data and domain randomization for evaluation. Real-robot hardware and task-level results are unavailable in the source excerpt.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Connects semantic understanding, future visual prediction, and action generation in one model.</li>
+<li>Combines supervision from three data sources with physical language and two post-training changes.</li>
+<li>Reports strong OOD manipulation results. The decoder structure is similar to Motus; the separate effects of the changes remain uncertain.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>LIBERO</td>
+<td>Average success rate</td>
+<td>99.2%</td>
+<td>Standard suites; Xiaomi-Robotics-0: 98.7%</td>
+</tr>
+<tr>
+<td>LIBERO-Plus</td>
+<td>Overall success rate</td>
+<td>92.6%</td>
+<td>Highest reported value among the listed methods</td>
+</tr>
+<tr>
+<td>RoboTwin 2.0 C2R</td>
+<td>Mean task success rate</td>
+<td>68.32%</td>
+<td>50 tasks; GigaBrain-0.7: 67.90%; full pretraining budgets are not confirmed to match</td>
+</tr>
+<tr>
+<td>RoboTwin 2.0 C2C</td>
+<td>Mean task success rate</td>
+<td>75.14%</td>
+<td>50 tasks; OpenWAM-α: 89.4%; full pretraining budgets are not confirmed to match</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Joint learning of semantics and dynamics with human data addresses robot generalization and data scale. Transfer to complex real tasks remains uncertain.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.0</td>
+<td>Three-source supervision and post-training changes extend a structure similar to Motus and physical language from LAP. Their separate effects remain uncertain.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Joint attention, future-frame noise, and action-history initialization address the stated problem. The text and figure caption disagree on human-data supervision of the action predictor.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.7</td>
+<td>LIBERO-Plus and C2R results support robustness to distribution shifts. C2C trails the best baseline, and real-robot results and inference latency are unavailable.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.0</td>
+<td>OOD success partly supports closing the gap between VLA dynamics grounding and WAM semantic reasoning. Direct measurements of both abilities are limited.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.5/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>The source excerpt has no quantitative real-robot, long-horizon, or scaling-law results. The abstract makes these claims.</li>
+<li>Human data supervise the VLM and VGM in the text, but the figure caption describes training all three experts.</li>
+<li>RoboTwin 2.0 C2C success is below OpenWAM-α. Full pretraining data and budgets are not confirmed to match across methods.</li>
+<li>Available results do not isolate the effects of physical language, visual generation, or post-training changes. Direct evidence of improved reasoning and dynamics understanding is limited.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / — (URLs are unavailable in the source excerpt).</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —</li>
+<li><strong>Deployment hardware:</strong> —</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> Robot demonstrations include AgiBot World, Bridge, Droid, Fractal, Robocoin, and Interdata-A1. Human egocentric data come from EgoVerse, EgoDex, and VITRA. VQA data add language supervision. Data processing screens trajectory and visual quality; EgoANT segments and annotates EgoDex subtasks.</li>
+<li><strong>Evaluation data:</strong> LIBERO, LIBERO-Plus, and the 50-task RoboTwin 2.0 C2C and C2R evaluations.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.02054v3" target="_blank" rel="noopener">Paper text</a>, abstract and sections 1–5.1.</p>
