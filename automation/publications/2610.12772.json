@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section13/reflex.md": "68616637e09c0c939524f5e65aafa32104d5e33a8ffd166907ffc27ff7d90edb",
+    "detailed_ko/section13/reflex.md": "1a65f6e859a65f17302670b8820f285a4ed3f0c0f5beabe656f414de2dcab374",
+    "detailed_zh/section13/reflex.md": "8eba8036dfd861168d8ae0640085e9a64a927667bb4ec3a6710328c1f33e89ec"
+  },
+  "paper_id": "2610.12772",
+  "rows": {
+    "survey.md": "| [**Reflex**](https://arxiv.org/abs/2610.12772v1) | 2026 | Unitree G1; whole-body catching of human-thrown boxes | Three stages: state-based PPO, dynamics latent learning, and RGB-D history regression with a fixed controller | Catch success: simulation 85.7%; real G1 65%, 40%, and 15% at 2.5, 5, and 7 m (20 trials per condition) | — |",
+    "survey_ko.md": "| [**Reflex**](https://arxiv.org/abs/2610.12772v1) | 2026 | Unitree G1; 사람이 던진 상자를 전신으로 받아 유지한다 | 상태 기반 PPO, 동역학 latent 학습, 고정 제어기를 위한 RGB-D 이력 회귀의 3단계로 학습한다 | 포획 성공률: 시뮬레이션 85.7%; 실제 G1은 2.5, 5, 7 m에서 각각 65%, 40%, 15% (조건당 20회) | — |",
+    "survey_zh.md": "| [**Reflex**](https://arxiv.org/abs/2610.12772v1) | 2026 | Unitree G1；全身接住并保持人类抛出的箱子 | 三阶段学习：状态PPO、动力学潜变量学习、固定控制器下的RGB-D历史回归 | 接箱成功率：仿真85.7%；真实G1在2.5、5、7 m处分别为65%、40%、15%（每个条件20次试验） | — |"
+  },
+  "run_id": "2026-10-13T233558Z",
+  "status": "published"
+}

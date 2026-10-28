@@ -1,0 +1,100 @@
+<h3 class="dp-h3">Reflex</h3>
+<p class="dp-p"><strong>전체 제목:</strong> Reflex: Visually Grounded Reactive Humanoid Control</p>
+<p class="dp-p"><strong>저자:</strong> Taoyang Jia 외</p>
+<p class="dp-p"><strong>학회/연도:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.12772v1" target="_blank" rel="noopener">2610.12772v1</a></p>
+<p class="dp-p"><strong>아키텍처:</strong> CNN이 RGB-D 영상에서 상자를 찾고, 기하 계층이 특징 8개를 추출한다. GRU는 이 특징과 카메라 ego-motion 이력으로 8차원 동역학 latent를 예측한다. 고정된 action decoder는 이 latent와 로봇 상태로 전신을 제어한다.</p>
+<p class="dp-p"><strong>핵심 방법론:</strong> 1단계는 PPO로 상태 기반 포획 policy를 학습한다. 2단계는 행동 일치, DAgger, encoder·decoder 공동 PPO로 지연된 상자 관측에서 동역학 latent를 학습한다. 3단계는 제어기를 고정하고 자기중심 RGB-D 이력에서 이 latent를 예측하도록 학습한다.</p>
+<p class="dp-p"><strong>로봇 / 과제:</strong> 29-DoF Unitree G1이 사람이 던진 상자를 팔뚝과 몸통으로 받고, 넘어지지 않고 유지한다. 후속 시연은 SONIC을 이용해 상자를 운반하고 사람에게 전달한다.</p>
+<p class="dp-p"><strong>주요 contribution:</strong></p>
+<ul class="dp-list">
+<li>RMA 방식의 고정 decoder·latent 회귀를 움직이는 humanoid 카메라로 관측하는 빠른 물체에 확장한다.</li>
+<li>제어, 동역학 추론, 시각 학습을 분리하고 각 단계에 직접 감독을 제공한다.</li>
+<li>외부 상자 측정 없이 온보드 RGB-D로 실제 G1의 포획 성공률을 제시한다.</li>
+</ul>
+<p class="dp-p"><strong>정량적 결과:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / 과제</th>
+<th>지표</th>
+<th>값</th>
+<th>조건</th>
+</tr></thead><tbody>
+<tr>
+<td>시뮬레이션 상자 포획</td>
+<td>포획 성공률</td>
+<td>85.7%</td>
+<td>RGB-D; 제어기 6개의 총 3840회 중 3290회 성공</td>
+</tr>
+<tr>
+<td>시뮬레이션 상자 포획, privileged 참조</td>
+<td>포획 성공률</td>
+<td>87.9%</td>
+<td>동일 decoder; privileged 상자 입력과 시각 입력의 시야 범위가 다르다</td>
+</tr>
+<tr>
+<td>실제 G1, 일반 상자</td>
+<td>포획 성공률</td>
+<td>65% / 40% / 15%</td>
+<td>투척 거리 2.5 / 5 / 7 m; 조건당 20회</td>
+</tr>
+<tr>
+<td>실제 후속 작업 과정</td>
+<td>누적 성공률</td>
+<td>65% / 35% / 30% / 25%</td>
+<td>포획 / 운반 / 전달 / 복귀 후; 20회</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI 연구 평가:</strong> 세 검토자의 평균 점수이며, 10점 척도이다.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>항목</th>
+<th>점수 /10</th>
+<th>근거</th>
+</tr></thead><tbody>
+<tr>
+<td>중요도</td>
+<td>8.0</td>
+<td>온보드 시각과 전신 반응을 결합해 동적 물체 상호작용을 다룬다. 검증은 상자 포획과 제한된 후속 작업에 집중된다.</td>
+</tr>
+<tr>
+<td>추가 contribution</td>
+<td>7.0</td>
+<td>고정 decoder·latent 회귀를 빠른 물체와 움직이는 카메라에 확장한다. 핵심 학습 도구는 기존 기법이며, 동시 연구도 시각 기반 humanoid 상자 포획을 다룬다.</td>
+</tr>
+<tr>
+<td>방법 품질</td>
+<td>8.0</td>
+<td>단계 분리와 직접 감독으로 제어와 지각을 연결한다. 학습된 latent가 상자 크기를 보존하지 않아 유지 전략이 제한된다.</td>
+</tr>
+<tr>
+<td>효과성</td>
+<td>7.0</td>
+<td>높은 시뮬레이션 성공률과 실제 G1 포획이 방법을 뒷받침한다. 적은 실제 시행 수, 장거리 성능 저하, 낮은 후속 작업 성공률이 실제 활용 근거를 제한한다.</td>
+</tr>
+<tr>
+<td>gap 해소 근거</td>
+<td>7.3</td>
+<td>실제 RGB-D 포획으로 전신 제어, 빠른 동역학 추론, 온보드 시각을 연결한다. 크기와 거리의 한계로 더 넓은 능력의 gap은 일부만 해소한다.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>종합 점수:</strong> 7.4/10.</p>
+<p class="dp-p"><strong>한계점:</strong></p>
+<ul class="dp-list">
+<li>동역학 latent가 상자 크기를 보존하지 않는다. 작은 상자와 큰 상자는 접촉해도 유지에 자주 실패한다.</li>
+<li>시각 학습은 3.0–3.5 m 투척을 사용한다. 더 멀고 빠른 투척에서 성능이 낮아진다.</li>
+<li>실제 평가는 조건당 20회이다. 95% Wilson 구간은 최대 약 ±20 percentage points에 이른다.</li>
+<li>포획 성공이 안정된 자세를 뜻하지는 않는다. 시각 제어기별 torso excursion 편차가 크다.</li>
+<li>전체 후속 작업 과정은 20회 중 25%만 성공한다.</li>
+</ul>
+<p class="dp-p"><strong>공개 가중치/코드:</strong> — / —.</p>
+<h2 class="dp-h2">추론 / 배포</h2>
+<ul class="dp-list">
+<li><strong>추론 지연 시간:</strong> —.</li>
+<li><strong>배포 하드웨어:</strong> 몸통에 RGB-D 카메라를 장착한 Unitree G1이다. 제어기는 로봇 상태를 사용하며, 상자 자세·속도나 외부 카메라 측정은 받지 않는다.</li>
+</ul>
+<h2 class="dp-h2">데이터셋 / 데이터 수집</h2>
+<ul class="dp-list">
+<li><strong>제어 학습:</strong> 시뮬레이션 상태 기반 PPO 후 행동 정답을 이용한 데이터 집계와 latent 제어기 PPO를 수행한다.</li>
+<li><strong>시각 학습:</strong> 시뮬레이션 RGB-D·ego-motion 이력, privileged latent 정답, 상자 위치·속도 보조 정답을 사용한다. 시각 policy의 방문 상태도 데이터에 집계한다.</li>
+<li><strong>평가 데이터:</strong> 초기화 비교는 제어기 6개에 각각 held-out 투척 640회를 사용한다. 실제 G1 평가는 조건당 20회이다.</li>
+</ul>
+<p class="dp-p"><strong>출처:</strong> <a href="https://arxiv.org/html/2610.12772v1" target="_blank" rel="noopener">논문 본문</a>의 초록 및 I–V절.</p>

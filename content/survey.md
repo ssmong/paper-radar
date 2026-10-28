@@ -369,6 +369,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 
 | Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
 |---|---|---|---|---|---|
+| [**Reflex**](https://arxiv.org/abs/2610.12772v1) | 2026 | Unitree G1; whole-body catching of human-thrown boxes | Three stages: state-based PPO, dynamics latent learning, and RGB-D history regression with a fixed controller | Catch success: simulation 85.7%; real G1 65%, 40%, and 15% at 2.5, 5, and 7 m (20 trials per condition) | — |
 
 ---
 
