@@ -392,6 +392,7 @@
 
 | 论文 | Year | Robot / 任务 | 核心方法 | 主要结果 | Code |
 |---|---|---|---|---|---|
+| [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2；仿真中的实例、多对象、需求驱动及类别级导航 | 预训练MLLM无需导航专用微调；结合Navigation Skills、图像坐标目标、可替换执行器及执行反馈 | Geo-based Executor的SR：单对象78.00%、多对象34.00%（Habitat-GS），需求驱动59.50%（调整评估后的Demand-Bench） | — |
 
 ---
 

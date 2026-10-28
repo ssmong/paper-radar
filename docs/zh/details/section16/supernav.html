@@ -1,0 +1,98 @@
+<h3 class="dp-h3">SuperNav</h3>
+<p class="dp-p"><strong>完整标题：</strong> SuperNav: An Agentic Navigation System for Any Task in Any Scene</p>
+<p class="dp-p"><strong>作者：</strong> Jinkai Zhang等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2610.12126v1" target="_blank" rel="noopener">2610.12126v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 预训练MLLM通过harness选择导航目标，无需导航专用微调。Navigation Skills提供搜索、恢复及完成判断的指导。工具返回四方向RGB图像、执行状态及诊断信息。统一图像坐标接口将MLLM连接至Geo-based Executor或Learned Executor。</p>
+<p class="dp-p"><strong>核心方法论：</strong> MLLM在图像中选择目的地，执行器移动并返回反馈，支持下一次决策。目标记录管理未完成及已完成项目。上下文管理移除已被新观测替代的图像数据，但保留文本历史和图像路径。Geo-based Executor使用几何信息与路径规划。Learned Executor根据RGB观测及图像标记点预测局部移动。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> Habitat-GS中的实例及有序多对象导航、AI2-THOR中的需求驱动导航，以及HM3D上的类别级导航。真实机器人案例使用Unitree Go2搜索物体并依次访问目标。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>将图像目的地选择连接至可替换的运动执行器。</li>
+<li>结合Navigation Skills、目标记录与上下文管理来处理不同请求。</li>
+<li>评估多种导航任务，并通过消融实验分析harness的作用。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>基于InteriorGS的Habitat-GS，单对象导航</td>
+<td>SR</td>
+<td>78.00%</td>
+<td>Geo-based Executor；150个任务；到批准目标视点的navmesh路径距离小于1 m，并明确STOP</td>
+</tr>
+<tr>
+<td>基于InteriorGS的Habitat-GS，有序多对象导航</td>
+<td>SR</td>
+<td>34.00%</td>
+<td>Geo-based Executor；150个任务，每个含2–5个目标；按序到达并明确STOP</td>
+</tr>
+<tr>
+<td>AI2-THOR中调整评估后的Demand-Bench</td>
+<td>SR</td>
+<td>59.50%</td>
+<td>Geo-based Executor；200个任务；不重复使用物体，按序进入2 m目标区域并明确STOP</td>
+</tr>
+<tr>
+<td>HM3D-OVON val-unseen，Navigation Skills消融</td>
+<td>SR</td>
+<td>使用Skills：68.33%；移除Skills：35.00%</td>
+<td>相同120个回合、Geo-based Executor、GPT-5.6 Terra (high)及0.25 m阈值</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>在陌生场景中处理不同请求对服务机器人很重要。推理成本、延迟波动及几何信息依赖限制实际应用。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>6.0</td>
+<td>可替换执行器、Skills和上下文管理扩展了已有harness方法。缺少与最接近的harness方法的直接比较。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>图像坐标目标和执行反馈将决策与运动分离。相同执行器下的消融支持该设计，但语义完成判断缺少独立验证。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.0</td>
+<td>结果支持多种导航任务。观测及执行条件不同限制了基线比较；真实机器人证据为定性案例。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>7.0</td>
+<td>结果支持超出固定流程与导航训练数据范围的任务及场景泛化。实际活动完成及较长真实环境序列仍未验证。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.1/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>语义判断和目标记录依赖MLLM，不构成独立语义验证。</li>
+<li>Geo-based Executor需要地图或场景几何信息。MLLM推理带来成本和延迟波动。</li>
+<li>需求驱动评估衡量按序到达目标的能力，不评估所请求活动本身的完成情况。</li>
+<li>基线保留各自输入及历史管理机制。观测和运动执行条件与SuperNav不同。</li>
+<li>真实机器人证据为定性案例。长导航序列的可靠性及更广泛的真实环境评估仍待研究。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> 存在波动；具体数值：—。</li>
+<li><strong>部署硬件：</strong> Unitree Go2，使用四方向RGB相机、LiDAR及里程计；计算硬件：—。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>评估数据：</strong> 基于InteriorGS的Habitat-GS包含150个单对象任务和150个有序多对象任务。AI2-THOR中调整评估后的Demand-Bench包含200个任务。类别级评估使用120个HM3D-OVON val-unseen回合及1,000个HM3Dv2验证回合。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2610.12126v1" target="_blank" rel="noopener">论文正文</a>第3–5节及附录A.1；<a href="https://zju3dv.github.io/SuperNav/" target="_blank" rel="noopener">项目</a>。</p>

@@ -392,6 +392,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 
 | 논문 | 연도 | 로봇 / 과제 | 핵심 방법 | 주요 결과 | 코드 |
 |---|---|---|---|---|---|
+| [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2; 시뮬레이션 객체 인스턴스·다중 객체·요구 기반·객체 범주 탐색 | 탐색 전용 fine-tuning 없이 pretrained MLLM 사용; Navigation Skills, 이미지 좌표 목표, 교체 가능한 실행기, 실행 피드백 결합 | Geo-based Executor의 SR: 단일 객체 78.00%, 다중 객체 34.00% (Habitat-GS), 요구 기반 59.50% (평가를 수정한 Demand-Bench) | — |
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section16/supernav.md": "d86d6dfe19bf9b49dc48c58d908f9dc4ef6f9e11d56127d34503e5a94b1308f0",
+    "detailed_ko/section16/supernav.md": "860fbb87e04b5fc8ab1982a73a72a5a28c5ddc5910841d7c6e4d600f1ee59058",
+    "detailed_zh/section16/supernav.md": "7143346daa29038a9c3bcee262b399ebb7cc25f366f7f8ba713beb892331be8f"
+  },
+  "paper_id": "2610.12126",
+  "rows": {
+    "survey.md": "| [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2; simulated instance, multi-object, demand-driven, and category-level navigation | Pretrained MLLM without navigation-specific fine-tuning; Navigation Skills, visual-point goals, interchangeable executors, and execution feedback | Geo-based Executor SR: 78.00% single-object, 34.00% multi-object (Habitat-GS), 59.50% demand-driven (adapted Demand-Bench) | — |",
+    "survey_ko.md": "| [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2; 시뮬레이션 객체 인스턴스·다중 객체·요구 기반·객체 범주 탐색 | 탐색 전용 fine-tuning 없이 pretrained MLLM 사용; Navigation Skills, 이미지 좌표 목표, 교체 가능한 실행기, 실행 피드백 결합 | Geo-based Executor의 SR: 단일 객체 78.00%, 다중 객체 34.00% (Habitat-GS), 요구 기반 59.50% (평가를 수정한 Demand-Bench) | — |",
+    "survey_zh.md": "| [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2；仿真中的实例、多对象、需求驱动及类别级导航 | 预训练MLLM无需导航专用微调；结合Navigation Skills、图像坐标目标、可替换执行器及执行反馈 | Geo-based Executor的SR：单对象78.00%、多对象34.00%（Habitat-GS），需求驱动59.50%（调整评估后的Demand-Bench） | — |"
+  },
+  "run_id": "2026-10-13T233558Z",
+  "status": "published"
+}

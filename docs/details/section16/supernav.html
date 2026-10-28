@@ -1,0 +1,98 @@
+<h3 class="dp-h3">SuperNav</h3>
+<p class="dp-p"><strong>Full title:</strong> SuperNav: An Agentic Navigation System for Any Task in Any Scene</p>
+<p class="dp-p"><strong>Authors:</strong> Jinkai Zhang et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2610.12126v1" target="_blank" rel="noopener">2610.12126v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A pretrained MLLM selects navigation goals through a harness without navigation-specific fine-tuning. Navigation Skills give guidance for search, recovery, and completion. Tools return four RGB views, execution status, and diagnostics. A shared visual-point interface connects the MLLM to Geo-based Executor or Learned Executor.</p>
+<p class="dp-p"><strong>Key methodology:</strong> The MLLM selects a destination in an image. The executor moves toward it and returns feedback for the next decision. Goal records track pending and completed items. Context management removes superseded image payloads but keeps text history and image paths. Geo-based Executor uses geometry and path planning. Learned Executor predicts local motion from RGB observations and marked image points.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Instance and ordered multi-object navigation in Habitat-GS; demand-driven navigation in AI2-THOR; category-level navigation on HM3D. Real-robot examples use a Unitree Go2 to search for objects and visit successive goals.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Connects image-based destination selection to interchangeable motion executors.</li>
+<li>Combines Navigation Skills, goal records, and context management to support different requests.</li>
+<li>Evaluates several navigation task types and uses ablations to assess the harness.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>InteriorGS-based Habitat-GS, single-object navigation</td>
+<td>SR</td>
+<td>78.00%</td>
+<td>Geo-based Executor; 150 tasks; navmesh path distance below 1 m to an approved target viewpoint and explicit STOP</td>
+</tr>
+<tr>
+<td>InteriorGS-based Habitat-GS, ordered multi-object navigation</td>
+<td>SR</td>
+<td>34.00%</td>
+<td>Geo-based Executor; 150 tasks with two to five targets; ordered arrivals and explicit STOP</td>
+</tr>
+<tr>
+<td>Adapted Demand-Bench in AI2-THOR</td>
+<td>SR</td>
+<td>59.50%</td>
+<td>Geo-based Executor; 200 tasks; ordered arrival in 2 m target regions, without object reuse, and explicit STOP</td>
+</tr>
+<tr>
+<td>HM3D-OVON val-unseen, Navigation Skills ablation</td>
+<td>SR</td>
+<td>68.33% with Skills; 35.00% without Skills</td>
+<td>Same 120 episodes, Geo-based Executor, GPT-5.6 Terra (high), and 0.25 m threshold</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Different requests in unfamiliar scenes matter for service robots. Inference cost, variable delay, and geometry requirements limit practical use.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>6.0</td>
+<td>Interchangeable executors, Skills, and context management extend related harness methods. Direct comparisons with the closest harness methods are absent.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Visual-point goals and execution feedback separate decisions from motion. Ablations with the same executor support the design, but semantic completion has no independent check.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.0</td>
+<td>Results support several navigation task types. Different observation and execution conditions limit baseline comparisons; real-robot evidence is qualitative.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.0</td>
+<td>Results support broader task and scene coverage beyond fixed workflows and navigation training data. Activity completion and long real-world sequences remain unverified.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.1/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Semantic judgments and goal records depend on the MLLM. They are not independent semantic checks.</li>
+<li>Geo-based Executor needs maps or scene geometry. MLLM inference adds cost and variable delay.</li>
+<li>Demand-driven evaluation measures ordered navigation to targets, rather than completion of the requested activities.</li>
+<li>Baselines retain their own inputs and history mechanisms. Observation and motion conditions differ from SuperNav.</li>
+<li>Real-robot evidence is qualitative. Reliability over long navigation sequences and wider real-world evaluation remain open.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> Variable; numerical latency: —.</li>
+<li><strong>Deployment hardware:</strong> Unitree Go2 with four directional RGB cameras, LiDAR, and odometry; compute hardware: —.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Evaluation data:</strong> InteriorGS-based Habitat-GS: 150 single-object and 150 ordered multi-object tasks. Adapted Demand-Bench: 200 tasks in AI2-THOR. Category-level evaluation: 120 HM3D-OVON val-unseen episodes and 1,000 HM3Dv2 validation episodes.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2610.12126v1" target="_blank" rel="noopener">Paper text</a>, sections 3–5 and Appendix A.1; <a href="https://zju3dv.github.io/SuperNav/" target="_blank" rel="noopener">Project</a>.</p>

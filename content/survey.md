@@ -392,6 +392,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 
 | Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
 |---|---|---|---|---|---|
+| [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2; simulated instance, multi-object, demand-driven, and category-level navigation | Pretrained MLLM without navigation-specific fine-tuning; Navigation Skills, visual-point goals, interchangeable executors, and execution feedback | Geo-based Executor SR: 78.00% single-object, 34.00% multi-object (Habitat-GS), 59.50% demand-driven (adapted Demand-Bench) | — |
 
 ---
 
