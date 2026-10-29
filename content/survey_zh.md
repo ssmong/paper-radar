@@ -378,6 +378,7 @@
 
 | 论文 | Year | Robot / 任务 | 核心方法 | 主要结果 | Code |
 |---|---|---|---|---|---|
+| [**A Decade of Learning-Based Control: From Theoretic Foundations to Practical Deployment**](https://arxiv.org/abs/2610.29187v1) | 2026 | — | 教程涵盖稳定性、安全性、动力学学习、直接数据驱动控制及基于RL、IL和BO的策略学习 | Table I将学习目标、先验知识和不确定性模型与控制器设计及闭环保证相联系 | [教程资料](https://learning-based-control.github.io/tutorial/) |
 
 ---
 

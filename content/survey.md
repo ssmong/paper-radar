@@ -378,6 +378,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 
 | Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
 |---|---|---|---|---|---|
+| [**A Decade of Learning-Based Control: From Theoretic Foundations to Practical Deployment**](https://arxiv.org/abs/2610.29187v1) | 2026 | — | Tutorial on stability, safety, dynamics learning, direct data-driven control, and policy learning with RL, IL, and BO | Connects learning objectives, prior knowledge, and uncertainty models to controller design and closed-loop guarantees in Table I | [Tutorial resources](https://learning-based-control.github.io/tutorial/) |
 
 ---
 

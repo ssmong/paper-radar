@@ -378,6 +378,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 
 | 논문 | 연도 | 로봇 / 과제 | 핵심 방법 | 주요 결과 | 코드 |
 |---|---|---|---|---|---|
+| [**A Decade of Learning-Based Control: From Theoretic Foundations to Practical Deployment**](https://arxiv.org/abs/2610.29187v1) | 2026 | — | 안정성·안전성, 동역학 학습, 직접 데이터 기반 제어, RL·IL·BO 기반 policy 학습을 설명하는 튜토리얼이다 | Table I에서 학습 목표·사전 지식·불확실성 모델을 제어기 설계와 폐루프 보장에 연결한다 | [튜토리얼 자료](https://learning-based-control.github.io/tutorial/) |
 
 ---
 

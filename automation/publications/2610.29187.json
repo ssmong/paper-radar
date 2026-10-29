@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section14/decade_learning_based_control.md": "2b10d77a51026c1dfe0429f6002ecb2eedc722b0bf6594baefc4322520959f47",
+    "detailed_ko/section14/decade_learning_based_control.md": "24404f978a011a1a9f695c467869f6d9d12aac455de20513ff23b73bf659923f",
+    "detailed_zh/section14/decade_learning_based_control.md": "de94649f0a971db776d2935aadd5ab5317c9316ad287878ab2abf508747f672d"
+  },
+  "paper_id": "2610.29187",
+  "rows": {
+    "survey.md": "| [**A Decade of Learning-Based Control: From Theoretic Foundations to Practical Deployment**](https://arxiv.org/abs/2610.29187v1) | 2026 | — | Tutorial on stability, safety, dynamics learning, direct data-driven control, and policy learning with RL, IL, and BO | Connects learning objectives, prior knowledge, and uncertainty models to controller design and closed-loop guarantees in Table I | [Tutorial resources](https://learning-based-control.github.io/tutorial/) |",
+    "survey_ko.md": "| [**A Decade of Learning-Based Control: From Theoretic Foundations to Practical Deployment**](https://arxiv.org/abs/2610.29187v1) | 2026 | — | 안정성·안전성, 동역학 학습, 직접 데이터 기반 제어, RL·IL·BO 기반 policy 학습을 설명하는 튜토리얼이다 | Table I에서 학습 목표·사전 지식·불확실성 모델을 제어기 설계와 폐루프 보장에 연결한다 | [튜토리얼 자료](https://learning-based-control.github.io/tutorial/) |",
+    "survey_zh.md": "| [**A Decade of Learning-Based Control: From Theoretic Foundations to Practical Deployment**](https://arxiv.org/abs/2610.29187v1) | 2026 | — | 教程涵盖稳定性、安全性、动力学学习、直接数据驱动控制及基于RL、IL和BO的策略学习 | Table I将学习目标、先验知识和不确定性模型与控制器设计及闭环保证相联系 | [教程资料](https://learning-based-control.github.io/tutorial/) |"
+  },
+  "run_id": "2026-10-28T233702Z",
+  "status": "published"
+}
