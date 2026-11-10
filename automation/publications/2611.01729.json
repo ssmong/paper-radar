@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section15/ode_policy.md": "6ca4dab3cdcf15c3edbf051ef7c6d3f5c130da38f92f2dfbda37a3ed82ebd6df",
+    "detailed_ko/section15/ode_policy.md": "1a92d5735032d8f9736ad744ef98fbeadcaff1887d610c04e553376f68db979e",
+    "detailed_zh/section15/ode_policy.md": "1632d61f056632a6ae1a3032f678893f98d6362ed00be246e2aac952efca3c82"
+  },
+  "paper_id": "2611.01729",
+  "rows": {
+    "survey.md": "| [**ODE Policy**](https://arxiv.org/abs/2611.01729v1) | 2026 | Single-arm, dual-arm, dexterous, and humanoid robots; 14 real-world tasks; LIBERO; LAFAN1 motion tracking | Neural ODE learns action dynamics; path loss, contractive perturbation, and diversity head; integrates from the previous action in IL and RL | LIBERO success after 1 epoch (one seed): π0.5 ODE head 96.0% vs FM-R 75.5%; ImageWAM ODE head 82.6% vs original flow matching head 24.6% | — |",
+    "survey_ko.md": "| [**ODE Policy**](https://arxiv.org/abs/2611.01729v1) | 2026 | 단일 팔·양팔·다지 손·휴머노이드 로봇; 실제 과제 14개; LIBERO; LAFAN1 동작 추적 | Neural ODE로 action dynamics를 학습한다. Path loss, contractive perturbation, diversity head를 사용하며 IL·RL에서 이전 action부터 적분한다 | 1 epoch 후 LIBERO success rate (단일 seed): π0.5 ODE head 96.0% vs FM-R 75.5%; ImageWAM ODE head 82.6% vs 기존 flow matching head 24.6% | — |",
+    "survey_zh.md": "| [**ODE Policy**](https://arxiv.org/abs/2611.01729v1) | 2026 | 单臂、双臂、灵巧手及人形机器人；14个真实机器人任务；LIBERO；LAFAN1动作跟踪 | 神经ODE学习动作动力学；路径损失、收缩扰动及多样性头；IL与RL均从前一动作继续积分 | 1 epoch后LIBERO成功率（单一seed）：π0.5 ODE头96.0% vs FM-R 75.5%；ImageWAM ODE头82.6% vs原始flow matching头24.6% | — |"
+  },
+  "run_id": "2026-11-10T233008Z",
+  "status": "published"
+}

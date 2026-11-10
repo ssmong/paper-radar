@@ -1,0 +1,100 @@
+<h3 class="dp-h3">ODE Policy</h3>
+<p class="dp-p"><strong>Full title:</strong> ODE Policy: Robot Learning via Action Dynamics, Not Actions</p>
+<p class="dp-p"><strong>Authors:</strong> Jindou Jia et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2611.01729v1" target="_blank" rel="noopener">2611.01729v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A neural ODE uses a FiLM-MLP vector field to model action dynamics. Images and instructions condition the field. Proprioception enters the field directly. A diversity head adds sampled velocity offsets for multi-modal behavior. The same formulation serves as a visuomotor policy, a VLA or WAM action head, and an RL actor.</p>
+<p class="dp-p"><strong>Key methodology:</strong> In imitation learning (IL), path loss matches actions integrated over short chunks to demonstrations, without velocity labels. Contractive perturbation changes the starting action during training and teaches the path to return to the demonstration. At inference, integration continues from the last action across chunk boundaries. Observations and proprioception stay fixed within each chunk. In reinforcement learning (RL), the actor takes one Euler step from the previous action at each control step.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> LIBERO evaluates manipulation, and LIBERO-plus evaluates generalization. Real-robot evaluation covers 14 tasks on Franka Research 3, Galaxea R1 Lite, Sharpa North with Sharpa dexterous hands, and Unitree G1 with Inspire DFX dexterous hands. Tasks include precise, long-horizon, deformable, multi-modal, dexterous, and loco-manipulation tasks. RL evaluates a simulated Unitree G1 tracking 40 LAFAN1 motion clips with SuperMimic.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Learns an action vector field through paths integrated in physical time, without velocity labels.</li>
+<li>Connects action chunks by continuing from the previous action and uses a diversity head to retain distinct behavior modes.</li>
+<li>Applies the same action dynamics formulation to IL, VLA and WAM action heads, and model-based RL.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>LIBERO, visuomotor IL</td>
+<td>Success rate</td>
+<td>79.2%</td>
+<td>After 1 epoch; best compared baseline: 43.2%; four suites and three seeds</td>
+</tr>
+<tr>
+<td>LIBERO, π0.5</td>
+<td>Success rate</td>
+<td>96.0%</td>
+<td>After 1 epoch; FM-R: 75.5%; one seed; both action heads randomly initialized, with different structures and parameter counts</td>
+</tr>
+<tr>
+<td>LIBERO, ImageWAM</td>
+<td>Success rate</td>
+<td>82.6%</td>
+<td>After 1 epoch; original flow matching head: 24.6%; one seed</td>
+</tr>
+<tr>
+<td>LIBERO, visuomotor IL</td>
+<td>Success rate</td>
+<td>87.7%</td>
+<td>Epoch 100; 20 demonstrations per task; FM-DiT: 85.4% with 50 demonstrations per task; data conditions differ</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Data cost, inference cost, and action continuity affect many robot policies. Application to VLA, WAM, and RL gives the method a broad scope, but long-term operation remains unverified.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>8.0</td>
+<td>Training integrated paths without velocity labels and continuing across chunks extends Streaming flow policy. Time alignment and dynamical policies have prior work.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Short path integration and contractive perturbation address continuity and accumulated error. Fixed observations within chunks limit reaction to new events.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.3</td>
+<td>Shared backbone, data, and training schedules support the comparisons; visuomotor experiments use three seeds. Large-model results use one seed, and baselines later catch up or converge.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.0</td>
+<td>The integration structure and learning results support progress on continuity and cost. Detailed real-robot, smoothness, and ablation results are absent from the available excerpt.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.7/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Streaming actions do not mean continuous observation updates. Observations and proprioception stay fixed within a chunk.</li>
+<li>The π0.5 and ImageWAM learning curves use one seed. The pretrained π0.5 expert catches up from epoch 2; ImageWAM heads converge from epoch 6.</li>
+<li>Execution quality is measured only on successful episodes. It does not describe the quality of failed rollouts.</li>
+<li>LIBERO uses a separate classification head for binary gripper commands. These commands do not use the same continuous integration as the other actions.</li>
+<li>Early large-model gains on LIBERO do not establish the same gains on other tasks or under distribution changes.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> — (absolute latency not reported in the available excerpt).</li>
+<li><strong>Deployment hardware:</strong> —.</li>
+<li><strong>Integration:</strong> Standard visuomotor IL uses 8-step chunks and RK4. ImageWAM uses 12-step chunks with Euler; GR00T N1.7 uses 16-step chunks with Euler.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> LIBERO demonstrations; π0.5 uses 10 episodes per task and ImageWAM uses 25. Three real-robot tasks use data from another lab.</li>
+<li><strong>Evaluation data:</strong> Four LIBERO suites; 20 episodes per task per visuomotor checkpoint, with three training seeds. Large-model learning curves use one seed. Real-robot evaluation uses 20 trials per task and method. RL evaluates all 40 LAFAN1 clips.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2611.01729v1" target="_blank" rel="noopener">Paper text</a>, abstract and sections 1–6.1.2.</p>

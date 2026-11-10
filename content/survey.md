@@ -387,6 +387,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 | Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
 |---|---|---|---|---|---|
 | [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | Simulated dual-arm ARX X5; 42 RoboDojo manipulation tasks | GPT-6-Astra coding agents write and repair reusable tools; calibrated RGB triangulation and plane constraints | New layouts within seed 0: success 39.7%, progress score 48.0; tight insertion success 8.3% | [Code](https://github.com/HexaFuture/HexaShell) |
+| [**ODE Policy**](https://arxiv.org/abs/2611.01729v1) | 2026 | Single-arm, dual-arm, dexterous, and humanoid robots; 14 real-world tasks; LIBERO; LAFAN1 motion tracking | Neural ODE learns action dynamics; path loss, contractive perturbation, and diversity head; integrates from the previous action in IL and RL | LIBERO success after 1 epoch (one seed): π0.5 ODE head 96.0% vs FM-R 75.5%; ImageWAM ODE head 82.6% vs original flow matching head 24.6% | — |
 
 ---
 

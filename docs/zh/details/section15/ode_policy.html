@@ -1,0 +1,100 @@
+<h3 class="dp-h3">ODE Policy</h3>
+<p class="dp-p"><strong>完整标题：</strong> ODE Policy: Robot Learning via Action Dynamics, Not Actions</p>
+<p class="dp-p"><strong>作者：</strong> Jindou Jia等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2611.01729v1" target="_blank" rel="noopener">2611.01729v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 神经ODE使用FiLM-MLP向量场建模动作动力学。图像和指令构成向量场的条件，本体感觉状态直接输入向量场。多样性头添加采样速度偏移，以表示多模态行为。同一形式可作为视觉运动策略、VLA或WAM的动作头，以及RL的actor。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 模仿学习（IL）使用路径损失，将短动作块内积分得到的动作与示范对齐，无需速度标签。收缩扰动在训练时改变起始动作，使路径返回示范。推理从上一动作继续积分，跨动作块保持连接。每个动作块内的观测和本体感觉状态保持固定。强化学习（RL）在每个控制步从前一动作执行一次Euler步。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> LIBERO评估操作，LIBERO-plus评估泛化。真实机器人评估覆盖14个任务，使用Franka Research 3、Galaxea R1 Lite、配备Sharpa灵巧手的Sharpa North，以及配备Inspire DFX灵巧手的Unitree G1。任务包括精密、长时程、可变形物体、多模态、灵巧操作及移动操作。RL使用SuperMimic和仿真Unitree G1跟踪40个LAFAN1动作片段。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>通过物理时间上的积分路径学习动作向量场，无需速度标签。</li>
+<li>从前一动作继续积分以连接动作块，并使用多样性头保留不同的行为模式。</li>
+<li>将同一动作动力学形式用于IL、VLA和WAM动作头，以及基于模型的RL。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>LIBERO，视觉运动IL</td>
+<td>成功率</td>
+<td>79.2%</td>
+<td>1 epoch后；最佳对比基线为43.2%；四个任务套件和三个seed</td>
+</tr>
+<tr>
+<td>LIBERO，π0.5</td>
+<td>成功率</td>
+<td>96.0%</td>
+<td>1 epoch后；FM-R为75.5%；单一seed；两个动作头均随机初始化，结构和参数量不同</td>
+</tr>
+<tr>
+<td>LIBERO，ImageWAM</td>
+<td>成功率</td>
+<td>82.6%</td>
+<td>1 epoch后；原始flow matching头为24.6%；单一seed</td>
+</tr>
+<tr>
+<td>LIBERO，视觉运动IL</td>
+<td>成功率</td>
+<td>87.7%</td>
+<td>Epoch 100；每任务20个示范；FM-DiT使用50个示范达到85.4%；数据条件不同</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>数据成本、推理成本和动作连续性是多种机器人策略的共同问题。方法适用于VLA、WAM及RL，但长期运行尚未验证。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>8.0</td>
+<td>无需速度标签的积分路径训练及跨动作块延续扩展了Streaming flow policy。时间对齐及动力系统策略已有相关研究。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>短路径积分和收缩扰动针对连续性与误差累积。动作块内固定观测限制了对新事件的响应。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.3</td>
+<td>相同backbone、数据和训练计划支持比较，视觉运动实验使用三个seed。大模型结果仅用一个seed，基线随后追上或收敛。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>7.0</td>
+<td>积分结构和学习结果支持连续性与成本方面的改善。现有节选缺少真实机器人、平滑性及消融的详细结果，限制了判断。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.7/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>动作流式执行不代表持续更新观测。每个动作块内的观测和本体感觉状态保持固定。</li>
+<li>π0.5和ImageWAM学习曲线仅使用一个seed。预训练π0.5 expert从epoch 2开始追上，ImageWAM各动作头从epoch 6开始收敛。</li>
+<li>执行质量仅在成功回合上测量，未涵盖失败rollout的质量。</li>
+<li>LIBERO使用独立分类头预测二值夹爪命令，这些命令未采用与其他动作相同的连续积分。</li>
+<li>LIBERO上的大模型早期学习收益，尚不能确立其他任务或分布变化下的同等收益。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —（现有节选未报告绝对延迟）。</li>
+<li><strong>部署硬件：</strong> —。</li>
+<li><strong>积分：</strong> 标准视觉运动IL使用8-step动作块和RK4。ImageWAM使用12-step动作块和Euler；GR00T N1.7使用16-step动作块和Euler。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> LIBERO示范；π0.5每任务使用10个回合，ImageWAM使用25个。三个真实机器人任务使用其他实验室的数据。</li>
+<li><strong>评估数据：</strong> LIBERO的四个任务套件；每个视觉运动checkpoint每任务评估20个回合，使用三个训练seed。大模型学习曲线使用一个seed。真实机器人每个任务和方法评估20次。RL评估全部40个LAFAN1片段。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2611.01729v1" target="_blank" rel="noopener">论文正文</a>摘要及第1–6.1.2节。</p>
