@@ -1,0 +1,70 @@
+<p class="dp-p"># Ropedia Xperience 2</p>
+<ul class="dp-list">
+<li><strong>Full title:</strong> Ropedia Xperience 2: A Gold Standard for Scaling Physical AI Environments and Behaviors</li>
+<li><strong>Authors:</strong> Hao Li et al.</li>
+<li><strong>Venue/Year:</strong> arXiv / 2026</li>
+<li><strong>Paper:</strong> <a href="https://arxiv.org/abs/2611.17060v1" target="_blank" rel="noopener">2611.17060v1</a></li>
+<li><strong>Released scans:</strong> 1,589 metric-scale 3D scans and their reconstructions.</li>
+<li><strong>Collection inventory:</strong> 4,230 egocentric recordings of 74 tasks, totaling 131 h. These counts describe the collection, not a verified set of released, registered recordings.</li>
+<li><strong>Modalities:</strong> Egocentric RGB, LiDAR scene scans, camera trajectories, depth, estimated hand and body motion, and hierarchical language captions.</li>
+</ul>
+<h2 class="dp-h2">Key methodology/design</h2>
+<p class="dp-p">One operator first scans a scene with a handheld LiDAR scanner, then records tasks with the HOMIE head-mounted recorder. Collection requires no robot or motion-capture system on site. The processing pipeline produces scene meshes and 3D Gaussian representations. It also estimates camera trajectories and human motion and generates language annotations.</p>
+<p class="dp-p">SIFT, RANSAC, PnP, and robust Umeyama alignment register recordings to the scene. Held-out frames, IMU gravity consistency, and an ICP check assess the alignment. The estimated body motion uses SMPL-H with 52 body and finger joints at 30 Hz.</p>
+<h2 class="dp-h2">Main contributions</h2>
+<ul class="dp-list">
+<li>Extends Xperience-10M with metric scene scans and scene–recording registration.</li>
+<li>Shows four reuse routes: Real-to-Sim, human–robot retargeting, virtual teleoperation, and long-horizon trajectory generation.</li>
+<li>Uses scan reconstructions as reference geometry for depth and geometry estimation, 3D object detection, and spatial reasoning benchmarks.</li>
+</ul>
+<h2 class="dp-h2">Reported results</h2>
+<p class="dp-p">Retargeting uses four recordings from one scene, totaling 10.3 min of motion. The recordings are slowed down 2×. Median fingertip error is 0.40–0.55 cm; 95th-percentile error is below 2 cm.</p>
+<p class="dp-p">In one converted home scene, all 30 held-out rollouts complete one task with eight consecutive subtasks without breaking a task rule. Each subtask uses a policy program and a whole-body controller. This result shows trajectory generation; it does not establish general policy learning gains across scenes and tasks.</p>
+<h2 class="dp-h2">AI research assessments</h2>
+<p class="dp-p">Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Joint environment and behavior collection can support robot learning without on-site robots. The size of learning and collection-cost benefits remains uncertain.</td>
+</tr>
+<tr>
+<td>Contribution beyond prior work</td>
+<td>7.0</td>
+<td>Metric scans and scene–recording registration extend Xperience-10M. The pipeline combines existing alignment and motion estimation methods.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>7.0</td>
+<td>Separate capture devices and geometric alignment checks suit the data collection problem. A single transform cannot correct local SLAM drift.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>6.0</td>
+<td>Retargeting and 30 successful eight-subtask rollouts show reuse. Evaluation uses one scene for retargeting and one task for long-horizon generation.</td>
+</tr>
+<tr>
+<td>Support for addressing the research gap</td>
+<td>6.0</td>
+<td>Four reuse routes partly address the lack of joint environment and behavior resources. The extent of released, registered recordings and policy learning gains remains uncertain.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 6.7/10.</p>
+<h2 class="dp-h2">Limitations/Gaps</h2>
+<ul class="dp-list">
+<li>Released scans mainly cover home interiors. Reuse-grade scans can have partial coverage or reconstruction defects.</li>
+<li>Release grades include overrides and decisions on conflicting quality labels. They do not mean that all scans passed the same visual and geometric checks.</li>
+<li>Separate scans can show the same physical space. Recording counts and duration describe the broader collection inventory.</li>
+<li>A single registration transform cannot correct local SLAM drift. Unobserved body parts, especially legs, are inferred from a motion prior.</li>
+<li>Retargeting uses slowed recordings from one scene. Long-horizon generation covers one task in one home scene. General policy learning gains remain uncertain.</li>
+</ul>
+<h2 class="dp-h2">Availability</h2>
+<ul class="dp-list">
+<li><strong>Dataset download:</strong> —. The paper reports 1,589 released scans; no download address is reported in the source text.</li>
+<li><strong>Code / weights:</strong> — / —.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2611.17060v1" target="_blank" rel="noopener">Paper text</a>, sections 2–6.</p>

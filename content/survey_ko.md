@@ -283,6 +283,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 
 | 데이터셋 | Year | Venue | 규모 | Modality | Tasks | 언어 | 다운로드 |
 |---|---|---|---|---|---|---|---|
+| [**Ropedia Xperience 2**](https://arxiv.org/abs/2611.17060v1) | 2026 | arXiv | 공개 스캔 1,589개; 수집 기록 4,230개, 131 h | egocentric RGB + LiDAR 스캔 + 손·전신 동작 | 74개 작업 | ✅ 계층적 언어 주석 | — |
 | **EgoDex** | 2025 | ICLR | 829시간, 30Hz 1080p | egocentric RGB + 68관절 3D (AVP) | 194가지 테이블탑 | ✅ LLM 설명 | ✅ [GitHub](https://github.com/apple/ml-egodex) ~1.7TB |
 | **DexCanvas** | 2025 | arXiv | 7000시간 (v0.1=1%) | 다시점 RGB-D + MANO | 21가지 조작 유형 | ✗ | ✅ [HF](https://huggingface.co/datasets/DEXROBOT/DexCanvas) v0.1 |
 | **GigaHands** | 2025 | CVPR | 34시간, 14K 클립 | 다시점 RGB + 3D 손 | bimanual | ✅ 84K 주석 | ✅ [Site](https://ivl.cs.brown.edu/research/gigahands.html) |

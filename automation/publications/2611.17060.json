@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section8/ropedia_xperience_2.md": "988bc3ee30e9a34a44f928c45561a099ef03dcaaf5944ed2cafe1095d2722438",
+    "detailed_ko/section8/ropedia_xperience_2.md": "df0183192b421e8235c85fad2cf9ed3bd817b08b9690f3dfe4ea4373c1aafcde",
+    "detailed_zh/section8/ropedia_xperience_2.md": "01ce9f92cc8b2c533441fced16b1405c0d14f687fd04fa6b31b170cfd66acb6a"
+  },
+  "paper_id": "2611.17060",
+  "rows": {
+    "survey.md": "| [**Ropedia Xperience 2**](https://arxiv.org/abs/2611.17060v1) | 2026 | arXiv | 1,589 released scans; collection: 4,230 recordings, 131 h | Egocentric RGB + LiDAR scans + hand/body motion | 74 tasks | ✅ Hierarchical captions | — |",
+    "survey_ko.md": "| [**Ropedia Xperience 2**](https://arxiv.org/abs/2611.17060v1) | 2026 | arXiv | 공개 스캔 1,589개; 수집 기록 4,230개, 131 h | egocentric RGB + LiDAR 스캔 + 손·전신 동작 | 74개 작업 | ✅ 계층적 언어 주석 | — |",
+    "survey_zh.md": "| [**Ropedia Xperience 2**](https://arxiv.org/abs/2611.17060v1) | 2026 | arXiv | 已发布1,589个扫描；采集记录4,230段，131 h | 自中心RGB + LiDAR扫描 + 手部与全身运动 | 74项任务 | ✅ 分层语言标注 | — |"
+  },
+  "run_id": "2026-11-13T233006Z",
+  "status": "published"
+}

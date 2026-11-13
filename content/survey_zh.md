@@ -283,6 +283,7 @@
 
 | 数据集 | 年份 | 会议 | 规模 | 模态 | 任务 | 语言 | 下载 |
 |---|---|---|---|---|---|---|---|
+| [**Ropedia Xperience 2**](https://arxiv.org/abs/2611.17060v1) | 2026 | arXiv | 已发布1,589个扫描；采集记录4,230段，131 h | 自中心RGB + LiDAR扫描 + 手部与全身运动 | 74项任务 | ✅ 分层语言标注 | — |
 | **EgoDex** | 2025 | ICLR | 829小时，30Hz 1080p | 自中心RGB + 68关节3D (AVP) | 194个桌面 | ✅ LLM描述 | ✅ [GitHub](https://github.com/apple/ml-egodex) ~1.7TB |
 | **DexCanvas** | 2025 | arXiv | 7000小时（v0.1=1%） | 多视角RGB-D + MANO | 21种操作类型 | ✗ | ✅ [HF](https://huggingface.co/datasets/DEXROBOT/DexCanvas) v0.1 |
 | **GigaHands** | 2025 | CVPR | 34小时，14K片段 | 多视角RGB + 3D手 | Bimanual | ✅ 8.4万标注 | ✅ [Site](https://ivl.cs.brown.edu/research/gigahands.html) |

@@ -283,6 +283,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 
 | Dataset | Year | Venue | Scale | Modality | Tasks | Language | Download |
 |---|---|---|---|---|---|---|---|
+| [**Ropedia Xperience 2**](https://arxiv.org/abs/2611.17060v1) | 2026 | arXiv | 1,589 released scans; collection: 4,230 recordings, 131 h | Egocentric RGB + LiDAR scans + hand/body motion | 74 tasks | ✅ Hierarchical captions | — |
 | **EgoDex** | 2025 | ICLR | 829h, 30Hz 1080p | Ego RGB + 68-joint 3D (AVP) | 194 tabletop | ✅ LLM descriptions | ✅ [GitHub](https://github.com/apple/ml-egodex) ~1.7TB |
 | **DexCanvas** | 2025 | arXiv | 7000h (v0.1=1%) | Multi-view RGB-D + MANO | 21 manip types | ✗ | ✅ [HF](https://huggingface.co/datasets/DEXROBOT/DexCanvas) v0.1 |
 | **GigaHands** | 2025 | CVPR | 34h, 14K clips | Multi-view RGB + 3D hand | Bimanual | ✅ 84K annotations | ✅ [Site](https://ivl.cs.brown.edu/research/gigahands.html) |
