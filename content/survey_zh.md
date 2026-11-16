@@ -337,6 +337,7 @@
 | [**Open-TeleVision**](https://arxiv.org/abs/2407.10107) | UCSD | CoRL | 2024 | 立体VR | Bimanual dexterous | ✗ | - | [GitHub](https://github.com/OpenTeleVision/TeleVision) ✅ |
 | [**HATO**](https://arxiv.org/abs/2404.16823) | UC Berkeley | ICRA | 2024 | Meta Quest 2 VR | 2x Psyonic Ability Hand (6自由度) + tactile传感器 | ✗（仅机器人端tactile） | 低（VR + 假肢手） | [GitHub](https://toruowo.github.io/hato/) ✅ |
 | [**DexPilot**](https://arxiv.org/abs/1910.03135) | NVIDIA | ICRA | 2020 | 视觉（裸手，单RGB摄像头） | Allegro (16) + Kuka IIWA | ✗ | 极低（仅需摄像头） | [Page](https://sites.google.com/view/dex-pilot) |
+| [**HALO**](https://arxiv.org/abs/2611.16439v1) | HKUST / Robbyant | arXiv | 2026 | 拖动示教 + 低阻力平台 | 重新设计的双臂夹爪 | ✅ 直接运动觉反馈 | — | [Page](https://robbyant-research.github.io/Lingbot-ALOHA/) |
 
 ---
 

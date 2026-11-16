@@ -337,6 +337,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 | [**Open-TeleVision**](https://arxiv.org/abs/2407.10107) | UCSD | CoRL | 2024 | Stereo VR | Bimanual dex | ✗ | - | [GitHub](https://github.com/OpenTeleVision/TeleVision) ✅ |
 | [**HATO**](https://arxiv.org/abs/2404.16823) | UC Berkeley | ICRA | 2024 | Meta Quest 2 VR | 2x Psyonic Ability Hand (6 DoF) + touch sensors | ✗ (touch on robot only) | Low (VR + prosthetic hands) | [GitHub](https://toruowo.github.io/hato/) ✅ |
 | [**DexPilot**](https://arxiv.org/abs/1910.03135) | NVIDIA | ICRA | 2020 | Vision (bare hand, single RGB camera) | Allegro (16) + Kuka IIWA | ✗ | Very low (camera only) | [Page](https://sites.google.com/view/dex-pilot) |
+| [**HALO**](https://arxiv.org/abs/2611.16439v1) | HKUST / Robbyant | arXiv | 2026 | Kinesthetic teaching + low-resistance platform | Redesigned bimanual grippers | ✅ direct kinesthetic | — | [Page](https://robbyant-research.github.io/Lingbot-ALOHA/) |
 
 ---
 

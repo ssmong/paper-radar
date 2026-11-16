@@ -1,0 +1,105 @@
+<p class="dp-p"># 10.12 HALO</p>
+<ul class="dp-list">
+<li><strong>Full title:</strong> HALO: Human-Aligned Data Collection for WhoLe-body MObile Manipulation</li>
+<li><strong>Authors:</strong> Shuai Yang, Fangyi Xu, Yishu Shen, Kecheng Zheng, Yinghao Xu (HKUST / Robbyant)</li>
+<li><strong>Venue/Year:</strong> arXiv preprint, November 2026</li>
+<li><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2611.16439v1" target="_blank" rel="noopener">2611.16439v1</a></li>
+<li><strong>Input modality:</strong> Kinesthetic teaching and natural operator movement on a low-resistance passive platform</li>
+<li><strong>Target hand:</strong> Redesigned bimanual grippers</li>
+<li><strong>Force feedback:</strong> Direct physical feedback during kinesthetic teaching</li>
+<li><strong>Cost:</strong> —</li>
+</ul>
+<h2 class="dp-h2">Key methodology/design</h2>
+<p class="dp-p">The operator directly guides the robot end-effectors and moves a passive platform while teaching bimanual manipulation. The powered base is removed during collection. The platform preserves the nonholonomic motion constraints of the AgileX Tracer AGV 2 differential-drive base used during deployment.</p>
+<p class="dp-p">CaRE-Ego, SAM2, and DiffuEraser segment, track, and remove the demonstrator's hands from recorded images. Base velocity calibration and response-delay correction align platform motion with deployment commands. The system uses fine-tuning of π0.5 on the processed demonstrations and asynchronous real-time action chunking (RTC) for execution.</p>
+<h2 class="dp-h2">Main contributions</h2>
+<ul class="dp-list">
+<li>Combines direct manipulation feedback with natural operator movement for whole-body demonstrations.</li>
+<li>Processes images and base actions to reduce differences between collection and autonomous deployment.</li>
+<li>Evaluates collection efficiency and learned policies against Mobile ALOHA and VR teleoperation.</li>
+</ul>
+<h2 class="dp-h2">Quantitative results</h2>
+<p class="dp-p">Collection is limited to one hour per task, including resets and object preparation. The collection comparison uses one operator with no prior experience with the evaluated interfaces.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Task / Setting</th>
+<th>Metric</th>
+<th>Result</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>Push Chair demonstration collection</td>
+<td>Collection speedup</td>
+<td>2.9×</td>
+<td>Compared with Mobile ALOHA under matched collection conditions</td>
+</tr>
+<tr>
+<td>Disassemble Lego</td>
+<td>Policy success rate</td>
+<td>75.0%</td>
+<td>30/40 trials</td>
+</tr>
+<tr>
+<td>Six-stage mobile box manipulation</td>
+<td>Policy success rate</td>
+<td>73.3%</td>
+<td>11/15 trials</td>
+</tr>
+<tr>
+<td>Zip-Tie Fastening</td>
+<td>Succ. Rate</td>
+<td>30.0%</td>
+<td>10 trials</td>
+</tr>
+<tr>
+<td>Push Chair hand-removal ablation</td>
+<td>Success Rate</td>
+<td>55% → 85%</td>
+<td>Same demonstrations; asynchronous inference with execution horizon 8</td>
+</tr>
+</tbody></table></div>
+<h2 class="dp-h2">AI research assessment</h2>
+<p class="dp-p">Mean scores from three AI reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Addresses the collection of coordinated mobility and bimanual demonstrations. Benefits beyond the evaluated tasks and platform remain uncertain.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.0</td>
+<td>Replaces separated leader–follower control with direct teaching and a passive platform. Policy and visual processing use existing methods.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>7.7</td>
+<td>Matches motion constraints and corrects visual and control differences. The separate effect of base calibration is not established.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>6.7</td>
+<td>Policy results and the hand-removal ablation support practical use. Zip-Tie Fastening succeeds in only 30.0% of 10 trials.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.0</td>
+<td>Matched collection conditions and the visual ablation support the alignment claim. One operator limits evidence across users.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.2/10.</p>
+<h2 class="dp-h2">Limitations/Gaps</h2>
+<ul class="dp-list">
+<li>Collection efficiency is compared with one operator; performance across operators is not established.</li>
+<li>Zip-Tie Fastening succeeds in only 30.0% of 10 trials. Sub-millimeter accuracy is a task requirement, not a separately measured accuracy result.</li>
+<li>Hardware evaluation uses one differential-drive base and a platform with matching motion constraints.</li>
+<li>The target table is fixed during Push Chair collection. Active perception is future work.</li>
+</ul>
+<h2 class="dp-h2">Data quality impact</h2>
+<p class="dp-p">Hand removal reduces visual differences between demonstrations and autonomous execution. Base calibration and temporal alignment account for differences between passive collection and powered deployment. The Push Chair ablation supports hand removal; the separate effect of base calibration is not established.</p>
+<h2 class="dp-h2">Open-source status</h2>
+<p class="dp-p">Code / weights: — / — (not reported). <a href="https://robbyant-research.github.io/Lingbot-ALOHA/" target="_blank" rel="noopener">Project page</a>.</p>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2611.16439v1" target="_blank" rel="noopener">Paper text</a>, sections 3–5 and appendix B.</p>

@@ -1,0 +1,105 @@
+<p class="dp-p"># 10.12 HALO</p>
+<ul class="dp-list">
+<li><strong>全称：</strong> HALO: Human-Aligned Data Collection for WhoLe-body MObile Manipulation</li>
+<li><strong>作者：</strong> Shuai Yang, Fangyi Xu, Yishu Shen, Kecheng Zheng, Yinghao Xu (HKUST / Robbyant)</li>
+<li><strong>发表venue/年份：</strong> arXiv预印本，2026年11月</li>
+<li><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2611.16439v1" target="_blank" rel="noopener">2611.16439v1</a></li>
+<li><strong>输入模态：</strong> 拖动示教与低阻力被动平台上的自然移动</li>
+<li><strong>目标手：</strong> 重新设计的双臂夹爪</li>
+<li><strong>力反馈：</strong> 拖动示教中的直接物理反馈</li>
+<li><strong>成本：</strong> —</li>
+</ul>
+<h2 class="dp-h2">核心方法/设计</h2>
+<p class="dp-p">操作者直接引导机器人末端执行器，并移动被动平台来示教双臂操作。采集时移除动力底盘。平台保持与部署所用AgileX Tracer AGV 2差速底盘相同的非完整运动约束。</p>
+<p class="dp-p">CaRE-Ego、SAM2和DiffuEraser用于分割、跟踪并移除记录图像中的示教者双手。底盘速度标定与响应延迟校正将平台运动对齐到部署指令。系统使用处理后的示教对π0.5策略进行fine-tuning，并采用异步实时动作分块（RTC）执行。</p>
+<h2 class="dp-h2">主要贡献</h2>
+<ul class="dp-list">
+<li>将直接操作反馈与操作者自然移动结合，用于采集全身示教。</li>
+<li>处理图像与底盘动作，减少采集和自主部署之间的差异。</li>
+<li>与Mobile ALOHA及VR遥操作比较采集效率和学习所得策略。</li>
+</ul>
+<h2 class="dp-h2">定量结果</h2>
+<p class="dp-p">每项任务的采集限时1小时，包括场景重置和物体准备。采集比较由一名对各参评接口均无使用经验的操作者完成。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>任务 / 设置</th>
+<th>指标</th>
+<th>结果</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>Push Chair示教采集</td>
+<td>采集速度提升</td>
+<td>2.9×</td>
+<td>在相同采集条件下与Mobile ALOHA比较</td>
+</tr>
+<tr>
+<td>Disassemble Lego</td>
+<td>策略成功率</td>
+<td>75.0%</td>
+<td>30/40 trials</td>
+</tr>
+<tr>
+<td>六阶段移动箱体操作</td>
+<td>策略成功率</td>
+<td>73.3%</td>
+<td>11/15 trials</td>
+</tr>
+<tr>
+<td>Zip-Tie Fastening</td>
+<td>Succ. Rate</td>
+<td>30.0%</td>
+<td>10 trials</td>
+</tr>
+<tr>
+<td>Push Chair手部移除ablation</td>
+<td>Success Rate</td>
+<td>55% → 85%</td>
+<td>相同示教；异步推理，execution horizon为8</td>
+</tr>
+</tbody></table></div>
+<h2 class="dp-h2">AI研究评估</h2>
+<p class="dp-p">三位AI评估者的平均分，采用10分制。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>针对移动与双臂协调示教的采集问题。已评估任务和平台之外的收益仍不确定。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>7.0</td>
+<td>用直接示教和被动平台替代空间分离的主从控制。策略和视觉处理采用已有方法。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>7.7</td>
+<td>匹配运动约束并校正视觉及控制差异。底盘标定的独立效果尚未得到验证。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>6.7</td>
+<td>策略结果和手部移除ablation支持实用性。Zip-Tie Fastening在10 trials中的成功率仅为30.0%。</td>
+</tr>
+<tr>
+<td>问题缺口支撑</td>
+<td>7.0</td>
+<td>相同采集条件的比较和视觉ablation支持对齐效果。仅一名操作者限制了跨用户证据。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.2/10。</p>
+<h2 class="dp-h2">局限性/不足</h2>
+<ul class="dp-list">
+<li>采集效率比较仅涉及一名操作者，未验证跨操作者表现。</li>
+<li>Zip-Tie Fastening在10 trials中的成功率仅为30.0%。Sub-millimeter精度是任务要求，并非单独测得的精度结果。</li>
+<li>硬件评估限于一种差速底盘及运动约束匹配的采集平台。</li>
+<li>Push Chair采集时目标桌子固定。主动感知属于未来工作。</li>
+</ul>
+<h2 class="dp-h2">数据质量影响</h2>
+<p class="dp-p">手部移除减少示教与自主执行之间的视觉差异。底盘标定和时间对齐处理被动采集与动力底盘部署之间的差异。Push Chair的ablation支持手部移除，但底盘标定的独立效果尚未得到验证。</p>
+<h2 class="dp-h2">开源状态</h2>
+<p class="dp-p">代码 / 权重：— / —（未报告）。<a href="https://robbyant-research.github.io/Lingbot-ALOHA/" target="_blank" rel="noopener">项目主页</a>。</p>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2611.16439v1" target="_blank" rel="noopener">论文正文</a>，第3–5节及附录B。</p>

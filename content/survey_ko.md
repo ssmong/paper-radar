@@ -337,6 +337,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 | [**Open-TeleVision**](https://arxiv.org/abs/2407.10107) | UCSD | CoRL | 2024 | 스테레오 VR | bimanual dexterous | ✗ | - | [GitHub](https://github.com/OpenTeleVision/TeleVision) ✅ |
 | [**HATO**](https://arxiv.org/abs/2404.16823) | UC Berkeley | ICRA | 2024 | Meta Quest 2 VR | 2x Psyonic Ability Hand (6 DoF) + 터치 센서 | ✗ (Robot 측 터치만) | 저가 (VR + 의수 핸드) | [GitHub](https://toruowo.github.io/hato/) ✅ |
 | [**DexPilot**](https://arxiv.org/abs/1910.03135) | NVIDIA | ICRA | 2020 | 비전 (맨손, 단일 RGB 카메라) | Allegro (16) + Kuka IIWA | ✗ | 매우 저가 (카메라만) | [Page](https://sites.google.com/view/dex-pilot) |
+| [**HALO**](https://arxiv.org/abs/2611.16439v1) | HKUST / Robbyant | arXiv | 2026 | 직접 교시 + 저저항 플랫폼 | 재설계한 양팔 gripper | ✅ 직접 교시를 통한 힘 피드백 | — | [Page](https://robbyant-research.github.io/Lingbot-ALOHA/) |
 
 ---
 

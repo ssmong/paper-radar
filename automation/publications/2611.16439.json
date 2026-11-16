@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section10/halo.md": "b359d1c05cec81c0107dba67696366bc3531ee587e6e4170d67dee293eef7e30",
+    "detailed_ko/section10/halo.md": "f4d8990af6c371994ac559977088bc8314c865df652d48fb0cf637a37b490732",
+    "detailed_zh/section10/halo.md": "2fb5012aae72355fcf3a474e2ae4c145c0aef4f2c6fb6802eea9e29495819cbe"
+  },
+  "paper_id": "2611.16439",
+  "rows": {
+    "survey.md": "| [**HALO**](https://arxiv.org/abs/2611.16439v1) | HKUST / Robbyant | arXiv | 2026 | Kinesthetic teaching + low-resistance platform | Redesigned bimanual grippers | ✅ direct kinesthetic | — | [Page](https://robbyant-research.github.io/Lingbot-ALOHA/) |",
+    "survey_ko.md": "| [**HALO**](https://arxiv.org/abs/2611.16439v1) | HKUST / Robbyant | arXiv | 2026 | 직접 교시 + 저저항 플랫폼 | 재설계한 양팔 gripper | ✅ 직접 교시를 통한 힘 피드백 | — | [Page](https://robbyant-research.github.io/Lingbot-ALOHA/) |",
+    "survey_zh.md": "| [**HALO**](https://arxiv.org/abs/2611.16439v1) | HKUST / Robbyant | arXiv | 2026 | 拖动示教 + 低阻力平台 | 重新设计的双臂夹爪 | ✅ 直接运动觉反馈 | — | [Page](https://robbyant-research.github.io/Lingbot-ALOHA/) |"
+  },
+  "run_id": "2026-11-16T233007Z",
+  "status": "published"
+}
