@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>접촉 풍부 다지 조작 서베이</title>
-<meta name="description" content="다지 조작, 힘 인식 VLA 및 임피던스 제어에 관한 199+편의 논문을 다루는 인터랙티브 서베이.">
+<meta name="description" content="다지 조작, 힘 인식 VLA 및 임피던스 제어에 관한 200+편의 논문을 다루는 인터랙티브 서베이.">
 <meta property="og:title" content="접촉 풍부 다지 조작 서베이">
-<meta property="og:description" content="다지 조작, 힘 인식 VLA 및 임피던스 제어에 관한 199+편의 논문을 다루는 인터랙티브 서베이.">
+<meta property="og:description" content="다지 조작, 힘 인식 VLA 및 임피던스 제어에 관한 200+편의 논문을 다루는 인터랙티브 서베이.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
@@ -53,10 +53,10 @@
         <p class="hero-author">이연서 &middot; 서울대학교</p>
         <p class="hero-desc">Dexterous manipulation, force-aware VLA, impedance 학습, RL 정책 및 관련 benchmark에 대한 논문, 저장소, 데이터셋을 정리한 서베이입니다.</p>
         <div class="hero-stats">
-          <div class="stat"><span class="stat-number">199+</span><span class="stat-label">항목</span></div>
+          <div class="stat"><span class="stat-number">200+</span><span class="stat-label">항목</span></div>
           <div class="stat"><span class="stat-number">20</span><span class="stat-label">섹션</span></div>
           <div class="stat"><span class="stat-number">103+</span><span class="stat-label">Open Source</span></div>
-          <div class="stat"><span class="stat-number">205</span><span class="stat-label">상세 리뷰</span></div>
+          <div class="stat"><span class="stat-number">206</span><span class="stat-label">상세 리뷰</span></div>
         </div>
       </div>
       <div class="chevron chevron-right"></div>
@@ -471,10 +471,10 @@
     <div class="table-card">
   <div class="table-controls">
     <div class="table-search-wrap"><svg class="search-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg><input type="search" class="table-search" placeholder="이 테이블에서 검색..."></div>
-    <span class="table-count"><span class="count-visible">20</span> / 20</span>
+    <span class="table-count"><span class="count-visible">21</span> / 21</span>
   </div>
   <div class="table-scroll">
-    <table class="survey-table" data-section="sec-3" data-total="20">
+    <table class="survey-table" data-section="sec-3" data-total="21">
       <thead><tr>
         <th class="sortable">Paper</th>
         <th class="sortable">Group</th>
@@ -727,6 +727,18 @@
         <td><span class="badge badge-yes"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.5" fill="currentColor" opacity="0.12"/><path d="M4.5 8.5L7 11l4.5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span> <a href="https://github.com/irmakguzey/tdex" target="_blank" rel="noopener">GitHub</a></td>
         <td><span class="badge badge-no"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.5" fill="currentColor" opacity="0.12"/><path d="M5.25 5.25l5.5 5.5M10.75 5.25l-5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span></td>
         <td>5가지 dexterous Tasks (조이스틱, 책, 그릇, 페그, 점토); vs vision-only 1.7배. §3 항목 중 dexterous 핸드를 사용한 극소수 사례 중 하나.</td>
+      </tr>
+      <tr data-year="2026" data-code="false" data-weights="false" data-hand="gripper">
+        <td><a href="https://arxiv.org/abs/2611.21099v1" target="_blank" rel="noopener"><strong>ForceHarness</strong></a> <button class="detail-btn" data-detail="details/section3/forceharness.html" data-title="ForceHarness" title="View details"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1.5" width="12" height="13" rx="2"/><path d="M5 5.5h6M5 8h6M5 10.5h4"/></svg></button></td>
+        <td>NUS Show Lab</td>
+        <td>arXiv</td>
+        <td>2026</td>
+        <td>손목 F/T 또는 관절 토크 기반 힘 추정</td>
+        <td><span class="badge badge-yes"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.5" fill="currentColor" opacity="0.12"/><path d="M4.5 8.5L7 11l4.5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span> 목표 자세를 통해 힘을 조절하는 primitive</td>
+        <td>Franka FR3 + 평행 gripper (손목 F/T 센서 없음)</td>
+        <td><span class="badge badge-na">—</span></td>
+        <td><span class="badge badge-na">—</span></td>
+        <td>실제 과제 6개(닦기, 나사 조이기, 껍질 벗기기, USB 삽입, 무게별 분류, 강성 구분); GPT-6 Astra의 zero-shot 성공률 3.3% → 90.0%; ForceBench + HiddenPhys</td>
       </tr>
       </tbody>
     </table>

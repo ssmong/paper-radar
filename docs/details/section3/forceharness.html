@@ -1,0 +1,106 @@
+<h2 class="dp-h2">3.21 ForceHarness</h2>
+<ul class="dp-list">
+<li><strong>Full title:</strong> ForceHarness: Turning Force into Action and Physics for Frozen Frontier Models</li>
+<li><strong>Authors:</strong> Ke Sun, Kevin Yuchen Ma, Yike Zhang, Yanzhe Chen, Mike Zheng Shou</li>
+<li><strong>Group:</strong> Show Lab, National University of Singapore</li>
+<li><strong>Venue/Year:</strong> arXiv preprint, 2026</li>
+<li><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2611.21099v1" target="_blank" rel="noopener">2611.21099v1</a></li>
+</ul>
+<p class="dp-p"><strong>Force/tactile input type:</strong> Calibrated force from a wrist F/T sensor or external joint torques. The real robot uses joint torques without a wrist F/T sensor.</p>
+<p class="dp-p"><strong>Force/impedance output:</strong> The model selects force primitives and their parameters. Each primitive regulates force through target poses and the robot's existing impedance controller. This is active force regulation beneath the model.</p>
+<p class="dp-p"><strong>Robot platform:</strong> Franka FR3 with a parallel gripper, a wrist RGB-D camera, and an exterior RGB camera.</p>
+<p class="dp-p"><strong>Tasks:</strong> Six real tasks: wipe a whiteboard, drive a screw, peel an eggplant, insert a USB plug, sort bottles by weight, and tell soft objects from hard objects. Simulation uses eight ForceBench tasks and seven HiddenPhys tasks.</p>
+<p class="dp-p"><strong>Key methodology:</strong> Three layers connect a frozen model to the robot without demonstrations or fine-tuning. Force calibration removes offsets and uses readings taken at rest. Self-terminating force primitives use admittance control and stop at contact events, goals, force caps, or time limits. A physics translation layer returns physical quantities, uncertainty estimates, and status flags from each force trace. The model reads each result and selects the next action.</p>
+<p class="dp-p"><strong>Architecture/Parameters:</strong> An API-only frozen model calls tools above the force-control loop. The framework has twelve force primitives and ten other tools. Model architecture and parameter counts: —.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Combines force calibration, self-terminating control, and physical feedback without model training.</li>
+<li>Adds HiddenPhys, a seven-task MuJoCo benchmark with hidden physical variables, expert force controllers, and learned policies.</li>
+<li>Evaluates the system on a real arm without a wrist F/T sensor and on two simulation benchmarks.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong> GPT-6 Astra with ForceHarness versus the same model without force.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Without force</th>
+<th>ForceHarness</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>Franka FR3, six tasks</td>
+<td>Success rate</td>
+<td>3.3% (2/60)</td>
+<td>90.0% (54/60)</td>
+<td>Same instructions; 10 episodes per task and condition</td>
+</tr>
+<tr>
+<td>ForceBench, eight tasks</td>
+<td>Mean success rate</td>
+<td>70.0%</td>
+<td>87.5%</td>
+<td>First 10 seeds; tools and thresholds tuned on eight of these seeds</td>
+</tr>
+<tr>
+<td>HiddenPhys, seven tasks</td>
+<td>Successful episodes</td>
+<td>87/140</td>
+<td>135/140</td>
+<td>Same 20 test seeds per task; ForceHarness has zero handle-damage episodes</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three AI reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Connects frozen models to contact control without fine-tuning or a wrist sensor on the real robot. Model delays limit fast coordination.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>7.0</td>
+<td>Integrates force control and calibrated physical feedback beyond raw readings or generated control code. Components use existing methods; no direct FORCA comparison is reported.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Separates fast contact control from slow model decisions. Feedback ablations support the design, but only in simulation.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.7</td>
+<td>Real-robot and HiddenPhys comparisons show clear gains. ForceBench tuning on evaluation seeds and different learned-baseline protocols limit generalization claims.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.3</td>
+<td>Success and ablations support force use without training. Physical feedback benefits depend on the model; fast reactive coordination remains unresolved.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.6/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>Model calls take seconds between primitives. The fixed primitive menu limits new motion laws and reactive coordination.</li>
+<li>Ablations run only in simulation. Real-robot trials use 10 episodes per task and condition.</li>
+<li>ForceBench tools and perception thresholds were tuned on eight of ten evaluation seeds. Stove Press and Nut Thread were revised after initial runs. Some public success checks omit release or clearance.</li>
+<li>ForceBench learned-baseline results are cited rather than reproduced. Their demonstrations, inputs, instructions, and evaluation counts differ, so their performance gap does not isolate the effect of force.</li>
+<li>HiddenPhys gives frozen models noisy object poses rather than images. Under OOD shifts, only frozen models receive instructions with the changed ranges.</li>
+<li>Physical-quantity feedback helps smaller models more; GPT-6.1 Sol also performs well with raw force numbers.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> Model decisions take seconds; exact latency: —.</li>
+<li><strong>Deployment hardware:</strong> Franka FR3 and cameras as listed above. Compute hardware: —.</li>
+<li><strong>Real-time capable?</strong> Primitives regulate contact beneath the model. Model calls prevent fast reactive coordination between primitives.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> ForceHarness requires no demonstrations or fine-tuning. Learned baselines on HiddenPhys use about 200 demonstrations per task.</li>
+<li><strong>Evaluation data:</strong> Six real tasks, eight ForceBench tasks, and seven HiddenPhys tasks with hidden physical variables.</li>
+<li><strong>Data format / public availability:</strong> — / —.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2611.21099v1" target="_blank" rel="noopener">Paper text</a>, sections 1–5 and limitations.</p>

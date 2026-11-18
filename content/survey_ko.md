@@ -71,6 +71,7 @@ Contact-rich Tasks을 위해 force/torque 또는 tactile 센싱을 통합하는 
 | [**TacDiffusion**](https://arxiv.org/abs/2409.11047) | TU Munich MIRMI | ICRA | 2024 | tactile | ✅ 6D wrench | gripper + tactile | [GitHub](https://github.com/popnut123/TacDiffusion) ✅ | ✗ | force-domain diffusion, 95.7% zero-shot |
 | [**FARM**](https://arxiv.org/abs/2510.13324) | TU Munich MIRMI | arXiv | 2025 | GelSight Mini | ✅ grip force | 개조된 UMI gripper | ✗ | ✗ | joint position + force prediction |
 | [**T-Dex**](https://arxiv.org/abs/2303.12076) | NYU (Pinto) | ICRA | 2024 | tactile (DIGIT) | ✗ (position only) | **Allegro (16) + DIGIT** + Kinova arm | [GitHub](https://github.com/irmakguzey/tdex) ✅ | ✗ | 5가지 dexterous Tasks (조이스틱, 책, 그릇, 페그, 점토); vs vision-only 1.7배. §3 항목 중 dexterous 핸드를 사용한 극소수 사례 중 하나. |
+| [**ForceHarness**](https://arxiv.org/abs/2611.21099v1) | NUS Show Lab | arXiv | 2026 | 손목 F/T 또는 관절 토크 기반 힘 추정 | ✅ 목표 자세를 통해 힘을 조절하는 primitive | Franka FR3 + 평행 gripper (손목 F/T 센서 없음) | — | — | 실제 과제 6개(닦기, 나사 조이기, 껍질 벗기기, USB 삽입, 무게별 분류, 강성 구분); GPT-6 Astra의 zero-shot 성공률 3.3% → 90.0%; ForceBench + HiddenPhys |
 
 ---
 

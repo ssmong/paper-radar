@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section3/forceharness.md": "cbcc876d179a7641edd1da4591f68ec4146c53c60e10aeb2d6f35e0ef5cac721",
+    "detailed_ko/section3/forceharness.md": "ac27996cdc1f81c97947d7789d499221b81ec37455501e1822931313d5cda5a9",
+    "detailed_zh/section3/forceharness.md": "f73d3bf617f84ecc1dc1b227df16c094a0726a4c631fb6907b84faf9f07e34a2"
+  },
+  "paper_id": "2611.21099",
+  "rows": {
+    "survey.md": "| [**ForceHarness**](https://arxiv.org/abs/2611.21099v1) | NUS Show Lab | arXiv | 2026 | Wrist F/T or joint-torque force estimate | ✅ force-regulating primitives via pose targets | Franka FR3 + parallel gripper (no wrist F/T sensor) | — | — | 6 real tasks (wiping, screwing, peeling, USB insertion, weight sorting, stiffness discrimination); GPT-6 Astra zero-shot success 3.3% → 90.0%; ForceBench + HiddenPhys |",
+    "survey_ko.md": "| [**ForceHarness**](https://arxiv.org/abs/2611.21099v1) | NUS Show Lab | arXiv | 2026 | 손목 F/T 또는 관절 토크 기반 힘 추정 | ✅ 목표 자세를 통해 힘을 조절하는 primitive | Franka FR3 + 평행 gripper (손목 F/T 센서 없음) | — | — | 실제 과제 6개(닦기, 나사 조이기, 껍질 벗기기, USB 삽입, 무게별 분류, 강성 구분); GPT-6 Astra의 zero-shot 성공률 3.3% → 90.0%; ForceBench + HiddenPhys |",
+    "survey_zh.md": "| [**ForceHarness**](https://arxiv.org/abs/2611.21099v1) | NUS Show Lab | arXiv | 2026 | 腕部F/T或关节力矩估计力 | ✅ 通过目标位姿调节力的动作基元 | Franka FR3 + 平行夹爪（无腕部F/T传感器） | — | — | 6项真实任务（擦拭、拧螺丝、剥皮、USB插入、按重量分类、刚度辨别）；GPT-6 Astra的zero-shot成功率3.3% → 90.0%；ForceBench + HiddenPhys |"
+  },
+  "run_id": "2026-11-18T233007Z",
+  "status": "published"
+}

@@ -71,6 +71,7 @@
 | [**TacDiffusion**](https://arxiv.org/abs/2409.11047) | TU Munich MIRMI | ICRA | 2024 | Tactile | ✅ 6D torque | Gripper + tactile | [GitHub](https://github.com/popnut123/TacDiffusion) ✅ | ✗ | 力域diffusion，95.7% zero-shot |
 | [**FARM**](https://arxiv.org/abs/2510.13324) | TU Munich MIRMI | arXiv | 2025 | GelSight Mini | ✅ grip force | 改装UMI gripper | ✗ | ✗ | 关节位置 + 力预测 |
 | [**T-Dex**](https://arxiv.org/abs/2303.12076) | NYU (Pinto) | ICRA | 2024 | Tactile (DIGIT) | ✗（仅位置） | **Allegro (16) + DIGIT** + Kinova机械臂 | [GitHub](https://github.com/irmakguzey/tdex) ✅ | ✗ | 5个dexterous任务（操纵杆、书本、碗、销钉、橡皮泥）；比纯视觉提升1.7倍。§3中极少数使用dexterous hand的工作之一。 |
+| [**ForceHarness**](https://arxiv.org/abs/2611.21099v1) | NUS Show Lab | arXiv | 2026 | 腕部F/T或关节力矩估计力 | ✅ 通过目标位姿调节力的动作基元 | Franka FR3 + 平行夹爪（无腕部F/T传感器） | — | — | 6项真实任务（擦拭、拧螺丝、剥皮、USB插入、按重量分类、刚度辨别）；GPT-6 Astra的zero-shot成功率3.3% → 90.0%；ForceBench + HiddenPhys |
 
 ---
 

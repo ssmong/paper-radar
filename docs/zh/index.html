@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>接触丰富灵巧操作综述</title>
-<meta name="description" content="涵盖199+篇灵巧操作、力感知VLA及阻抗控制论文的交互式综述。">
+<meta name="description" content="涵盖200+篇灵巧操作、力感知VLA及阻抗控制论文的交互式综述。">
 <meta property="og:title" content="接触丰富灵巧操作综述">
-<meta property="og:description" content="涵盖199+篇灵巧操作、力感知VLA及阻抗控制论文的交互式综述。">
+<meta property="og:description" content="涵盖200+篇灵巧操作、力感知VLA及阻抗控制论文的交互式综述。">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
@@ -53,10 +53,10 @@
         <p class="hero-author">Yeonseo Lee &middot; Seoul National University</p>
         <p class="hero-desc">Dexterous manipulation, force-aware VLA, impedance learning, RL policy 及相关 benchmark 的论文、代码库和数据集综述。</p>
         <div class="hero-stats">
-          <div class="stat"><span class="stat-number">199+</span><span class="stat-label">条目</span></div>
+          <div class="stat"><span class="stat-number">200+</span><span class="stat-label">条目</span></div>
           <div class="stat"><span class="stat-number">20</span><span class="stat-label">章节</span></div>
           <div class="stat"><span class="stat-number">103+</span><span class="stat-label">Open Source</span></div>
-          <div class="stat"><span class="stat-number">204</span><span class="stat-label">详细评述</span></div>
+          <div class="stat"><span class="stat-number">205</span><span class="stat-label">详细评述</span></div>
         </div>
       </div>
       <div class="chevron chevron-right"></div>
@@ -471,10 +471,10 @@
     <div class="table-card">
   <div class="table-controls">
     <div class="table-search-wrap"><svg class="search-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg><input type="search" class="table-search" placeholder="在此表中搜索..."></div>
-    <span class="table-count"><span class="count-visible">20</span> / 20</span>
+    <span class="table-count"><span class="count-visible">21</span> / 21</span>
   </div>
   <div class="table-scroll">
-    <table class="survey-table" data-section="sec-3" data-total="20">
+    <table class="survey-table" data-section="sec-3" data-total="21">
       <thead><tr>
         <th class="sortable">论文</th>
         <th class="sortable">研究组</th>
@@ -727,6 +727,18 @@
         <td><span class="badge badge-yes"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.5" fill="currentColor" opacity="0.12"/><path d="M4.5 8.5L7 11l4.5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span> <a href="https://github.com/irmakguzey/tdex" target="_blank" rel="noopener">GitHub</a></td>
         <td><span class="badge badge-no"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.5" fill="currentColor" opacity="0.12"/><path d="M5.25 5.25l5.5 5.5M10.75 5.25l-5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg></span></td>
         <td>5个dexterous任务（操纵杆、书本、碗、销钉、橡皮泥）；比纯视觉提升1.7倍。§3中极少数使用dexterous hand的工作之一。</td>
+      </tr>
+      <tr >
+        <td><a href="https://arxiv.org/abs/2611.21099v1" target="_blank" rel="noopener"><strong>ForceHarness</strong></a> <button class="detail-btn" data-detail="details/section3/forceharness.html" data-title="ForceHarness" title="View details"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="1.5" width="12" height="13" rx="2"/><path d="M5 5.5h6M5 8h6M5 10.5h4"/></svg></button></td>
+        <td>NUS Show Lab</td>
+        <td>arXiv</td>
+        <td>2026</td>
+        <td>腕部F/T或关节力矩估计力</td>
+        <td><span class="badge badge-yes"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.5" fill="currentColor" opacity="0.12"/><path d="M4.5 8.5L7 11l4.5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span> 通过目标位姿调节力的动作基元</td>
+        <td>Franka FR3 + 平行夹爪（无腕部F/T传感器）</td>
+        <td><span class="badge badge-na">—</span></td>
+        <td><span class="badge badge-na">—</span></td>
+        <td>6项真实任务（擦拭、拧螺丝、剥皮、USB插入、按重量分类、刚度辨别）；GPT-6 Astra的zero-shot成功率3.3% → 90.0%；ForceBench + HiddenPhys</td>
       </tr>
       </tbody>
     </table>

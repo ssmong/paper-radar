@@ -71,6 +71,7 @@ Models incorporating force/torque or tactile sensing for contact-rich tasks. Inc
 | [**TacDiffusion**](https://arxiv.org/abs/2409.11047) | TU Munich MIRMI | ICRA | 2024 | Tactile | ✅ 6D wrench | Gripper + tactile | [GitHub](https://github.com/popnut123/TacDiffusion) ✅ | ✗ | Force-domain diffusion, 95.7% zero-shot |
 | [**FARM**](https://arxiv.org/abs/2510.13324) | TU Munich MIRMI | arXiv | 2025 | GelSight Mini | ✅ grip force | Modified UMI gripper | ✗ | ✗ | Joint position + force prediction |
 | [**T-Dex**](https://arxiv.org/abs/2303.12076) | NYU (Pinto) | ICRA | 2024 | Tactile (DIGIT) | ✗ (position only) | **Allegro (16) + DIGIT** + Kinova arm | [GitHub](https://github.com/irmakguzey/tdex) ✅ | ✗ | 5 dexterous tasks (joystick, book, bowl, peg, playdough); 1.7x over vision-only. One of very few §3 entries with a dex hand. |
+| [**ForceHarness**](https://arxiv.org/abs/2611.21099v1) | NUS Show Lab | arXiv | 2026 | Wrist F/T or joint-torque force estimate | ✅ force-regulating primitives via pose targets | Franka FR3 + parallel gripper (no wrist F/T sensor) | — | — | 6 real tasks (wiping, screwing, peeling, USB insertion, weight sorting, stiffness discrimination); GPT-6 Astra zero-shot success 3.3% → 90.0%; ForceBench + HiddenPhys |
 
 ---
 
