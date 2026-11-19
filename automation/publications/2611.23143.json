@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section15/tcp4d.md": "99fd4c114430a9c1fd249841910a65fd78239efde70d7038c3a942a86d7181d4",
+    "detailed_ko/section15/tcp4d.md": "8370a429198e33a5d6c78ac0e9dc9673dbc66cbfe899b4fc4004cd56e1de92cb",
+    "detailed_zh/section15/tcp4d.md": "ad74c1261141c41c2fc5402b591db4f05886175c2b9949086a79424a7cc5f13f"
+  },
+  "paper_id": "2611.23143",
+  "rows": {
+    "survey.md": "| [**TCP4D**](https://arxiv.org/abs/2611.23143v1) | 2026 | TCP tracking on DROID and RoboLab; 48 RoboTwin tasks; CoBoT Magic pen placement and bowl stacking | Shared 4D scene representation tracks TCP poses and gripper states from RGB video; flow matching generates future actions; cross-embodiment augmentation without recorded source-robot states | RoboTwin success: 69.19% clean2clean, 10.94% clean2random; CoBoT Magic mean success: 78.33% across two tasks | — |",
+    "survey_ko.md": "| [**TCP4D**](https://arxiv.org/abs/2611.23143v1) | 2026 | DROID·RoboLab의 TCP 추적; RoboTwin 과제 48개; CoBoT Magic의 펜 놓기·그릇 쌓기 | 공유 4D 장면 표현으로 RGB 영상의 TCP 자세와 gripper 상태를 추적한다. Flow matching으로 미래 행동을 생성하며, 기록된 원본 로봇 상태 없이 cross-embodiment 증강을 수행한다 | RoboTwin 성공률: clean2clean 69.19%, clean2random 10.94%; CoBoT Magic 두 과제 평균 성공률: 78.33% | — |",
+    "survey_zh.md": "| [**TCP4D**](https://arxiv.org/abs/2611.23143v1) | 2026 | DROID与RoboLab上的TCP跟踪；48个RoboTwin任务；CoBoT Magic放笔与叠碗 | 共享4D场景表示从RGB视频跟踪TCP位姿及夹爪状态；flow matching生成未来动作；无需记录源机器人状态即可进行跨本体数据增强 | RoboTwin成功率：clean2clean 69.19%，clean2random 10.94%；CoBoT Magic两项任务平均成功率：78.33% | — |"
+  },
+  "run_id": "2026-11-18T233007Z",
+  "status": "published"
+}

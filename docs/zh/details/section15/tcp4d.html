@@ -1,0 +1,106 @@
+<h3 class="dp-h3">TCP4D</h3>
+<p class="dp-p"><strong>完整标题：</strong> TCP4D: A Unified Tool-Center-Point Tracking and Generation Model for Robot Manipulation</p>
+<p class="dp-p"><strong>作者：</strong> Haosong Peng等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2611.23143v1" target="_blank" rel="noopener">2611.23143v1</a></p>
+<p class="dp-p"><strong>架构：</strong> 基于DINOv2的Transformer骨干遵循4RC结构，构建共享4D场景表示。初始2D TCP查询引导模型直接预测SE(3)中的TCP位姿、夹爪状态、场景几何及相机参数。DiT根据轨迹局部特征、机器人状态、腕部图像和语言生成未来TCP状态。冻结的DINOv2与T5-base分别编码腕部图像和指令。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 首先联合训练几何与TCP重建，再通过flow matching联合微调骨干、跟踪器及生成器。跨本体数据增强从RGB视频恢复运动，通过IK重定向，移除源机器人并修补背景，再渲染目标机器人。该流程无需记录源机器人状态，但目标机器人必须能够到达恢复的运动轨迹。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> TCP跟踪在DROID和RoboLab上评估。操作评估包括48个RoboTwin任务，以及CoBoT Magic的放笔与叠碗两项任务。跨本体策略评估在四项任务上使用Aloha-AgileX源演示，以及ARX-X5和UR5-WSG目标机器人。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>直接恢复虚拟TCP位姿和夹爪状态，无需对表面点拟合刚体运动。</li>
+<li>通过共享4D场景表示连接TCP跟踪与未来动作生成。</li>
+<li>无需记录源机器人状态，即可将RGB视频转换为目标机器人演示。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>DROID / RoboLab</td>
+<td>ATE</td>
+<td>7.60 / 16.07 mm</td>
+<td>Sim(3)对齐后测量</td>
+</tr>
+<tr>
+<td>RoboLab Unseen</td>
+<td>RRE</td>
+<td>6.80°</td>
+<td>MoSE3：0.99°；TCP4D旋转误差更高</td>
+</tr>
+<tr>
+<td>RoboTwin，48个任务</td>
+<td>平均成功率</td>
+<td>clean2clean 69.19% / clean2random 10.94%</td>
+<td>每项任务100次试验；TCP4D使用third view，对比基线使用head view</td>
+</tr>
+<tr>
+<td>CoBoT Magic，两项任务</td>
+<td>平均成功率</td>
+<td>78.33%</td>
+<td>每项任务、每种方法30次试验；DP3：63.33%；DP3使用深度点云，TCP4D使用RGB</td>
+</tr>
+<tr>
+<td>ARX-X5，四项任务</td>
+<td>平均成功率</td>
+<td>72.0% vs 30.5%</td>
+<td>DP使用源数据 + 增强数据，对比仅使用增强数据；相同训练预算；每项任务50个回合</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>复用缺少动作标注的视频可增加机器人训练数据。目标机器人的可达范围限制了可迁移的运动。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>8.0</td>
+<td>直接恢复虚拟TCP，减少对表面点拟合及已记录源机器人状态的依赖。骨干与生成方法仍扩展已有设计。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>7.7</td>
+<td>直接位姿恢复与轨迹条件flow matching连接动作重建和生成。共享表示与轨迹条件各自的作用未被分离。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.0</td>
+<td>跟踪、真实机器人任务及增强数据策略结果支持实际用途。较低的clean2random成功率和较高的RoboLab旋转误差限制了效果。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>7.0</td>
+<td>跟踪与目标策略结果支持动作标注恢复及无源机器人状态的数据增强。可达范围与有限任务覆盖仍留下空白。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.5/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>生成器仅使用clean演示训练，RoboTwin clean2random成功率降至10.94%。</li>
+<li>真实机器人生成器评估仅包含CoBoT Magic两项任务，每项任务、每种方法30次试验。</li>
+<li>RoboTwin中TCP4D与对比基线的相机视角不同。真实机器人对比中的DP3使用深度点云。</li>
+<li>ATE在Sim(3)对齐后测量，无法据此确定对齐前的公制位姿精度。</li>
+<li>目标机器人必须能够到达恢复的运动轨迹。共享表示与轨迹条件各自的效果未被独立测量。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —。</li>
+<li><strong>部署硬件：</strong> —。</li>
+<li><strong>集成：</strong> 通过四次Euler更新生成未来动作序列。CoBoT Magic使用cuRobo求解IK，推理时无需实测深度。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> 跟踪器使用DROID和RoboTwin训练；CoBoT Magic每项任务使用60条演示。增强使用每项任务50条Aloha-AgileX源演示，在四项任务中共生成199条ARX-X5和198条UR5-WSG演示。</li>
+<li><strong>评估数据：</strong> DROID与RoboLab跟踪；48个RoboTwin任务，每项100次试验；CoBoT Magic两项任务，每项任务、每种方法30次试验；跨本体策略按任务及策略–本体组合各评估50个回合。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2611.23143v1" target="_blank" rel="noopener">论文正文</a>摘要及第1–5节。<a href="https://livioni.github.io/TCP4D/" target="_blank" rel="noopener">项目</a>。</p>

@@ -391,6 +391,7 @@ VLM backbone을 사용하지 않지만 dexterous manipulation의 baseline 또는
 |---|---|---|---|---|---|
 | [**HexaShell**](https://arxiv.org/abs/2610.23479v1) | 2026 | 시뮬레이션 양팔 ARX X5; RoboDojo 조작 과제 42개 | GPT-6-Astra coding agent가 재사용 도구를 작성·수정; 보정된 RGB의 삼각측량과 평면 제약으로 위치 측정 | seed 0의 새 배치: 성공률 39.7%, progress score 48.0; 정밀 삽입 성공률 8.3% | [코드](https://github.com/HexaFuture/HexaShell) |
 | [**ODE Policy**](https://arxiv.org/abs/2611.01729v1) | 2026 | 단일 팔·양팔·다지 손·휴머노이드 로봇; 실제 과제 14개; LIBERO; LAFAN1 동작 추적 | Neural ODE로 action dynamics를 학습한다. Path loss, contractive perturbation, diversity head를 사용하며 IL·RL에서 이전 action부터 적분한다 | 1 epoch 후 LIBERO success rate (단일 seed): π0.5 ODE head 96.0% vs FM-R 75.5%; ImageWAM ODE head 82.6% vs 기존 flow matching head 24.6% | — |
+| [**TCP4D**](https://arxiv.org/abs/2611.23143v1) | 2026 | DROID·RoboLab의 TCP 추적; RoboTwin 과제 48개; CoBoT Magic의 펜 놓기·그릇 쌓기 | 공유 4D 장면 표현으로 RGB 영상의 TCP 자세와 gripper 상태를 추적한다. Flow matching으로 미래 행동을 생성하며, 기록된 원본 로봇 상태 없이 cross-embodiment 증강을 수행한다 | RoboTwin 성공률: clean2clean 69.19%, clean2random 10.94%; CoBoT Magic 두 과제 평균 성공률: 78.33% | — |
 
 ---
 

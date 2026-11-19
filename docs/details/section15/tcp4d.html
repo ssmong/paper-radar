@@ -1,0 +1,106 @@
+<h3 class="dp-h3">TCP4D</h3>
+<p class="dp-p"><strong>Full title:</strong> TCP4D: A Unified Tool-Center-Point Tracking and Generation Model for Robot Manipulation</p>
+<p class="dp-p"><strong>Authors:</strong> Haosong Peng et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2611.23143v1" target="_blank" rel="noopener">2611.23143v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A DINOv2-based Transformer backbone follows 4RC and builds a shared 4D scene representation. Initial 2D TCP queries guide direct prediction of TCP poses in SE(3), gripper states, scene geometry, and camera parameters. A DiT generates future TCP states from local track features, robot state, wrist images, and language. Frozen DINOv2 and T5-base encode wrist images and instructions.</p>
+<p class="dp-p"><strong>Key methodology:</strong> First, train geometry and TCP reconstruction together. Then jointly fine-tune the backbone, tracker, and generator with flow matching. Cross-embodiment augmentation recovers motion from RGB video, retargets it through IK, removes the source robot, completes the background, and renders the target robot. This process can operate without recorded source-robot states. The target robot must be able to reach the recovered motion.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> TCP tracking uses DROID and RoboLab. Manipulation evaluation covers 48 RoboTwin tasks and two CoBoT Magic tasks: placing pens and stacking bowls. Cross-embodiment policy evaluation uses four tasks with Aloha-AgileX source demonstrations and ARX-X5 and UR5-WSG target robots.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Directly recovers virtual TCP poses and gripper states, without fitting rigid motion to surface points.</li>
+<li>Connects TCP tracking and future action generation through a shared 4D scene representation.</li>
+<li>Converts RGB videos into target-robot demonstrations without recorded source-robot states.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>DROID / RoboLab</td>
+<td>ATE</td>
+<td>7.60 / 16.07 mm</td>
+<td>After Sim(3) alignment</td>
+</tr>
+<tr>
+<td>RoboLab Unseen</td>
+<td>RRE</td>
+<td>6.80°</td>
+<td>MoSE3: 0.99°; TCP4D has higher rotation error</td>
+</tr>
+<tr>
+<td>RoboTwin, 48 tasks</td>
+<td>Mean success rate</td>
+<td>69.19% clean2clean / 10.94% clean2random</td>
+<td>100 trials per task; TCP4D uses third view, compared baselines use head view</td>
+</tr>
+<tr>
+<td>CoBoT Magic, two tasks</td>
+<td>Mean success rate</td>
+<td>78.33%</td>
+<td>30 trials per task and method; DP3: 63.33%; DP3 uses depth point clouds, TCP4D uses RGB</td>
+</tr>
+<tr>
+<td>ARX-X5, four tasks</td>
+<td>Mean success rate</td>
+<td>72.0% vs 30.5%</td>
+<td>DP with source + augmented data vs augmented-only data; same training budget; 50 episodes per task</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Reusing videos without action labels can increase robot training data. Target reachability limits which motions can transfer.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>8.0</td>
+<td>Direct virtual TCP recovery removes the need for surface-point fitting and recorded source states. The backbone and generation method extend existing designs.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>7.7</td>
+<td>Direct pose recovery and track-conditioned flow matching connect action reconstruction with generation. The separate effects of the shared representation and track conditioning are not isolated.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.0</td>
+<td>Tracking, real-robot tasks, and augmented-data policy results support practical use. Low clean2random success and higher RoboLab rotation error limit the result.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>7.0</td>
+<td>Tracking and target-policy results support recovery of action labels and augmentation without source states. Reachability and the narrow task range leave gaps.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.5/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>The generator trains only on clean demonstrations. RoboTwin clean2random success falls to 10.94%.</li>
+<li>Real-robot generator evaluation covers two CoBoT Magic tasks, with 30 trials per task and method.</li>
+<li>RoboTwin camera views differ between TCP4D and the compared baselines. DP3 uses depth point clouds in the real-robot comparison.</li>
+<li>ATE uses Sim(3) alignment. These values do not establish metric pose accuracy before alignment.</li>
+<li>Target robots must be able to reach the recovered motion. The shared representation and track conditioning lack separate effect estimates.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —.</li>
+<li><strong>Deployment hardware:</strong> —.</li>
+<li><strong>Integration:</strong> Four Euler updates generate the future action sequence. CoBoT Magic uses cuRobo for IK; measured depth is not required at inference.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> DROID and RoboTwin for tracker training; 60 demonstrations per CoBoT Magic task. Augmentation uses 50 Aloha-AgileX source demonstrations per task, yielding 199 ARX-X5 and 198 UR5-WSG demonstrations across four tasks.</li>
+<li><strong>Evaluation data:</strong> DROID and RoboLab tracking; 48 RoboTwin tasks with 100 trials per task; two CoBoT Magic tasks with 30 trials per task and method; cross-embodiment policies with 50 episodes per task and policy–embodiment pair.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2611.23143v1" target="_blank" rel="noopener">Paper text</a>, abstract and sections 1–5. <a href="https://livioni.github.io/TCP4D/" target="_blank" rel="noopener">Project</a>.</p>
