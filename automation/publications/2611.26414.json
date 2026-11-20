@@ -1,0 +1,15 @@
+{
+  "details": {
+    "detailed/section16/zerovln.md": "468380760217514e752fbbee69e7db46c29a365d3be089af338272857540273e",
+    "detailed_ko/section16/zerovln.md": "00f08311e332827239c0a8fb559e0cc2ad82d6bf45c5f0bfa975e10009badf86",
+    "detailed_zh/section16/zerovln.md": "1f355c950041683f4914afb4ca6b2109044800ba1bc4eea5532b90e62ab18d8e"
+  },
+  "paper_id": "2611.26414",
+  "rows": {
+    "survey.md": "| [**ZeroVLN**](https://arxiv.org/abs/2611.26414v1) | 2026 | Simulated vision-language navigation: SAGE-3D, R2R-CE, RxR-CE | VLM brain without navigation-domain SFT; semantic tool calls, request-grounded action expert training, and joint slow–fast RL | SR: 51.3% SAGE-3D, 52.7% R2R-CE, 51.4% RxR-CE; R2R/RxR SPL below NaVILA with the same backbone and training episodes | — |",
+    "survey_ko.md": "| [**ZeroVLN**](https://arxiv.org/abs/2611.26414v1) | 2026 | 시뮬레이션 시각·언어 탐색: SAGE-3D, R2R-CE, RxR-CE | VLM brain의 탐색 영역 SFT 없이 의미 기반 도구 호출을 사용한다. 요청 grounding으로 action expert를 학습한 뒤 slow–fast policy를 공동 RL로 개선한다 | SR: SAGE-3D 51.3%, R2R-CE 52.7%, RxR-CE 51.4%; 동일 backbone·학습 에피소드의 NaVILA보다 R2R/RxR SPL이 낮다 | — |",
+    "survey_zh.md": "| [**ZeroVLN**](https://arxiv.org/abs/2611.26414v1) | 2026 | 仿真视觉语言导航：SAGE-3D、R2R-CE、RxR-CE | VLM大脑无需导航领域SFT；语义工具调用、请求落地的动作专家训练及慢–快策略联合RL | SR：SAGE-3D 51.3%、R2R-CE 52.7%、RxR-CE 51.4%；R2R/RxR的SPL低于相同骨干及训练回合下的NaVILA | — |"
+  },
+  "run_id": "2026-11-20T233008Z",
+  "status": "published"
+}

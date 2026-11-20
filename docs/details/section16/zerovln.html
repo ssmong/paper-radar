@@ -1,0 +1,104 @@
+<h3 class="dp-h3">ZeroVLN</h3>
+<p class="dp-p"><strong>Full title:</strong> ZeroVLN: Learning to Navigate without Supervised Fine-Tuning of the VLM Brain</p>
+<p class="dp-p"><strong>Authors:</strong> Zixuan Huang et al.</p>
+<p class="dp-p"><strong>Venue/Year:</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv:</strong> <a href="https://arxiv.org/abs/2611.26414v1" target="_blank" rel="noopener">2611.26414v1</a></p>
+<p class="dp-p"><strong>Architecture:</strong> A Qwen3.6-35B-A3B VLM brain sends natural-language movement requests through semantic tool calls. A 12-layer flow-matching action expert uses a Qwen3.5-4B visual encoder to execute them. The slow brain selects movements. The fast action expert updates continuous actions from new RGB observations.</p>
+<p class="dp-p"><strong>Key methodology:</strong> First, a planner uses scene-mesh semantic maps and training-only geometry to ground requests from the frozen brain into reachable local goals and reference trajectories. The action expert learns only the executed prefix of each predicted action sequence. Then closed-loop RL jointly updates the brain and action expert. Both policies use a shared trajectory-level advantage with separate gradient paths. Rewards cover terminal success, first arrival, distance progress, and information discovery. The brain receives no navigation-domain SFT, but its weights change during RL.</p>
+<p class="dp-p"><strong>Robot / Tasks:</strong> Simulated vision-language navigation on SAGE-Bench (SAGE-3D), R2R-CE, and RxR-CE. Physical robot: —. R2R-CE and RxR-CE require the agent to stop in the goal region; SAGE-Bench requires arrival.</p>
+<p class="dp-p"><strong>Main contributions:</strong></p>
+<ul class="dp-list">
+<li>Replaces geometric goal prediction with semantic tool requests, without navigation-domain SFT of the brain.</li>
+<li>Aligns action expert training with the brain's actual requests and the action prefix used during execution.</li>
+<li>Jointly improves movement decisions and continuous execution through RL while largely retaining general visual capabilities.</li>
+</ul>
+<p class="dp-p"><strong>Quantitative results:</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Benchmark / Task</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Context</th>
+</tr></thead><tbody>
+<tr>
+<td>SAGE-3D navigation</td>
+<td>SR</td>
+<td>51.3%; NaVILA 23.5%</td>
+<td>Same backbone and training episodes</td>
+</tr>
+<tr>
+<td>R2R-CE navigation</td>
+<td>SR</td>
+<td>52.7%; NaVILA 46.5%</td>
+<td>Same backbone and training episodes; stopping required</td>
+</tr>
+<tr>
+<td>RxR-CE navigation</td>
+<td>SR</td>
+<td>51.4%; NaVILA 48.7%</td>
+<td>Same backbone and training episodes; stopping required</td>
+</tr>
+<tr>
+<td>R2R-CE / RxR-CE navigation</td>
+<td>SPL</td>
+<td>29.2% / 28.1%; NaVILA 41.8% / 43.0%</td>
+<td>Same backbone and training episodes; lower path efficiency despite higher OSR</td>
+</tr>
+<tr>
+<td>Twelve general visual benchmarks</td>
+<td>Mean accuracy</td>
+<td>59.16%; base brain 59.47%</td>
+<td>Measures capability retention after navigation training</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI research assessment:</strong> Mean scores from three reviewers, on a 10-point scale.</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>Dimension</th>
+<th>Score</th>
+<th>Reason</th>
+</tr></thead><tbody>
+<tr>
+<td>Importance</td>
+<td>8.0</td>
+<td>Learning navigation while retaining general visual capabilities supports the study of shared robot brains. Other physical skills and real robots remain outside the evaluation.</td>
+</tr>
+<tr>
+<td>Delta contribution</td>
+<td>8.0</td>
+<td>Semantic requests and joint slow–fast RL extend DualVLN's geometric interface. The design combines existing methods; transfer to other backbones remains unverified.</td>
+</tr>
+<tr>
+<td>Method quality</td>
+<td>8.0</td>
+<td>Request grounding and execution-prefix supervision reduce training–execution mismatch. Training still needs semantic maps and a planner with privileged geometry.</td>
+</tr>
+<tr>
+<td>Effectiveness</td>
+<td>7.0</td>
+<td>Comparisons with the same backbone and episodes support higher SR and capability retention. Lower R2R/RxR SPL limits the path-efficiency benefit.</td>
+</tr>
+<tr>
+<td>Gap support</td>
+<td>8.0</td>
+<td>Controlled navigation results and visual evaluations that bypass answer formatting support capability retention. Evidence covers one brain backbone and VLN-CE.</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>Overall score:</strong> 7.8/10.</p>
+<p class="dp-p"><strong>Limitations/Gaps:</strong></p>
+<ul class="dp-list">
+<li>R2R-CE and RxR-CE show higher OSR but lower SPL than NaVILA. Additional exploration can increase path length.</li>
+<li>Initial action expert training needs scene-mesh semantic maps and a planner with training-only geometry.</li>
+<li>Evaluation covers three VLN-CE benchmarks and one brain backbone. Effects on physical robots and other backbones remain unverified.</li>
+<li>Reducing unnecessary exploration while retaining goal reachability and general visual capabilities remains an open gap.</li>
+</ul>
+<p class="dp-p"><strong>Open weights/code:</strong> — / —.</p>
+<h2 class="dp-h2">Inference / Deployment</h2>
+<ul class="dp-list">
+<li><strong>Inference latency:</strong> —.</li>
+<li><strong>Deployment hardware:</strong> —.</li>
+</ul>
+<h2 class="dp-h2">Dataset / Data Collection</h2>
+<ul class="dp-list">
+<li><strong>Training data:</strong> A shared pool of 34,445 navigation episodes supports action expert adaptation and RL. Reference trajectories are generated from the frozen brain's movement requests.</li>
+<li><strong>Evaluation data:</strong> SAGE-Bench, R2R-CE, and RxR-CE official evaluation sets; twelve general visual benchmarks for capability retention.</li>
+</ul>
+<p class="dp-p"><strong>Source:</strong> <a href="https://arxiv.org/html/2611.26414v1" target="_blank" rel="noopener">Paper text</a>, sections 2–5.</p>

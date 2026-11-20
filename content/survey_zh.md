@@ -400,6 +400,7 @@
 | 论文 | Year | Robot / 任务 | 核心方法 | 主要结果 | Code |
 |---|---|---|---|---|---|
 | [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2；仿真中的实例、多对象、需求驱动及类别级导航 | 预训练MLLM无需导航专用微调；结合Navigation Skills、图像坐标目标、可替换执行器及执行反馈 | Geo-based Executor的SR：单对象78.00%、多对象34.00%（Habitat-GS），需求驱动59.50%（调整评估后的Demand-Bench） | — |
+| [**ZeroVLN**](https://arxiv.org/abs/2611.26414v1) | 2026 | 仿真视觉语言导航：SAGE-3D、R2R-CE、RxR-CE | VLM大脑无需导航领域SFT；语义工具调用、请求落地的动作专家训练及慢–快策略联合RL | SR：SAGE-3D 51.3%、R2R-CE 52.7%、RxR-CE 51.4%；R2R/RxR的SPL低于相同骨干及训练回合下的NaVILA | — |
 
 ---
 

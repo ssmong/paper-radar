@@ -1,0 +1,104 @@
+<h3 class="dp-h3">ZeroVLN</h3>
+<p class="dp-p"><strong>完整标题：</strong> ZeroVLN: Learning to Navigate without Supervised Fine-Tuning of the VLM Brain</p>
+<p class="dp-p"><strong>作者：</strong> Zixuan Huang等</p>
+<p class="dp-p"><strong>发表期刊/年份：</strong> — / 2026</p>
+<p class="dp-p"><strong>arXiv：</strong> <a href="https://arxiv.org/abs/2611.26414v1" target="_blank" rel="noopener">2611.26414v1</a></p>
+<p class="dp-p"><strong>架构：</strong> Qwen3.6-35B-A3B VLM大脑通过语义工具调用发送自然语言移动请求。12层流匹配动作专家使用Qwen3.5-4B视觉编码器执行请求。慢速大脑选择移动方式，快速动作专家根据新的RGB观测更新连续动作。</p>
+<p class="dp-p"><strong>核心方法论：</strong> 首先，规划器利用场景网格语义地图及仅训练时可用的几何信息，将冻结大脑的请求落地为可达局部目标和参考轨迹。动作专家仅对预测动作序列中实际执行的前缀进行监督学习。随后，闭环RL联合更新大脑与动作专家。两个策略共享轨迹级优势，但使用独立梯度路径。奖励涵盖最终成功、首次到达、距离进展及信息发现。大脑不接受导航领域SFT，但权重会在RL中更新。</p>
+<p class="dp-p"><strong>机器人/任务：</strong> SAGE-Bench（SAGE-3D）、R2R-CE及RxR-CE中的仿真视觉语言导航。实体机器人：—。R2R-CE和RxR-CE要求在目标区域停止，SAGE-Bench要求到达。</p>
+<p class="dp-p"><strong>主要贡献：</strong></p>
+<ul class="dp-list">
+<li>用语义工具请求替代几何目标预测，无需对大脑进行导航领域SFT。</li>
+<li>使动作专家训练与大脑的实际请求及执行时采用的动作前缀一致。</li>
+<li>通过RL联合改善移动决策和连续执行，同时大体保留通用视觉能力。</li>
+</ul>
+<p class="dp-p"><strong>定量结果：</strong></p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>基准/任务</th>
+<th>指标</th>
+<th>数值</th>
+<th>条件</th>
+</tr></thead><tbody>
+<tr>
+<td>SAGE-3D导航</td>
+<td>SR</td>
+<td>51.3%；NaVILA 23.5%</td>
+<td>相同骨干及训练回合</td>
+</tr>
+<tr>
+<td>R2R-CE导航</td>
+<td>SR</td>
+<td>52.7%；NaVILA 46.5%</td>
+<td>相同骨干及训练回合；要求停止</td>
+</tr>
+<tr>
+<td>RxR-CE导航</td>
+<td>SR</td>
+<td>51.4%；NaVILA 48.7%</td>
+<td>相同骨干及训练回合；要求停止</td>
+</tr>
+<tr>
+<td>R2R-CE / RxR-CE导航</td>
+<td>SPL</td>
+<td>29.2% / 28.1%；NaVILA 41.8% / 43.0%</td>
+<td>相同骨干及训练回合；OSR更高，但路径效率更低</td>
+</tr>
+<tr>
+<td>十二个通用视觉基准</td>
+<td>Mean accuracy</td>
+<td>59.16%；基础大脑59.47%</td>
+<td>评估导航训练后的能力保留</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>AI研究评分：</strong> 三位评估者的平均分，满分10分。</p>
+<div class="dp-tbl-wrap"><table class="dp-tbl"><thead><tr>
+<th>维度</th>
+<th>分数</th>
+<th>理由</th>
+</tr></thead><tbody>
+<tr>
+<td>重要性</td>
+<td>8.0</td>
+<td>在学习导航时保留通用视觉能力，对共享机器人大脑研究很重要。其他物理技能及实体机器人不在评估范围内。</td>
+</tr>
+<tr>
+<td>增量贡献</td>
+<td>8.0</td>
+<td>语义请求与慢–快策略联合RL扩展了DualVLN的几何接口。设计结合已有方法，向其他骨干的迁移仍未验证。</td>
+</tr>
+<tr>
+<td>方法质量</td>
+<td>8.0</td>
+<td>请求落地和执行前缀监督减少训练与执行的不一致。训练仍需语义地图及使用特权几何信息的规划器。</td>
+</tr>
+<tr>
+<td>有效性</td>
+<td>7.0</td>
+<td>相同骨干及回合下的比较支持更高SR和能力保留。R2R/RxR较低的SPL限制了路径效率方面的收益。</td>
+</tr>
+<tr>
+<td>空白弥补证据</td>
+<td>8.0</td>
+<td>受控导航比较及绕过答案格式的视觉评估支持能力保留。证据仅覆盖一种大脑骨干和VLN-CE。</td>
+</tr>
+</tbody></table></div>
+<p class="dp-p"><strong>综合评分：</strong> 7.8/10。</p>
+<p class="dp-p"><strong>局限性/差距：</strong></p>
+<ul class="dp-list">
+<li>R2R-CE及RxR-CE的OSR高于NaVILA，但SPL更低。额外探索可能增加路径长度。</li>
+<li>动作专家初始训练需要场景网格语义地图，以及使用仅训练时可用几何信息的规划器。</li>
+<li>评估覆盖三个VLN-CE基准及一种大脑骨干。实体机器人及其他骨干上的效果仍未验证。</li>
+<li>在保留目标可达性及通用视觉能力的同时减少无效探索，仍是待解决的问题。</li>
+</ul>
+<p class="dp-p"><strong>开放权重/代码：</strong> — / —。</p>
+<h2 class="dp-h2">推理/部署</h2>
+<ul class="dp-list">
+<li><strong>推理延迟：</strong> —。</li>
+<li><strong>部署硬件：</strong> —。</li>
+</ul>
+<h2 class="dp-h2">数据集/数据收集</h2>
+<ul class="dp-list">
+<li><strong>训练数据：</strong> 共享的34,445个导航回合用于动作专家适应及RL。参考轨迹根据冻结大脑的移动请求生成。</li>
+<li><strong>评估数据：</strong> SAGE-Bench、R2R-CE和RxR-CE官方评估集，以及用于能力保留评估的十二个通用视觉基准。</li>
+</ul>
+<p class="dp-p"><strong>来源：</strong> <a href="https://arxiv.org/html/2611.26414v1" target="_blank" rel="noopener">论文正文</a>第2–5节。</p>

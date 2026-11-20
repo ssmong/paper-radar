@@ -400,6 +400,7 @@ Note: IndustReal (NVIDIA, RSS 2023) also addresses contact-rich assembly with RL
 | Paper | Year | Robot / Tasks | Key Method | Main Result | Code |
 |---|---|---|---|---|---|
 | [**SuperNav**](https://arxiv.org/abs/2610.12126v1) | 2026 | Unitree Go2; simulated instance, multi-object, demand-driven, and category-level navigation | Pretrained MLLM without navigation-specific fine-tuning; Navigation Skills, visual-point goals, interchangeable executors, and execution feedback | Geo-based Executor SR: 78.00% single-object, 34.00% multi-object (Habitat-GS), 59.50% demand-driven (adapted Demand-Bench) | — |
+| [**ZeroVLN**](https://arxiv.org/abs/2611.26414v1) | 2026 | Simulated vision-language navigation: SAGE-3D, R2R-CE, RxR-CE | VLM brain without navigation-domain SFT; semantic tool calls, request-grounded action expert training, and joint slow–fast RL | SR: 51.3% SAGE-3D, 52.7% R2R-CE, 51.4% RxR-CE; R2R/RxR SPL below NaVILA with the same backbone and training episodes | — |
 
 ---
 
